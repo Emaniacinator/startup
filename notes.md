@@ -4,10 +4,11 @@
 
 Note that the link for the above has not yet actually been added, but will be soon.
 
+# Github and Markdown Notes
 
-
-
-
+All of this is fairly familiar due to your job, so it shouldn't be a huge issue. Just make sure not to
+accidentally mix up the order of the brackets (which come first) and the parentheses (which come second)
+like you sometimes do, and you should be fine!
 
 
 # I'm leaving all of the stuff after this in, just for reference. Consider deleting it later
