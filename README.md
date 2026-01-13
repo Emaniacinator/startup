@@ -21,9 +21,9 @@ Probably make the name catchier, but this works for now
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology
 - [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
@@ -45,9 +45,15 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Secure login over HTTPS
+- Ability to add new games to the application
+- Ability to leave a review for a game
+- Ability to leave a comment on a game
+- Ability for an admin to delete games, reviews, and comments
+- Ability for the user to view a page for each game, with reviews and comments that are updated in real time
+- Persistently stored comments, reviews, and games information
+- Display of the game list
+- Display of a small page with information for each game
 
 ### Technologies
 
@@ -64,7 +70,7 @@ I am going to use the required technologies in the following ways:
     * leaving comments
     * retrieving comments
 - **DB/Login** - Store comments, votes, and game information in a database. Register and login users with securely stored credentials. People can't interact with anything other than the login page unless they are authenticated.
-- **WebSocket** - When a user adds a game, leaves a review, or leaves a comment, it will be broadcast to all other users who are logged in.
+- **WebSocket** - When a user adds a game, leaves a review, or leaves a comment, it will be broadcast to all other users who are logged in and on the appropriate page.
 
 ## 🚀 AWS deliverable
 
