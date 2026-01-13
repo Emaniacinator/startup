@@ -28,7 +28,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+There are a myriad of really interesting and fun video games, but there aren't actually very many good review sites. You can find reviews on Amazon, Xbox, Google, or other places but it doesn't ever seem like there are any truly dedicated locations for quality reviews. The goal of the Games Rating application is to fix this issue by providing a space for people to share their reviews and have discussions about different video games that have released. When users want to, they can open up this application and add a new game to the game options or leave a review on one that's already there. These discussions and reviews are saved so that they can be referenced in the future. Additionally an average rating for each game is displayed for concise information about opinions on the game. These will all be out of 100 so that there is plenty of room for nuanced opinions.
 
 ### Design
 
