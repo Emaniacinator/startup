@@ -1,6 +1,16 @@
 # CS 260 Notes
 
-[My startup - Simon](https://simon.cs260.click)
+[My startup - Game Ratings and Discussion]()
+
+Note that the link for the above has not yet actually been added, but will be soon.
+
+
+
+
+
+
+
+# I'm leaving all of the stuff after this in, just for reference. Consider deleting it later
 
 ## Helpful links
 
