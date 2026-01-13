@@ -51,14 +51,20 @@ sequenceDiagram
 
 ### Technologies
 
-I am going to use the required technologies in the following ways.
+I am going to use the required technologies in the following ways:
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Uses simple HTML structure to create small HTML pages for each game, as well as a login page. 
+- **CSS** - Used to make the app look good even if screens are different sizes, as well as for formatting of pages to ensure comfortable whitespace, good spacing of images, and clear differentation of ideas in the page.
+- **React** - Used for login, leaving reviews, adding new games, leaving comments, and for other miscellaneous actions and components.
+- **Service** - Backend service with endpoints, including the following:
+    * login
+    * retrieving game information
+    * submitting reviews
+    * retrieving review scores
+    * leaving comments
+    * retrieving comments
+- **DB/Login** - Store comments, votes, and game information in a database. Register and login users with securely stored credentials. People can't interact with anything other than the login page unless they are authenticated.
+- **WebSocket** - When a user adds a game, leaves a review, or leaves a comment, it will be broadcast to all other users who are logged in.
 
 ## 🚀 AWS deliverable
 
