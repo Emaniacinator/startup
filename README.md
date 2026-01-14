@@ -11,11 +11,11 @@ Probably make the name catchier, but this works for now
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] Proper use of Markdown
-- [x] A concise and compelling elevator pitch
-- [x] Description of key features
-- [x] Description of how you will use each technology
-- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] Proper use of Markdown - Formatted text size and images to make following the document clear
+- [x] A concise and compelling elevator pitch - Wrote the pitch
+- [x] Description of key features - Wrote up a brief description of the features I want, including means of user interaction and pages
+- [x] Description of how you will use each technology - Wrote up a brief description of each of the technologies and my inital thoughts on implementing it
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references. - Added images for a home page, game page, and a sequence diagram of several functions
 
 ### Elevator pitch
 
