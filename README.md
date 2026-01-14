@@ -33,10 +33,10 @@ There are a myriad of really interesting and fun video games, but there aren't a
 ### Design
 
 ![Home Page](HomePage.png)
-<small>This is the home page<small>
+<sub>This is the home page<sub>
 
 ![Game Page](GamePage.png)
-<small>This is a game page<small>
+<sub>This is a game page<sub>
 
 Above are some quick images of the home page and the game page for reference
 
