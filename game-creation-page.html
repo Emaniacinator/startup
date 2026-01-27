@@ -7,12 +7,21 @@
         <a href="index.html">Return to home page</a>
         <p>To add a new game, please fill out the following info:</p>
         <form>
-            <label for="game-name-id">Game Name Here</label>
-            <input type="text" id="game-name-id" name="game-name">
-            <label for="game-photo-url-id">Put the game's cover photo url here</label>
-            <input type="url" id="game-photo-url-id" name="game-photo-url">
-            <label for="">
-            <textarea id="game-summary-id" name="game-summary">Type a brief summary of the game's premise here</textarea>
+            <div>
+                <label for="game-name-id">Game Name</label>
+                <input type="text" id="game-name-id" name="game-name">
+            </div>
+            
+            <div>
+                <label for="game-photo-url-id">Cover Photo Url</label>
+                <input type="url" id="game-photo-url-id" name="game-photo-url">
+            </div>
+            
+            <div>
+                <label for="game-summary-id">Sumary of Premise</label>
+                <textarea id="game-summary-id" name="game-summary"></textarea>
+            </div>
+            
             <button type="Submit">Submit</button>
         </form>
     </main>
