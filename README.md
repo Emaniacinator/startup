@@ -79,22 +79,21 @@ I am going to use the required technologies in the following ways:
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
+- [x] **Server deployed and accessible with custom domain name** - [Here is my domain](https://eric260.click).
 
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - I created four simple html pages that indicate the layout of my website.
 - [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
+- [x] **Links** - My html pages link between each other as appropriate
 - [ ] **Text** - I did not complete this part of the deliverable.
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
 - [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
-
+- [x] **Login placeholder** - I created an example login page as well as a login button or username display, depending on status of the login
+- [x] **DB data placeholder** - I indicated some locations where tables and other data might be filled in using DB data, especially in the index page
+- [x] **WebSocket placeholder** - I indicated some locations where a list will be populated as people create data, via websocket. Especially in the index page
 ## 🚀 CSS deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
