@@ -86,10 +86,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] **HTML pages** - I created four simple html pages that indicate the layout of my website.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
+- [x] **Proper HTML element usage** - I made sure to use HTML elements thoroughly to both create function for and organize the webpage.
 - [x] **Links** - My html pages link between each other as appropriate
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
+- [x] **Text** - I indlucded various text elements and forms that the users can both view and fill out on several pages
+- [x] **3rd party API placeholder** - I noted how a 3rd party API would be used in the game creation page to verify game existence for the site
 - [ ] **Images** - I did not complete this part of the deliverable.
 - [x] **Login placeholder** - I created an example login page as well as a login button or username display, depending on status of the login
 - [x] **DB data placeholder** - I indicated some locations where tables and other data might be filled in using DB data, especially in the index page
