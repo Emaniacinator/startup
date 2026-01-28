@@ -2,9 +2,36 @@
     <header>
         <h1>Video Game Voting</h1>
         <h2>Game Name Here!</h2>
+        <p>Average Game Rating: 0/100 (pull from a database)</p>
+        <p>Put a game image here</p>
     </header>
     <main>
+        <a href="login-page.html">Login (OR IF LOGGED IN, THE USERNAME)</a>
         <a href="index.html">Return to home page</a>
+        <h3>Leave a game review</h3>
+        <form>
+            <div>
+                <label for="game-score-id">Score the game out of 100</label>
+                <input id="game-score-id" name="game-score" type="number" max="100" required>
+            </div>
+            <div>
+                <label for="game-review-id">Leave a review</label>
+                <textarea id="game-review-id" name="game-review" required></textarea>
+            </div>
+            <button type="Submit">Leave Review</button>
+        </form>
+        <h3>Live Chat About Game</h3>
+        <p>This is where there will be a live chat about the game, using websocket</p>
+        <form>
+            <label for="comment-box-id">Leave a comment in chat</label>
+            <textarea id="comment-box-id" name="comment-box" required></textarea>
+            <button type="Submit">Comment</button>
+        </form>
+        <h3>Reviews</h3>
+        <p>Username of a reviewer</p>
+        <p>Score of review</p>
+        <p>The text of the review</p>
+        <p>(There will be more reviews after this)</p>
     </main>
     <footer>
         <p>Eric Vinton - CS 260</p>
