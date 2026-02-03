@@ -19,7 +19,7 @@ body{
     overflow: scroll;
     background-color: #919191;
     h1{
-        position: fixed;
+        position: relative;
         width: 100%;
         display: flex;
         color: green;
@@ -27,8 +27,8 @@ body{
         align-items: center;
         z-index: 10;
         height: 5%;
-        font-size: small;
         text-align: center;
+        font-size: clamp(0.5rem, 2vw, 3vw);
     }
     img{
         width: 50%;
