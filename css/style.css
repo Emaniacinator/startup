@@ -10,6 +10,20 @@ body{
     align-items: center;
     overflow: scroll;
     background-color: #d6f1f6;
+    font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+    h2{
+        font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+    }
+    a{
+        font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+    }
+    td{
+        font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+    }
+    th{
+        font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+        text-decoration: solid;
+    }
 }
 
 main :any-link{

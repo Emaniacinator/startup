@@ -5,45 +5,46 @@
         <img alt="Demo banner for website" src="..\website-banner.png">
         <nav class="" id="login-links">
             <a class= "h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id= "login-link" href="login-page.html">Login / Username</a>
-            <p></p>
             <a class= "h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id= "game-creation-link" href="game-creation-page.html">Add Game</a>
         </nav>
     </div>
     <main>
-        <nav class="top-games">
+        <nav id ="top-games" class="fixed content-center left-1/12 right-7/12">
             <h2 class="flex justify-center text-2xl">Top Rated Games</h2>
             <p class="flex justify-center">(This will be populated by a database)</p>
-            <table class="flex border-2 justify-center">
-                <tr>
-                    <th>Name</th>
-                    <th>Rating</th>
-                    <th>Release Date</th>
+            <table class="grid table-fixed border-2 w-full">
+                <tr class="grid grid-cols-3">
+                    <th class="relative text-center w-1/2">Name</th>
+                    <th class="relative text-center w-1/4">Rating</th>
+                    <th class="relative text-center w-1/4">Release Date</th>
                 </tr>
-                <tr>
-                    <td><a href="game-page-template.html">Popular Game 1</a></td>
-                    <td>95</td>
-                    <td>1/1/1001</td>
+                <tr class="grid grid-cols-3 justify-center gap-5 bg-white">
+                    <td class="relative text-center w-1/2"><a href="game-page-template.html">Popular Game 1</a></td>
+                    <td class="relative text-center w-1/4">95</td>
+                    <td class="relative text-center w-1/4">1/1/1001</td>
                 </tr>
-                <tr>
-                    <td><a href="game-page-template.html">Popular Game 2</a></td>
-                    <td>80</td>
-                    <td>2/2/2002</td>
+                <tr class="grid grid-cols-3 justify-center gap-5 bg-gray-300">
+                    <td class="relative text-center w-1/2"><a href="game-page-template.html">Popular Game 2</a></td>
+                    <td class="relative text-center w-1/4">80</td>
+                    <td class="relative text-center w-1/4">2/2/2002</td>
                 </tr>
-                <tr>
-                    <td><a href="game-page-template.html">Popular Game 3</a></td>
-                    <td>72</td>
-                    <td>3/3/3003</td>
-                </tr>
+                <tr class="grid grid-cols-3 justify-center gap-5 bg-white">
+                    <td class="relative text-center w-1/2"><a href="game-page-template.html">Popular Game 3</a></td>
+                    <td class="relative text-center w-1/4">72</td>
+                    <td class="relative text-center w-1/4">3/3/3003</td>
+                </tr>          
             </table>
         </nav>
-        <nav class="newly-added">
-            <h2>Newly Added Games</h2>
-            <p>This will be live updated by websocket for logged in users as people add new games to the website, in a chat-like fashion</p>
-            <li><a href="game-page-template.html">Game 1</a></li>
-            <li><a href="game-page-template.html">Game 2</a></li>
-            <li><a href="game-page-template.html">Game 3</a></li>
+        <nav id="newly-added" class="fixed content-center left-7/12 right-1/12">
+            <h2 class="flex justify-center">Newly Added Games</h2>
+            <p class="flex justify-center">(This will be live updated by websocket for logged in users as people add new games to the website, in a chat-like fashion)</p>
+            <div class="border-2 rounded">
+                <li><a href="game-page-template.html">Game 1</a></li>
+                <li><a href="game-page-template.html">Game 2</a></li>
+                <li><a href="game-page-template.html">Game 3</a></li>
+            </div>
         </nav>
-        <nav class="game-list">
+        <nav id="game-list" class="flex">
             <h2>All Games</h2>
             <p>This will be a list of all of the games that have a review page</p>
             <li><a href="game-page-template.html">Game 1</a></li>
