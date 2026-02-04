@@ -19,7 +19,7 @@ body{
     overflow: scroll;
     background-color: #919191;
     h1{
-        position: relative;
+        position: fixed;
         width: 100%;
         display: flex;
         color: green;
