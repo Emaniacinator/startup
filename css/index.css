@@ -42,3 +42,21 @@ body{
         align-items: center;
     }
 }
+
+.login-link{
+    position: fixed;
+    display: flex;
+    font-size: clamp(0.5rem, 1.5vw, 3vw);
+    justify-content: center;
+    align-items: right;
+    z-index: 10;
+    right: 0%;
+}
+
+footer{
+    position: fixed;
+    display: flex;
+    bottom: 0;
+    z-index: 10;
+    height: 5%;
+}
