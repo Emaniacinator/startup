@@ -3,6 +3,7 @@
 
 body{
     margin-top: 10%;
+    margin-bottom: 10%;
     display: flex;
     font-family: 'Roboto';
     justify-content: center;
