@@ -105,7 +105,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
 - [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
 - [x] **Use of a imported font** - I imported the Roboto font from Google and set that to be my webpage's font
-- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I used class selectors, ID selectors, and element selectors to style various text boxes and other items. I also used pseudo selectors to style links and invalid data types in forms correctly
 
 ## 🚀 React part 1: Routing deliverable
 
