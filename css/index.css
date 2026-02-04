@@ -11,6 +11,11 @@ body{
     background-color: #d6f1f6;
 }
 
+main :any-link{
+        color:darkgreen;
+        text-decoration: underline;
+}
+
 .website-banner{
     position: fixed;
     top: 0;
@@ -80,7 +85,9 @@ footer{
     a{
         position: fixed;
         display: flex;
-        left: 82%
+        left: 82%;
+        color: blue;
+        text-decoration: underline;
     }
 }
 
