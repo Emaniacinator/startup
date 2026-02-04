@@ -83,3 +83,7 @@ footer{
         left: 82%
     }
 }
+
+:invalid{
+    background-color: #ee5959;
+}

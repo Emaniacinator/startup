@@ -101,7 +101,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [ ] **Use of a CSS framework** - I did not complete this part of the deliverable.
+- [x] **Use of a CSS framework** - I implemented the tailwind framework into several elements of my page, especially the buttons and link formatting
 - [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
 - [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
 - [x] **Use of a imported font** - I imported the Roboto font from Google and set that to be my webpage's font
