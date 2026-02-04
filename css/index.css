@@ -8,6 +8,7 @@ body{
     justify-content: center;
     align-items: center;
     overflow: scroll;
+    background-color: #d6f1f6;
 }
 
 .website-banner{
@@ -32,7 +33,7 @@ body{
     }
     img{
         width: 50%;
-        height: 5%;
+        height: (auto * 0.05);
         position: fixed;
         z-index: 8;
         top: 0;
@@ -41,16 +42,26 @@ body{
         justify-content: center;
         align-items: center;
     }
-}
-
-.login-link{
+    #login-link{
     position: fixed;
     display: flex;
-    font-size: clamp(0.5rem, 1.5vw, 3vw);
+    font-size: clamp(0.5rem, 1.45vw, 2vw);
     justify-content: center;
-    align-items: right;
+    align-items: center;
     z-index: 10;
-    right: 0%;
+    left: 84.25%;
+    top: 0;
+    }
+    #game-creation-link{
+    position: fixed;
+    display: flex;
+    font-size: clamp(0.5rem, 1.45vw, 2vw);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    right: 88.27%;
+    top: 0;
+    }
 }
 
 footer{
@@ -59,4 +70,16 @@ footer{
     bottom: 0;
     z-index: 10;
     height: 5%;
+    font-size: clamp(0.5rem, 1.5vw, 3vw);
+    color: blue;
+    p{
+        position: fixed;
+        display: flex;
+        right: 85%;
+    }
+    a{
+        position: fixed;
+        display: flex;
+        left: 82%
+    }
 }
