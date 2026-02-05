@@ -100,10 +100,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
+- [x] **Visually appealing colors and layout. No overflowing elements.** - I colored all of the elements of the page in an effort to make a visualy appealing design that still had clarity
 - [x] **Use of a CSS framework** - I implemented the tailwind framework into several elements of my page, especially the buttons and link formatting
-- [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
+- [x] **All visual elements styled using CSS** - I styled all of the visuals that I currently intend on having using CSS
+- [x] **Responsive to window resizing using flexbox and/or grid display** - The page will successfully resize to match different screen types, widths, and heights!
 - [x] **Use of a imported font** - I imported the Roboto font from Google and set that to be my webpage's font
 - [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I used class selectors, ID selectors, and element selectors to style various text boxes and other items. I also used pseudo selectors to style links and invalid data types in forms correctly
 
