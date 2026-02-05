@@ -25,5 +25,9 @@ mkdir -p services/${service}/public
 ENDSSH
 
 # Step 2
+printf "\n----> Compile the pages for vite and Tailwind.\n"
+npm run build
+
+# Step 3
 printf "\n----> Copy the distribution package to the target.\n"
-scp -r -i "$key" * ubuntu@$hostname:services/$service/public
+scp -i "$key" -r ./dist/* ubuntu@$hostname:services/$service/public
