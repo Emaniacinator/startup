@@ -13,6 +13,7 @@ body{
     font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
     h2{
         font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+        font-weight: bold;
     }
     a{
         font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
@@ -23,6 +24,9 @@ body{
     th{
         font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
         text-decoration: solid;
+    }
+    p{
+        font-size: clamp(0.1rem, 0.75vw + 0.33vh, 2vw);
     }
 }
 
@@ -116,6 +120,14 @@ footer{
     }
 }
 
-:invalid{
-    background-color: #ee5959;
+input{
+    border: solid black;
+}
+
+input:invalid{
+    border: solid red;
+}
+
+div:valid{
+    border: solid green;
 }
