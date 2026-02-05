@@ -11,21 +11,21 @@
     <main>
         <h2 class="flex justify-center">Add a new game here!</h2>
         <p class="flex justify-center">To add a new game, please fill out the following info:</p>
-        <form>
-            <div>
+        <form class="flexbox justify-center">
+            <div class="flexbox">
                 <p>Note that a 3rd party API will verify the existence of this game before allowing it to be submitted</p>
-                <label for="game-name-id">Game Name</label>
+                <label class="flexbox text-xs" for="game-name-id">Game Name</label>
                 <input type="text" id="game-name-id" name="game-name" required>
             </div>       
-            <div>
-                <label for="game-photo-url-id">Cover Photo Url</label>
+            <div class="flexbox">
+                <label class="flexbox text-xs" for="game-photo-url-id">Cover Photo Url</label>
                 <input type="url" id="game-photo-url-id" name="game-photo-url" required>
             </div>  
-            <div>
-                <label for="game-summary-id">Sumary of Premise</label>
+            <div class="flexbox">
+                <label class="text-xs" for="game-summary-id">Sumary of Premise</label>
                 <textarea id="game-summary-id" name="game-summary" required></textarea>
             </div>       
-            <button type="Submit">Submit</button>
+            <button class="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded "type="Submit">Submit</button>
         </form>
     </main>
     <footer>
