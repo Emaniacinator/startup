@@ -9,7 +9,7 @@ export function HomePage() {
             <img alt="Demo banner for website" src=".\website-banner.png" />
             <nav className="" id="login-links">
                 <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">Login / Username</NavLink>
-                <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="game-creation-page">Add Game</NavLink>
+                <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
             </nav>
         </div>
         <main>

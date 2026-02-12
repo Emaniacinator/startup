@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { HomePage } from './home-page/home-page'
 import { LoginPage } from './login-page/login-page';
 import { GamePageTemplate } from './game-page-template/game-page-template';
+import { GameCreationPage } from './game-creation-page/game-creation-page';
 
 export default function App() {
   return (
@@ -14,7 +15,8 @@ export default function App() {
                 <Route path='/' element={<HomePage />} exact />
                 <Route path='/LoginPage' element={<LoginPage />} />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
-                <Route path='*' element={<NotFound />} />
+                <Route path='/GameCreationPage' element={<GameCreationPage />} />
+                <Route path='*' element={<NotFound />} />q
             </Routes>
             <footer>
                 <p>Eric Vinton - CS 260</p>
