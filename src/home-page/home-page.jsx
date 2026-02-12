@@ -24,17 +24,17 @@ export function HomePage() {
                             <th className="relative text-center w-1/4">Release Date</th>
                         </tr>
                         <tr className="grid grid-cols-3 justify-center gap-5 bg-white">
-                            <td className="relative text-center w-1/2"><a href="game-page-template.html">Popular Game 1</a></td>
+                            <td className="relative text-center w-1/2"><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></td>
                             <td className="relative text-center w-1/4">95</td>
                             <td className="relative text-center w-1/4">1/1/1001</td>
                         </tr>
                         <tr className="grid grid-cols-3 justify-center gap-5 bg-gray-300">
-                            <td className="relative text-center w-1/2"><a href="game-page-template.html">Popular Game 2</a></td>
+                            <td className="relative text-center w-1/2"><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></td>
                             <td className="relative text-center w-1/4">80</td>
                             <td className="relative text-center w-1/4">2/2/2002</td>
                         </tr>
                         <tr className="grid grid-cols-3 justify-center gap-5 bg-white">
-                            <td className="relative text-center w-1/2"><a href="game-page-template.html">Popular Game 3</a></td>
+                            <td className="relative text-center w-1/2"><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></td>
                             <td className="relative text-center w-1/4">72</td>
                             <td className="relative text-center w-1/4">3/3/3003</td>
                         </tr>          
@@ -45,18 +45,18 @@ export function HomePage() {
                     <h2 className="flex justify-center">Newly Added Games</h2>
                     <p className="flex justify-center">(This will be live updated by websocket for logged in users as people add new games to the website, in a chat-like fashion)</p>
                     <div className="border-2 rounded">
-                        <li><a href="game-page-template.html">Game 1</a></li>
-                        <li><a href="game-page-template.html">Game 2</a></li>
-                        <li><a href="game-page-template.html">Game 3</a></li>
+                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
+                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
+                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>
                     </div>
                 </nav>
             </div>
             <nav id="game-list" className="flexbox justify-center content-center">
                 <h2 className="flex justify-center">All Games</h2>
                 <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
-                <li className="flex justify-center"><a href="game-page-template.html">Game 1</a></li>
-                <li className="flex justify-center"><a href="game-page-template.html">Game 2</a></li>
-                <li className="flex justify-center"><a href="game-page-template.html">Game 3</a></li>
+                <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
+                <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
+                <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>
             </nav>
         </main>
     </div>

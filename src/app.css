@@ -4,7 +4,7 @@
 
 @tailwind utilities;
 
-.body{
+body{
     margin-top: 10%;
     margin-bottom: 10%;
     display: flex;
@@ -57,6 +57,8 @@ main :any-link{
         height: 5%;
         text-align: center;
         font-size: clamp(0.5rem, 2vw + 0.5vh, 3vw);
+        left: 0%;
+        right: 0%;
     }
     img{
         width: 50%;
@@ -69,7 +71,19 @@ main :any-link{
         justify-content: center;
         align-items: center;
     }
+    #login-link{
+        width: 15%;
+        position: fixed;
+        display: flex;
+        font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        right: 0;
+        top: 0;
+    }
     #login-links{
+        width: 15%;
         position: fixed;
         display: flex;
         font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);
@@ -80,6 +94,7 @@ main :any-link{
         top: 0;
     }
     #game-creation-link{
+        width: 15%;
         position: fixed;
         display: flex;
         font-size: clamp(0.1rem, 1vw + 0.5vh, 2vw);

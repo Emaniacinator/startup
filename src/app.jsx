@@ -5,20 +5,22 @@ import "./app.css";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { HomePage } from './home-page/home-page'
 import { LoginPage } from './login-page/login-page';
+import { GamePageTemplate } from './game-page-template/game-page-template';
 
 export default function App() {
   return (
-    <BrowserRouter>
-        <Routes>
-            <Route path='/' element={<HomePage />} exact />
-            <Route path='/LoginPage' element={<LoginPage />} />
-            <Route path='*' element={<NotFound />} />
-        </Routes>
-        <footer>
-            <p>Eric Vinton - CS 260</p>
-            <a href="https://github.com/Emaniacinator/startup">Click here for Github repo</a>
-        </footer>
-    </BrowserRouter>
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<HomePage />} exact />
+                <Route path='/LoginPage' element={<LoginPage />} />
+                <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
+                <Route path='*' element={<NotFound />} />
+            </Routes>
+            <footer>
+                <p>Eric Vinton - CS 260</p>
+                <a href="https://github.com/Emaniacinator/startup">Click here for Github repo</a>
+            </footer>
+        </BrowserRouter>
   );
 }
 
