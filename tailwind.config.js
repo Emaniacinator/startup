@@ -3,9 +3,10 @@ import('tailwindcss').Config
 export default{
     content:[
         './index.html',
-        './game-creation-page.html',
-        './game-page-template.html',
-        './login-page.html'
+        '.src/home-page/home-page.html',
+        '.src/game-creation-page/game-creation-page.html',
+        '.src/game-page-template/game-page-template.html',
+        '.src/login-page/login-page.html'
     ],
     plugins: [],
 };
