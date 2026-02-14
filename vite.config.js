@@ -18,10 +18,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html'),
-                home_page: resolve(__dirname, 'src/home-page/home-page.html'),
-                login_page: resolve(__dirname, 'src/login-page/login-page.html'),
-                game_creation_page: resolve(__dirname, 'src/game-creation-page/game-creation-page.html'),
-                game_page_template: resolve(__dirname, 'src/game-page-template/game-page-template.html'),
+                jsxIndex: resolve(__dirname, 'index.jsx'),
                 HomePage: resolve(__dirname, 'src/home-page/home-page.jsx'),
                 LoginPage: resolve(__dirname, 'src/login-page/login-page.jsx'),
                 GameCreationPage: resolve(__dirname, 'src/game-creation-page/game-creation-page.jsx'),
