@@ -17,7 +17,7 @@ export function HomePage() {
                 <nav id ="top-games" className="flexbox content-center w-5/12 left-1/12 right-7/12">
                     <h2 className="flex justify-center text-2xl">Top Rated Games</h2>
                     <p className="flex justify-center">(This will be populated by a database)</p>
-                    <table className="grid table-fixed border-2 w-full">
+                    <table className="grid outline-2 table-fixed w-full">
                         <thead className="grid grid-cols-3">
                             <tr>
                                 <th className="relative text-center w-1/4">Name</th>
@@ -68,7 +68,7 @@ export function HomePage() {
                 <nav id="newly-added" className="flexbox w-5/12 left-7/12 right-1/12">
                     <h2 className="flex justify-center">Newly Added Games</h2>
                     <p className="flex justify-center">(This will be live updated by websocket for logged in users as people add new games to the website, in a chat-like fashion)</p>
-                    <div className="border-2 rounded">
+                    <div className="outline-2 rounded list-inside">
                         <li><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
                         <li><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
                         <li><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>

@@ -31,7 +31,7 @@ export function GamePageTemplate(){
                                 <label className="text-xs" for="game-review-id">Leave a review</label>
                                 <textarea id="game-review-id" name="game-review" required></textarea>
                             </div>
-                            <button type="Submit">Leave Review</button>
+                            <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Leave Review</button>
                         </form>
                     </div>
                 </div>
