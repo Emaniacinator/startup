@@ -8,17 +8,23 @@ import { LoginPage } from './login-page/login-page';
 import { GamePageTemplate } from './game-page-template/game-page-template';
 import { GameCreationPage } from './game-creation-page/game-creation-page';
 import { LoginState } from './login-page/login-state';
+import { PageState } from './home-page/page-state';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
     const currentLoginState = username ? LoginState.LoggedIn : LoginState.LoggedOut;
     const [loginState, setLoginState] = React.useState(localStoreage.useState(currentLoginState));
     const pageLocation = React.useLocation();
-    const [currentPage, setCurrentPage] = React.useState('currentPage');
+    const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
 
     React.useEffect(() => {
-
-    }, [pageLocation.path])
+        if (pageLocation.pathname === ('' || '/')){
+            setCurrentPage(PageState.HomePage)
+        }
+        else {
+            setCurrentPage(PageState.OtherPage)
+        }
+    }, [pageLocation.pathname])
 
     return (
         <BrowserRouter>
@@ -28,13 +34,32 @@ export default function App() {
                 <nav className="" id="login-links">
                     {loginState === LoginState.LoggedIn && (
                         <>
-                            {currentPage ===}
-                        <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">{username} - Logout</NavLink>
-                        <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
+                            {currentPage === PageState.HomePage && (
+                                <>
+                                <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="/GameCreationPage">Add Game</NavLink>
+                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="/LoginPage">{username} - Logout</NavLink>
+                                </>
+                            )}
+                            {currentPage === PageState.OtherPage && (
+                                <>
+                                    <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
+                                    <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="../LoginPage">{username} - Logout</NavLink>
+                                </>
+                            )}
                         </>
                     )}
                     {loginState === LoginState.LoggedOut && (
-                        <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">Login</NavLink>
+                        <>
+                            {currentPage === PageState.HomePage && (
+                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="/LoginPage">Login</NavLink>
+                            )}
+                            {currentPage === PageState.OtherPage && (
+                                <>
+                                    <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
+                                    <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="../LoginPage">Login</NavLink>
+                                </>
+                            )}
+                        </>
                     )}
                 </nav>
             </div>
