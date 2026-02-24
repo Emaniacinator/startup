@@ -9,12 +9,31 @@ export function HomePage(temporaryGameListStorage, temporaryNewGameListInfo, tem
     const [fifthMostRecentGame, setFifthMostRecentGame] = useState(null);
 
     React.useEffect(() =>{
+        // Update or populate the complete game list
+        const fullGameList = document.getElementById("game-list");
+        temporaryGameListStorage.foreach(gameItem => {
+            // Create the new items
+            const newListItem = document.createElement("li");
+            const newNavLink = document.createElement("NavLink");
+            // Give them the correct properties
+            newNavLink.setAttribute('className', 'nav-link')
+            newNavLink.setAttribute('to', 'GamePageTemplate');
+            newNavLink.textContent = gameItem.gameName
+            // Add the NavLink to the li item and the li item to the actual game-list
+            newListItem.appendChild(newNavLink)
+            fullGameList.appendChild(newListItem);
+        });
+
+        // Then update or populate the new game list
         setFirstMostRecentGame(temporaryNewGameListInfo[4]);
         setSecondMostRecentGame(temporaryNewGameListInfo[3]);
         setThirdMostRecentGame(temporaryNewGameListInfo[2]);
         setFourthMostRecentGame(temporaryNewGameListInfo[1]);
         setFifthMostRecentGame(temporaryNewGameListInfo[0]);
     }, [temporaryGameListStorage.length]);
+
+    // In theory, this is going to make it so that there is new dummy game data every 5 seconds
+    mockGameAdditionsFunc();
 
     return (
         <div className="home-page-container">
@@ -108,9 +127,6 @@ export function HomePage(temporaryGameListStorage, temporaryNewGameListInfo, tem
                 <nav id="game-list" className="flexbox justify-center content-center">
                     <h2 className="flex justify-center">All Games</h2>
                     <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
-                    <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
-                    <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
-                    <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>
                 </nav>
             </main>
         </div>

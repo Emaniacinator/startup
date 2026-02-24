@@ -112,6 +112,17 @@ export default function App() {
     }
 
     function addDummyGameToMockOtherUsers(){
+        const [dummyUserTimer, setDummyUserTimer] = useState(0);
+
+        React.useEffect(() => {
+            const intervalIncrementer = setTimePassed(() => {
+                setDummyUserTimer(prevCount => prevCount + 1);
+            }, 3000);
+            return () => {
+                clearInterval(intervalIncrementer);
+            }
+        }, []);
+
         dummyGame = new Game(gameName="A *NEW* Dummy Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="This is just a dummy to illustrate functionality", gameId=temporaryGameListStorage.length)
         temporaryGameListStorage.push(dummyGame);
         updateNewGameList(dummyGame);
