@@ -22,6 +22,14 @@ export default function App() {
     let temporaryGameListStorage = [];
     let temporaryNewGameListInfo = [];
 
+    /// This next section is nasty and is just to create a fake top games database to read from
+    const temporaryTopGameList = [new Game(gameName="Top Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The best rated game", gameId=-1, averageScore=100, releaseDate="1/1/1001"),
+                                new Game(gameName="Second Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The second best rated game", gameId=-2, averageScore=90, releaseDate="2/2/2002"),
+                                new Game(gameName="Third Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The third best rated game", gameId=-3, averageScore=80, releaseDate="3/3/3003"),
+                                new Game(gameName="Fourth Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The fourth best rated game", gameId=-4, averageScore=70, releaseDate="4/4/4004"),
+                                new Game(gameName="Fifth Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The fifth best rated game", gameId=-5, averageScore=60, releaseDate="5/5/5005")]
+    /// Okay, the section is over and we can go back to the normal code
+
     React.useEffect(() => {
         if (pageLocation.pathname === ('' || '/')){
             setCurrentPage(PageState.HomePage);
@@ -104,7 +112,7 @@ export default function App() {
     }
 
     function addDummyGameToMockOtherUsers(){
-        dummyGame = new Game(gameName="A Dummy Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="This is just a dummy to illustrate functionality", gameId=temporaryGameListStorage.length)
+        dummyGame = new Game(gameName="A *NEW* Dummy Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="This is just a dummy to illustrate functionality", gameId=temporaryGameListStorage.length)
         temporaryGameListStorage.push(dummyGame);
         updateNewGameList(dummyGame);
     }

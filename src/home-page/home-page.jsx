@@ -1,14 +1,20 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export function HomePage(mockGameAdditionsFunc) {
+export function HomePage(temporaryGameListStorage, temporaryNewGameListInfo, temporaryTopGameList, mockGameAdditionsFunc) {
+    const [firstMostRecentGame, setFirstMostRecentGame] = useState(null);
+    const [secondMostRecentGame, setSecondMostRecentGame] = useState(null);
+    const [thirdMostRecentGame, setThirdMostRecentGame] = useState(null);
+    const [fourthMostRecentGame, setFourthMostRecentGame] = useState(null);
+    const [fifthMostRecentGame, setFifthMostRecentGame] = useState(null);
+
   return (
     <div className="home-page-container">
         <main>
             <div id="combo-box" className="flex justify-center">
                 <nav id ="top-games" className="flexbox content-center w-5/12 left-1/12 right-7/12">
                     <h2 className="flex justify-center text-2xl">Top Rated Games</h2>
-                    <p className="flex justify-center">(This will be updated and populated by a database)</p>
+                    <p className="flex justify-center">(This will be updated and populated by a database when the page is loaded)</p>
                     <table className="grid outline-2 table-fixed w-full">
                         <thead className="grid grid-cols-3">
                             <tr>
@@ -23,37 +29,59 @@ export function HomePage(mockGameAdditionsFunc) {
                         </thead>
                         <tbody className="grid grid-cols-3 bg-white">
                             <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></td>
+                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[0].gameName}</NavLink></td>
                             </tr>
                             <tr>
-                                <td className="relative text-center w-1/10">95</td>
+                                <td className="relative text-center w-1/10">{temporaryTopGameList[0].averageScore}</td>
                             </tr>
                             <tr>
-                                <td className="relative text-center w-1/4">1/1/1001</td>
+                                <td className="relative text-center w-1/4">{temporaryTopGameList[0].releaseDate}</td>
                             </tr>
                         </tbody>
                         <tbody className="grid grid-cols-3 bg-gray-300">
                             <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></td>
+                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[1].gameName}</NavLink></td>
                             </tr>
                             <tr>
-                                <td className="relative text-center w-1/10">80</td>
+                                <td className="relative text-center w-1/10">{temporaryTopGameList[1].averageScore}</td>
                             </tr>
                             <tr>
-                                <td className="relative text-center w-1/4">2/2/2002</td>
+                                <td className="relative text-center w-1/4">{temporaryTopGameList[1].releaseDate}</td>
                             </tr>
                         </tbody>
                         <tbody className="grid grid-cols-3 bg-white">
                             <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></td>
+                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[2].gameName}</NavLink></td>
                             </tr>
                             <tr>
-                                <td className="relative text-center w-1/10">72</td>
+                                <td className="relative text-center w-1/10">{temporaryTopGameList[2].averageScore}</td>
                             </tr>
                             <tr>
-                                <td className="relative text-center w-1/4">3/3/3003</td>
+                                <td className="relative text-center w-1/4">{temporaryTopGameList[2].releaseDate}</td>
                             </tr>
-                        </tbody>          
+                        </tbody>
+                        <tbody className="grid grid-cols-3 bg-white">
+                            <tr>
+                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[3].gameName}</NavLink></td>
+                            </tr>
+                            <tr>
+                                <td className="relative text-center w-1/10">{temporaryTopGameList[3].averageScore}</td>
+                            </tr>
+                            <tr>
+                                <td className="relative text-center w-1/4">{temporaryTopGameList[3].releaseDate}</td>
+                            </tr>
+                        </tbody>    
+                        <tbody className="grid grid-cols-3 bg-white">
+                            <tr>
+                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[4].gameName}</NavLink></td>
+                            </tr>
+                            <tr>
+                                <td className="relative text-center w-1/10">{temporaryTopGameList[4].averageScore}</td>
+                            </tr>
+                            <tr>
+                                <td className="relative text-center w-1/4">{temporaryTopGameList[4].releaseDate}</td>
+                            </tr>
+                        </tbody>            
                     </table>
                 </nav>
                 <div id="divider" className="flexbox w-1/12"></div>
