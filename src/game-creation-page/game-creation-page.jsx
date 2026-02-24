@@ -8,7 +8,7 @@ export function GameCreationPage(temporaryGameListStorage){
             <main>
                 <h2 className="flex justify-center">Add a new game here!</h2>
                 <p className="flex justify-center">To add a new game, please fill out the following info:</p>
-                <form className="flexbox justify-center">
+                <form className="flexbox justify-center" onSubmit={handleGameCreation}>
                     <div className="flexbox">
                         <p>Note that a 3rd party API will verify the existence of this game before allowing it to be submitted</p>
                         <label className="flexbox text-xs" for="game-name-id">Game Name</label>
@@ -42,10 +42,26 @@ export function GameCreationPage(temporaryGameListStorage){
 
         if (!gameExistenceChecker === true) {
             gameToAdd = new Game(gameName=newGameName, gameImageUrl=newGamePhoto, gameSummary=newGameSummary, gameId=temporaryGameListStorage.length);
-            temporaryGameListStorage.push(gameToAdd);
+            mockApiCheckForExistence = mockApiCall();
+            if (mockApiCheckForExistence === true){
+                temporaryGameListStorage.push(gameToAdd);
+                inputObject.setCustomValidity("");
+            }
+            else{
+                inputObject.setCustomValidity("This is mocking the game not existing in an API database. Sorry for the random interruption");
+            }
         }
         else {
             inputObject.setCustomValidity("That game is already in our database. Please consider leaving a review instead");
+        }
+    }
+
+    function mockApiCall(){
+        if (Math.random() < 0.5){
+            return false;
+        }
+        else {
+            return true;
         }
     }
 }
