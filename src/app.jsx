@@ -7,10 +7,37 @@ import { HomePage } from './home-page/home-page'
 import { LoginPage } from './login-page/login-page';
 import { GamePageTemplate } from './game-page-template/game-page-template';
 import { GameCreationPage } from './game-creation-page/game-creation-page';
+import { LoginState } from './login-page/login-state';
 
 export default function App() {
-  return (
+    const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
+    const currentLoginState = username ? LoginState.LoggedIn : LoginState.LoggedOut;
+    const [loginState, setLoginState] = React.useState(localStoreage.useState(currentLoginState));
+    const pageLocation = React.useLocation();
+    const [currentPage, setCurrentPage] = React.useState('currentPage');
+
+    React.useEffect(() => {
+
+    }, [pageLocation.path])
+
+    return (
         <BrowserRouter>
+            <div className="website-banner">
+                <h1 className="website-name">Video Game Voting</h1>
+                <img alt="Demo banner for website" src="../../public/website-banner.png" />
+                <nav className="" id="login-links">
+                    {loginState === LoginState.LoggedIn && (
+                        <>
+                            {currentPage ===}
+                        <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">{username} - Logout</NavLink>
+                        <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
+                        </>
+                    )}
+                    {loginState === LoginState.LoggedOut && (
+                        <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">Login</NavLink>
+                    )}
+                </nav>
+            </div>
             <Routes>
                 <Route path='/' element={<HomePage />} exact />
                 <Route path='/LoginPage' element={<LoginPage />} />
@@ -23,21 +50,29 @@ export default function App() {
                 <a href="https://github.com/Emaniacinator/startup">Click here for Github repo</a>
             </footer>
         </BrowserRouter>
-  );
+    );
+
+
+    function onLoginChange(username, loginState){
+        setUsername(username);
+        setLoginState(loginState);
+    }
+
+    function NotFound(){
+        return (
+            <div className="page-not-found-container">
+                <div className="website-banner">
+                    <h1 className="website-name">Video Game Voting</h1>
+                    <img alt="Demo banner for website" src="../../public/website-banner.png" />
+                    <nav className="" id="login-links">
+                        <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
+                    </nav>
+                </div>
+                <main className="bg-gray-500 text-red-700 justify-center items-center text-5xl">
+                    404 Error: Page Not Found  
+                </main>
+            </div>
+        )
+    }
 }
 
-function NotFound(){
-    return (
-        <div className="page-not-found-container">
-            <div className="website-banner">
-                <h1 className="website-name">Video Game Voting</h1>
-                <img alt="Demo banner for website" src="../../public/website-banner.png" />
-                <nav className="" id="login-links">
-                    <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
-                </nav>
-            </div>
-            <main className="bg-gray-500 text-red-700 justify-center items-center text-5xl">
-                404 Error: Page Not Found  
-            </main>
-        </div>)
-}

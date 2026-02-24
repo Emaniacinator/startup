@@ -4,14 +4,6 @@ import { NavLink } from 'react-router-dom';
 export function HomePage() {
   return (
     <div className="home-page-container">
-        <div className="website-banner">
-            <h1 className="website-name">Video Game Voting</h1>
-            <img alt="Demo banner for website" src="../../public/website-banner.png" />
-            <nav className="" id="login-links">
-                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">Login / Username</NavLink>
-                <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
-            </nav>
-        </div>
         <main>
             <div id="combo-box" className="flex justify-center">
                 <nav id ="top-games" className="flexbox content-center w-5/12 left-1/12 right-7/12">
