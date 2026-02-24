@@ -4,14 +4,6 @@ import { NavLink } from 'react-router-dom';
 export function GameCreationPage(){
     return(
         <div className="game-creation-page-container">
-            <div className="website-banner">
-                <h1 className="website-name">Video Game Voting</h1>
-                <img alt="Demo banner for website" src="../../public/website-banner.png" />
-                <nav className="" id="login-links">
-                    <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="../LoginPage">Logout / Username</NavLink>
-                    <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
-                </nav>
-            </div>
             <main>
                 <h2 className="flex justify-center">Add a new game here!</h2>
                 <p className="flex justify-center">To add a new game, please fill out the following info:</p>

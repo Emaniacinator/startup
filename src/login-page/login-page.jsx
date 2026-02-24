@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LoginState } from './login-state';
 
-export function LoginPage({ username, loginState }){
+export function LoginPage(username, loginState, temporaryUsernameStorage, temporaryPasscodeStorage, loginChangeFunc){
 
     if (loginState === LoginState.LoggedIn) {
         return (
@@ -14,35 +14,28 @@ export function LoginPage({ username, loginState }){
     else {
         return (
             <div className="login-page-container">
-                <div className="website-banner">
-                    <h1 className="website-name">Video Game Voting</h1>
-                    <img alt="Demo banner for website" src="../../public/website-banner.png" />
-                    <nav className="" id="login-links">
-                        <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
-                    </nav>
-                </div>
                 <main>
                     <h2>Login</h2>
                     <form>
                         <div>
                             <label for="new-user-id" className="flex text-xs">Username</label>
-                            <input type="text" id="existing-user-id" name="esisting-user" required />
+                            <input type="text" id="existing-user-id" name="esistingUser" required />
                         </div>
                         <div>
                             <label for="login-passcode-id" className="flex text-xs">Passcode</label>
-                            <input type="text" id="login-passcode-id" name="login-passcode" required />
+                            <input type="text" id="login-passcode-id" name="loginPasscode" required />
                         </div>
                         <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Log in</button>
                     </form>
                     <h2>Or create a new user</h2>
-                    <form>
+                    <form onSubmit={addNewUser}>
                         <div>
-                            <label className="flex text-xs" for="new-user-id">Create a New User</label>
-                            <input type="text" id="new-user-id" name="new-user" required />
+                            <label className="flex text-xs" for="new-user-id">Create a new Username</label>
+                            <input type="text" id="new-user-id" name="newUsername" required />
                         </div>
                         <div>
                             <label className="flex text-xs" for="new-passcode-id">Create a passcode</label>
-                            <input type="text" id="new-passcode-id" name="new-passcode" required />
+                            <input type="text" id="new-passcode-id" name="newPasscode" required />
                         </div>
                         <div>
                             <label className="flex text-xs" for="verify-new-passcode-id">Verify your passcode</label>
@@ -53,5 +46,32 @@ export function LoginPage({ username, loginState }){
                 </main>
             </div>
         )
-    }  
+    }
+    
+    function addNewUser(inputObject){
+        const newUsername = inputObject.target.elements.newUsername;
+        const newPasscode = inputObject.target.elements.newPasscode;
+
+        if (!temporaryUsernameStorage.includes(newUsername)){
+            temporaryUsernameStorage.push(newUsername);
+            temporaryPasscodeStorage.push(newPasscode);
+            loginChangeFunc(newUsername, LoginState.LoggedIn);
+            inputObject.setCustomValidity("");
+        }
+        else {
+            inputObject.setCustomValidity("Username already used. Please select a different username");
+        }
+    }
+
+    function loginUser(inputObject){
+        const inputUsername = inputObject.target.elements.existingUser;
+        const inputPasscode = inputObject.target.elements.loginPasscode;
+
+        if (temporaryUsernameStorage.includes(inputUsername)){
+
+        }
+        else {
+            inputObject.setCustomValidity("That user doesn't exist in our database. Please create a new user");
+        }
+    }
 }

@@ -16,6 +16,8 @@ export default function App() {
     const [loginState, setLoginState] = React.useState(localStoreage.useState(currentLoginState));
     const pageLocation = React.useLocation();
     const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
+    let temporaryUsernameStorage = []
+    let temporaryPasscodeStorage = []
 
     React.useEffect(() => {
         if (pageLocation.pathname === ('' || '/')){
@@ -36,8 +38,8 @@ export default function App() {
                         <>
                             {currentPage === PageState.HomePage && (
                                 <>
-                                <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="/GameCreationPage">Add Game</NavLink>
-                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="/LoginPage">{username} - Logout</NavLink>
+                                <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
+                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">{username} - Logout</NavLink>
                                 </>
                             )}
                             {currentPage === PageState.OtherPage && (
@@ -51,7 +53,7 @@ export default function App() {
                     {loginState === LoginState.LoggedOut && (
                         <>
                             {currentPage === PageState.HomePage && (
-                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="/LoginPage">Login</NavLink>
+                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">Login</NavLink>
                             )}
                             {currentPage === PageState.OtherPage && (
                                 <>
@@ -65,7 +67,13 @@ export default function App() {
             </div>
             <Routes>
                 <Route path='/' element={<HomePage />} exact />
-                <Route path='/LoginPage' element={<LoginPage />} />
+                <Route path='/LoginPage' element={<LoginPage 
+                    username={username}
+                    loginState={loginState}
+                    temporaryUsernameStorage={temporaryUsernameStorage}
+                    temporaryPasscodeStorage={temporaryPasscodeStorage} 
+                    loginChangFunc={onLoginChange} />} 
+                />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
                 <Route path='/GameCreationPage' element={<GameCreationPage />} />
                 <Route path='*' element={<NotFound />} />
