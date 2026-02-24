@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 
-export function GameCreationPage(temporaryGameListStorage){
+export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc){
     return (
         <div className="game-creation-page-container">
             <main>
@@ -45,6 +45,7 @@ export function GameCreationPage(temporaryGameListStorage){
             mockApiCheckForExistence = mockApiCall();
             if (mockApiCheckForExistence === true){
                 temporaryGameListStorage.push(gameToAdd);
+                newGameListUpdateFunc(gameToAdd);
                 inputObject.setCustomValidity("");
             }
             else{

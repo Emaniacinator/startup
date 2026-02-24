@@ -9,6 +9,7 @@ import { GamePageTemplate } from './game-page-template/game-page-template';
 import { GameCreationPage } from './game-creation-page/game-creation-page';
 import { LoginState } from './classes/login-state';
 import { PageState } from './classes/page-state';
+import { Game } from './classes/game';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
@@ -19,6 +20,7 @@ export default function App() {
     let temporaryUsernameStorage = [];
     let temporaryPasscodeStorage = [];
     let temporaryGameListStorage = [];
+    let temporaryNewGameListInfo = [];
 
     React.useEffect(() => {
         if (pageLocation.pathname === ('' || '/')){
@@ -76,7 +78,9 @@ export default function App() {
                     loginChangFunc={onLoginChange} />} 
                 />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
-                <Route path='/GameCreationPage' element={<GameCreationPage />} />
+                <Route path='/GameCreationPage' element={<GameCreationPage 
+                    temporaryGameListStorage={temporaryGameListStorage}
+                    newGameListUpdateFunc={updateNewGameList}/>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
             <footer>
@@ -90,6 +94,19 @@ export default function App() {
     function onLoginChange(username, loginState){
         setUsername(username);
         setLoginState(loginState);
+    }
+
+    function updateNewGameList(newlyMadeGame){
+        if (temporaryNewGameListInfo.length > 4){
+            temporaryNewGameListInfo.shift();
+        }
+        temporaryNewGameListInfo.push(newlyMadeGame)
+    }
+
+    function addDummyGameToMockOtherUsers(){
+        dummyGame = new Game(gameName="A Dummy Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="This is just a dummy to illustrate functionality", gameId=temporaryGameListStorage.length)
+        temporaryGameListStorage.push(dummyGame);
+        updateNewGameList(dummyGame);
     }
 
     function NotFound(){
