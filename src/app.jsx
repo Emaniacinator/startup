@@ -7,8 +7,8 @@ import { HomePage } from './home-page/home-page'
 import { LoginPage } from './login-page/login-page';
 import { GamePageTemplate } from './game-page-template/game-page-template';
 import { GameCreationPage } from './game-creation-page/game-creation-page';
-import { LoginState } from './login-page/login-state';
-import { PageState } from './home-page/page-state';
+import { LoginState } from './classes/login-state';
+import { PageState } from './classes/page-state';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
@@ -16,15 +16,16 @@ export default function App() {
     const [loginState, setLoginState] = React.useState(localStoreage.useState(currentLoginState));
     const pageLocation = React.useLocation();
     const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
-    let temporaryUsernameStorage = []
-    let temporaryPasscodeStorage = []
+    let temporaryUsernameStorage = [];
+    let temporaryPasscodeStorage = [];
+    let temporaryGameListStorage = [];
 
     React.useEffect(() => {
         if (pageLocation.pathname === ('' || '/')){
-            setCurrentPage(PageState.HomePage)
+            setCurrentPage(PageState.HomePage);
         }
         else {
-            setCurrentPage(PageState.OtherPage)
+            setCurrentPage(PageState.OtherPage);
         }
     }, [pageLocation.pathname])
 

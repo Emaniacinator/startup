@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LoginState } from './login-state';
+import { LoginState } from '../classes/login-state';
 
 export function LoginPage(username, loginState, temporaryUsernameStorage, temporaryPasscodeStorage, loginChangeFunc){
 
