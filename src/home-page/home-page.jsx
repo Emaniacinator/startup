@@ -8,103 +8,111 @@ export function HomePage(temporaryGameListStorage, temporaryNewGameListInfo, tem
     const [fourthMostRecentGame, setFourthMostRecentGame] = useState(null);
     const [fifthMostRecentGame, setFifthMostRecentGame] = useState(null);
 
-  return (
-    <div className="home-page-container">
-        <main>
-            <div id="combo-box" className="flex justify-center">
-                <nav id ="top-games" className="flexbox content-center w-5/12 left-1/12 right-7/12">
-                    <h2 className="flex justify-center text-2xl">Top Rated Games</h2>
-                    <p className="flex justify-center">(This will be updated and populated by a database when the page is loaded)</p>
-                    <table className="grid outline-2 table-fixed w-full">
-                        <thead className="grid grid-cols-3">
-                            <tr>
-                                <th className="relative text-center w-1/4">Name</th>
-                            </tr>
-                            <tr>
-                                <th className="relative text-center w-1/4">Rating</th>
-                            </tr>
-                            <tr>
-                                <th className="relative text-center w-1/4">Release Date</th>
-                            </tr>
-                        </thead>
-                        <tbody className="grid grid-cols-3 bg-white">
-                            <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[0].gameName}</NavLink></td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/10">{temporaryTopGameList[0].averageScore}</td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/4">{temporaryTopGameList[0].releaseDate}</td>
-                            </tr>
-                        </tbody>
-                        <tbody className="grid grid-cols-3 bg-gray-300">
-                            <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[1].gameName}</NavLink></td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/10">{temporaryTopGameList[1].averageScore}</td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/4">{temporaryTopGameList[1].releaseDate}</td>
-                            </tr>
-                        </tbody>
-                        <tbody className="grid grid-cols-3 bg-white">
-                            <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[2].gameName}</NavLink></td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/10">{temporaryTopGameList[2].averageScore}</td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/4">{temporaryTopGameList[2].releaseDate}</td>
-                            </tr>
-                        </tbody>
-                        <tbody className="grid grid-cols-3 bg-white">
-                            <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[3].gameName}</NavLink></td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/10">{temporaryTopGameList[3].averageScore}</td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/4">{temporaryTopGameList[3].releaseDate}</td>
-                            </tr>
-                        </tbody>    
-                        <tbody className="grid grid-cols-3 bg-white">
-                            <tr>
-                                <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[4].gameName}</NavLink></td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/10">{temporaryTopGameList[4].averageScore}</td>
-                            </tr>
-                            <tr>
-                                <td className="relative text-center w-1/4">{temporaryTopGameList[4].releaseDate}</td>
-                            </tr>
-                        </tbody>            
-                    </table>
+    React.useEffect(() =>{
+        setFirstMostRecentGame(temporaryNewGameListInfo[4]);
+        setSecondMostRecentGame(temporaryNewGameListInfo[3]);
+        setThirdMostRecentGame(temporaryNewGameListInfo[2]);
+        setFourthMostRecentGame(temporaryNewGameListInfo[1]);
+        setFifthMostRecentGame(temporaryNewGameListInfo[0]);
+    }, [temporaryGameListStorage.length]);
+
+    return (
+        <div className="home-page-container">
+            <main>
+                <div id="combo-box" className="flex justify-center">
+                    <nav id ="top-games" className="flexbox content-center w-5/12 left-1/12 right-7/12">
+                        <h2 className="flex justify-center text-2xl">Top Rated Games</h2>
+                        <p className="flex justify-center">(This will be updated and populated by a database when the page is loaded)</p>
+                        <table className="grid outline-2 table-fixed w-full">
+                            <thead className="grid grid-cols-3">
+                                <tr>
+                                    <th className="relative text-center w-1/4">Name</th>
+                                </tr>
+                                <tr>
+                                    <th className="relative text-center w-1/4">Rating</th>
+                                </tr>
+                                <tr>
+                                    <th className="relative text-center w-1/4">Release Date</th>
+                                </tr>
+                            </thead>
+                            <tbody className="grid grid-cols-3 bg-white">
+                                <tr>
+                                    <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[0].gameName}</NavLink></td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/10">{temporaryTopGameList[0].averageScore}</td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/4">{temporaryTopGameList[0].releaseDate}</td>
+                                </tr>
+                            </tbody>
+                            <tbody className="grid grid-cols-3 bg-gray-300">
+                                <tr>
+                                    <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[1].gameName}</NavLink></td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/10">{temporaryTopGameList[1].averageScore}</td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/4">{temporaryTopGameList[1].releaseDate}</td>
+                                </tr>
+                            </tbody>
+                            <tbody className="grid grid-cols-3 bg-white">
+                                <tr>
+                                    <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[2].gameName}</NavLink></td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/10">{temporaryTopGameList[2].averageScore}</td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/4">{temporaryTopGameList[2].releaseDate}</td>
+                                </tr>
+                            </tbody>
+                            <tbody className="grid grid-cols-3 bg-white">
+                                <tr>
+                                    <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[3].gameName}</NavLink></td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/10">{temporaryTopGameList[3].averageScore}</td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/4">{temporaryTopGameList[3].releaseDate}</td>
+                                </tr>
+                            </tbody>    
+                            <tbody className="grid grid-cols-3 bg-white">
+                                <tr>
+                                    <td className="relative text-center w-1/4"><NavLink className="nav-link" to="GamePageTemplate">{temporaryTopGameList[4].gameName}</NavLink></td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/10">{temporaryTopGameList[4].averageScore}</td>
+                                </tr>
+                                <tr>
+                                    <td className="relative text-center w-1/4">{temporaryTopGameList[4].releaseDate}</td>
+                                </tr>
+                            </tbody>            
+                        </table>
+                    </nav>
+                    <div id="divider" className="flexbox w-1/12"></div>
+                    <nav id="newly-added" className="flexbox w-5/12 left-7/12 right-1/12">
+                        <h2 className="flex justify-center">Newly Added Games</h2>
+                        <p className="flex justify-center">(This will be live updated as people add new games to the website)</p>
+                        <div className="outline-2 rounded list-inside">
+                            <li><NavLink className="nav-link" to="GamePageTemplate">{firstMostRecentGame.gameName}</NavLink></li>
+                            <li><NavLink className="nav-link" to="GamePageTemplate">{secondMostRecentGame.gameName}</NavLink></li>
+                            <li><NavLink className="nav-link" to="GamePageTemplate">{thirdMostRecentGame.gameName}</NavLink></li>
+                            <li><NavLink className="nav-link" to="GamePageTemplate">{fourthMostRecentGame.gameName}</NavLink></li>
+                            <li><NavLink className="nav-link" to="GamePageTemplate">{fifthMostRecentGame.gameName}</NavLink></li>
+                        </div>
+                    </nav>
+                </div>
+                <nav id="game-list" className="flexbox justify-center content-center">
+                    <h2 className="flex justify-center">All Games</h2>
+                    <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
+                    <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
+                    <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
+                    <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>
                 </nav>
-                <div id="divider" className="flexbox w-1/12"></div>
-                <nav id="newly-added" className="flexbox w-5/12 left-7/12 right-1/12">
-                    <h2 className="flex justify-center">Newly Added Games</h2>
-                    <p className="flex justify-center">(This will be live updated as people add new games to the website)</p>
-                    <div className="outline-2 rounded list-inside">
-                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
-                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
-                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>
-                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 4</NavLink></li>
-                        <li><NavLink className="nav-link" to="GamePageTemplate">Game 5</NavLink></li>
-                    </div>
-                </nav>
-            </div>
-            <nav id="game-list" className="flexbox justify-center content-center">
-                <h2 className="flex justify-center">All Games</h2>
-                <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
-                <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 1</NavLink></li>
-                <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 2</NavLink></li>
-                <li className="flex justify-center"><NavLink className="nav-link" to="GamePageTemplate">Game 3</NavLink></li>
-            </nav>
-        </main>
-    </div>
-  );
+            </main>
+        </div>
+    );
 }
