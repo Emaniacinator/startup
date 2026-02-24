@@ -16,7 +16,7 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
             <div className="login-page-container">
                 <main>
                     <h2>Login</h2>
-                    <form>
+                    <form onSubmit={loginUser}>
                         <div>
                             <label for="new-user-id" className="flex text-xs">Username</label>
                             <input type="text" id="existing-user-id" name="esistingUser" required />
@@ -68,7 +68,14 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
         const inputPasscode = inputObject.target.elements.loginPasscode;
 
         if (temporaryUsernameStorage.includes(inputUsername)){
-
+            const usernameIndex = temporaryUsernameStorage.findIndex(finderFunction => finder === inputUsername);
+            if (temporaryUsernameStorage[usernameIndex] === inputPasscode){
+                loginChangeFunc(inputUsername, LoginState.LoggedIn);
+                inputObject.setCustomValidity("");
+            }
+            else {
+                inputObject.setCustomValidity("Incorrect passcode. Please try again");
+            }
         }
         else {
             inputObject.setCustomValidity("That user doesn't exist in our database. Please create a new user");
