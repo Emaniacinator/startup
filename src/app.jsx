@@ -131,11 +131,6 @@ export default function App() {
     }
 
     function NotFound(){
-        React.useEffect(() => {
-            setLoginState(currentLoginState);
-            setCurrentPage(PageState.OtherPage);
-        }, [])
-
         return (
             <div className="page-not-found-container">
                 <div className="website-banner">
@@ -150,10 +145,6 @@ export default function App() {
                 </main>
             </div>
         )
-    }
-
-    function DetermineHeaderItems(){
-
     }
 }
 

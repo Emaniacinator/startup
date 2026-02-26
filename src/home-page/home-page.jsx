@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { PageState } from '../classes/page-state';
+import { Game } from '../classes/game';
 
 export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, temporaryTopGameList, addDummyGameToMockOtherUsers}) {
     const [firstMostRecentGame, setFirstMostRecentGame] = React.useState(null);
@@ -55,7 +55,17 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
     }, [temporaryGameListStorage.length]);
 
     // In theory, this is going to make it so that there is new dummy game data every 5 seconds
-    addDummyGameToMockOtherUsers;
+    const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
+    
+    React.useEffect(() => {
+        const intervalIncrementer = setInterval(() => {
+            setDummyUserTimer(prevCount => prevCount + 1);
+        }, 3000);
+        let dummyGame = new Game("A *NEW* Dummy Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "This is just a dummy to illustrate functionality", temporaryGameListStorage.length)
+        temporaryGameListStorage.push(dummyGame);
+        updateNewGameList(dummyGame);
+        return (() => clearInterval(intervalIncrementer));
+    }, []);
 
     return (
         <div className="home-page-container">
@@ -153,4 +163,11 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
             </main>
         </div>
     );
+
+    function updateNewGameList(newlyMadeGame){
+        if (temporaryNewGameListInfo.length > 4){
+            temporaryNewGameListInfo.shift();
+        }
+        temporaryNewGameListInfo.push(newlyMadeGame)
+    }
 }
