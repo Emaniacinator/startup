@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export function GamePageTemplate(){
+export function GamePageTemplate(selectedGame, temporaryGameCommentsStorage){
     return(
         <div className="game-page-template-container">
             <main>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import 'tailwindcss';
 import "tailwindcss/preflight";
 import "./app.css";
@@ -14,33 +15,38 @@ import { Game } from './classes/game';
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
     const currentLoginState = username ? LoginState.LoggedIn : LoginState.LoggedOut;
-    const [loginState, setLoginState] = React.useState(localStoreage.useState(currentLoginState));
-    const pageLocation = React.useLocation();
+    const [loginState, setLoginState] = React.useState(currentLoginState);
     const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
     let temporaryUsernameStorage = [];
     let temporaryPasscodeStorage = [];
     let temporaryGameListStorage = [];
     let temporaryNewGameListInfo = [];
+    let temporaryGameCommentsStorage = []
 
     /// This next section is nasty and is just to create a fake top games database to read from
-    const temporaryTopGameList = [new Game(gameName="Top Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The best rated game", gameId=-1, averageScore=100, releaseDate="1/1/1001"),
-                                new Game(gameName="Second Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The second best rated game", gameId=-2, averageScore=90, releaseDate="2/2/2002"),
-                                new Game(gameName="Third Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The third best rated game", gameId=-3, averageScore=80, releaseDate="3/3/3003"),
-                                new Game(gameName="Fourth Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The fourth best rated game", gameId=-4, averageScore=70, releaseDate="4/4/4004"),
-                                new Game(gameName="Fifth Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="The fifth best rated game", gameId=-5, averageScore=60, releaseDate="5/5/5005")]
+    const temporaryTopGameList = [new Game("Top Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The best rated game", -1, 100, "1/1/1001"),
+                                new Game("Second Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The second best rated game", -2, 90, "2/2/2002"),
+                                new Game("Third Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The third best rated game", -3, 80, "3/3/3003"),
+                                new Game("Fourth Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The fourth best rated game", -4, 70, "4/4/4004"),
+                                new Game("Fifth Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The fifth best rated game", -5, 60, "5/5/5005")]
     /// Okay, the section is over and we can go back to the normal code
 
-    React.useEffect(() => {
-        if (pageLocation.pathname === ('' || '/')){
-            setCurrentPage(PageState.HomePage);
-        }
-        else {
-            setCurrentPage(PageState.OtherPage);
-        }
-    }, [pageLocation.pathname])
+    // React.useEffect(() => {
+    //     if (pageLocation.pathname === ('' || '/')){
+    //         setCurrentPage(PageState.HomePage);
+    //     }
+    //     else {
+    //         setCurrentPage(PageState.OtherPage);
+    //     }
+    // }, [pageLocation.pathname])
 
+    React.useEffect(() => {
+        setLoginState(currentLoginState);
+        setCurrentPage(PageState.HomePage)
+    }, [])
+    
     return (
-        <BrowserRouter>
+        <BrowserRouter> 
             <div className="website-banner">
                 <h1 className="website-name">Video Game Voting</h1>
                 <img alt="Demo banner for website" src="../../public/website-banner.png" />
@@ -77,7 +83,12 @@ export default function App() {
                 </nav>
             </div>
             <Routes>
-                <Route path='/' element={<HomePage />} exact />
+                <Route path='/' element={<HomePage 
+                    temporaryGameListStorage={temporaryGameListStorage}
+                    temporaryNewGameListInfo={temporaryNewGameListInfo}
+                    temporaryTopGameList={temporaryTopGameList}
+                    addDummyGameToMockOtherUsers={addDummyGameToMockOtherUsers} />} 
+                />
                 <Route path='/LoginPage' element={<LoginPage 
                     username={username}
                     loginState={loginState}
