@@ -21,7 +21,8 @@ export default function App() {
     let temporaryPasscodeStorage = [];
     let temporaryGameListStorage = [];
     let temporaryNewGameListInfo = [];
-    let temporaryGameCommentsStorage = []
+    let temporaryGameCommentsStorage = [];
+    const location = useLocation();
 
     /// This next section is nasty and is just to create a fake top games database to read from
     const temporaryTopGameList = [new Game("Top Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The best rated game", -1, 100, "1/1/1001"),
@@ -30,36 +31,22 @@ export default function App() {
                                 new Game("Fourth Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The fourth best rated game", -4, 70, "4/4/4004"),
                                 new Game("Fifth Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The fifth best rated game", -5, 60, "5/5/5005")]
     /// Okay, the section is over and we can go back to the normal code
-
-    // React.useEffect(() => {
-    //     if (pageLocation.pathname === ('' || '/')){
-    //         setCurrentPage(PageState.HomePage);
-    //     }
-    //     else {
-    //         setCurrentPage(PageState.OtherPage);
-    //     }
-    // }, [pageLocation.pathname])
-
-    React.useEffect(() => {
-        setLoginState(currentLoginState);
-        setCurrentPage(PageState.HomePage)
-    }, [])
     
     return (
-        <BrowserRouter> 
+        <> 
             <div className="website-banner">
                 <h1 className="website-name">Video Game Voting</h1>
                 <img alt="Demo banner for website" src="../../public/website-banner.png" />
                 <nav className="" id="login-links">
                     {loginState === LoginState.LoggedIn && (
                         <>
-                            {currentPage === PageState.HomePage && (
+                            {location.pathname === '/' && (
                                 <>
                                 <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
                                 <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">{username} - Logout</NavLink>
                                 </>
                             )}
-                            {currentPage === PageState.OtherPage && (
+                            {location.pathname !== '/' && (
                                 <>
                                     <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
                                     <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="../LoginPage">{username} - Logout</NavLink>
@@ -69,10 +56,10 @@ export default function App() {
                     )}
                     {loginState === LoginState.LoggedOut && (
                         <>
-                            {currentPage === PageState.HomePage && (
+                            {location.pathname === '/' && (
                                 <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">Login</NavLink>
                             )}
-                            {currentPage === PageState.OtherPage && (
+                            {location.pathname !== '/' && (
                                 <>
                                     <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
                                     <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="../LoginPage">Login</NavLink>
@@ -87,26 +74,30 @@ export default function App() {
                     temporaryGameListStorage={temporaryGameListStorage}
                     temporaryNewGameListInfo={temporaryNewGameListInfo}
                     temporaryTopGameList={temporaryTopGameList}
-                    addDummyGameToMockOtherUsers={addDummyGameToMockOtherUsers} />} 
+                    addDummyGameToMockOtherUsers={addDummyGameToMockOtherUsers}
+                    />} 
                 />
                 <Route path='/LoginPage' element={<LoginPage 
                     username={username}
                     loginState={loginState}
                     temporaryUsernameStorage={temporaryUsernameStorage}
                     temporaryPasscodeStorage={temporaryPasscodeStorage} 
-                    loginChangFunc={onLoginChange} />} 
+                    loginChangFunc={onLoginChange}
+                    />} 
                 />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
                 <Route path='/GameCreationPage' element={<GameCreationPage 
                     temporaryGameListStorage={temporaryGameListStorage}
-                    newGameListUpdateFunc={updateNewGameList}/>} />
+                    newGameListUpdateFunc={updateNewGameList}
+                    />} 
+                />
                 <Route path='*' element={<NotFound />} />
             </Routes>
             <footer>
                 <p>Eric Vinton - CS 260</p>
                 <a href="https://github.com/Emaniacinator/startup">Click here for Github repo</a>
             </footer>
-        </BrowserRouter>
+        </>
     );
 
 
@@ -140,6 +131,11 @@ export default function App() {
     }
 
     function NotFound(){
+        React.useEffect(() => {
+            setLoginState(currentLoginState);
+            setCurrentPage(PageState.OtherPage);
+        }, [])
+
         return (
             <div className="page-not-found-container">
                 <div className="website-banner">
@@ -154,6 +150,10 @@ export default function App() {
                 </main>
             </div>
         )
+    }
+
+    function DetermineHeaderItems(){
+
     }
 }
 

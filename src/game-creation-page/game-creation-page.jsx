@@ -1,8 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
+import { PageState } from '../classes/page-state';
 
-export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc){
+export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc, pageStateSetter){
+
+    React.useEffect(() => {
+        pageStateSetter;
+    }, [])
+
     return (
         <div className="game-creation-page-container">
             <main>
@@ -11,15 +17,15 @@ export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc
                 <form className="flexbox justify-center" onSubmit={handleGameCreation}>
                     <div className="flexbox">
                         <p>Note that a 3rd party API will verify the existence of this game before allowing it to be submitted</p>
-                        <label className="flexbox text-xs" for="game-name-id">Game Name</label>
+                        <label className="flexbox text-xs" htmlFor="game-name-id">Game Name</label>
                         <input type="text" id="game-name-id" name="gameName" required />
                     </div>       
                     <div className="flexbox">
-                        <label className="flexbox text-xs" for="game-photo-url-id">Cover Photo Url</label>
+                        <label className="flexbox text-xs" htmlFor="game-photo-url-id">Cover Photo Url</label>
                         <input type="url" id="game-photo-url-id" name="gamePhotoUrl" required />
                     </div>  
                     <div className="flexbox">
-                        <label className="text-xs" for="game-summary-id">Sumary of Premise</label>
+                        <label className="text-xs" htmlFor="game-summary-id">Sumary of Premise</label>
                         <textarea id="game-summary-id" name="gameSummary" required></textarea>
                     </div>       
                     <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Submit</button>

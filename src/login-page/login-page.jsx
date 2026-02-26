@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LoginState } from '../classes/login-state';
+import { PageState } from '../classes/page-state';
 
 export function LoginPage(username, loginState, temporaryUsernameStorage, temporaryPasscodeStorage, loginChangeFunc){
 
@@ -18,11 +19,11 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
                     <h2>Login</h2>
                     <form onSubmit={loginUser}>
                         <div>
-                            <label for="new-user-id" className="flex text-xs">Username</label>
+                            <label htmlFor="new-user-id" className="flex text-xs">Username</label>
                             <input type="text" id="existing-user-id" name="esistingUser" required />
                         </div>
                         <div>
-                            <label for="login-passcode-id" className="flex text-xs">Passcode</label>
+                            <label htmlFor="login-passcode-id" className="flex text-xs">Passcode</label>
                             <input type="text" id="login-passcode-id" name="loginPasscode" required />
                         </div>
                         <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Log in</button>
@@ -30,15 +31,15 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
                     <h2>Or create a new user</h2>
                     <form onSubmit={addNewUser}>
                         <div>
-                            <label className="flex text-xs" for="new-user-id">Create a new Username</label>
+                            <label className="flex text-xs" htmlFor="new-user-id">Create a new Username</label>
                             <input type="text" id="new-user-id" name="newUsername" required />
                         </div>
                         <div>
-                            <label className="flex text-xs" for="new-passcode-id">Create a passcode</label>
+                            <label className="flex text-xs" htmlFor="new-passcode-id">Create a passcode</label>
                             <input type="text" id="new-passcode-id" name="newPasscode" required />
                         </div>
                         <div>
-                            <label className="flex text-xs" for="verify-new-passcode-id">Verify your passcode</label>
+                            <label className="flex text-xs" htmlFor="verify-new-passcode-id">Verify your passcode</label>
                             <input type="text" id="verify-new-passcode-id" name="'verify-new-passcode" required />
                         </div>
                         <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Create Account</button>

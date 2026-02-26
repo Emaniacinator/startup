@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { PageState } from '../classes/page-state';
 
 export function GamePageTemplate(selectedGame, temporaryGameCommentsStorage){
+    
     return(
         <div className="game-page-template-container">
             <main>
@@ -16,11 +18,11 @@ export function GamePageTemplate(selectedGame, temporaryGameCommentsStorage){
                         <h2>Leave a game review</h2>
                         <form>
                             <div className="flexbox">
-                                <label className="text-xs" for="game-score-id">Score the game out of 100</label>
+                                <label className="text-xs" htmlFor="game-score-id">Score the game out of 100</label>
                                 <input id="game-score-id" name="game-score" type="number" max="100" required />
                             </div>
                             <div className="flexbox">
-                                <label className="text-xs" for="game-review-id">Leave a review</label>
+                                <label className="text-xs" htmlFor="game-review-id">Leave a review</label>
                                 <textarea id="game-review-id" name="game-review" required></textarea>
                             </div>
                             <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Leave Review</button>
@@ -39,7 +41,7 @@ export function GamePageTemplate(selectedGame, temporaryGameCommentsStorage){
                         <h2>Live Chat About Game</h2>
                         <p className="text-xs">(This is where there will be a live chat about the game, using websocket)</p>
                         <form>
-                            <label for="comment-box-id" className="text-xs">Leave a comment in chat</label>
+                            <label htmlFor="comment-box-id" className="text-xs">Leave a comment in chat</label>
                             <textarea id="comment-box-id" name="comment-box" required></textarea>
                             <button type="Submit">Comment</button>
                         </form>
