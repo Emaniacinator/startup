@@ -6,6 +6,8 @@ import { GameReview } from '../classes/gameReview';
 export function GamePageTemplate(gameToLoad){
     let [temporaryGameCommentsStorage, setTemporaryGameCommentsStorage] = React.useState([]);
     let [temporaryGameReviewStorage, setTemporaryGameReviewStorage] = React.useState([]);
+    const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
+    const [secondDummyUserTimer, setSecondDummyUserTimer] = React.useState(0);
 
     React.useEffect(() => {
         let dummyReview = new GameReview('Dummy User', '50', 'Dummy Review. It was alright I guess');
@@ -25,7 +27,7 @@ export function GamePageTemplate(gameToLoad){
     React.useEffect(() => {
             const intervalIncrementer = setInterval(() => {
                 let comment = 'WOW! A *dummy* comment!'
-                setDummyUserTimer(prevCount => prevCount + 1);
+                setSecondDummyUserTimer(prevCount => prevCount + 1);
                 setTemporaryGameCommentsStorage(prevList => [...prevList, comment])
             }, 2000);
             return (() => clearInterval(intervalIncrementer));
@@ -59,7 +61,7 @@ export function GamePageTemplate(gameToLoad){
                 <div id="combo-box" className="flex justify-center">
                     <div className="flexbox content-center w-7/12 left-1/12 right-7/12">
                         <h2>Reviews</h2>
-                        {setTemporaryGameReviewStorage.map((reviewItem) => (
+                        {temporaryGameReviewStorage.map((reviewItem) => (
                             <>
                                 <p>{reviewItem.reviewerUsername}:</p>
                                 <p>    Score: {reviewItem.reviewScore}</p>
@@ -76,7 +78,7 @@ export function GamePageTemplate(gameToLoad){
                             <textarea id="comment-box-id" name="commentBox" required></textarea>
                             <button type="Submit">Comment</button>
                         </form>
-                        {setTemporaryGameCommentsStorage.map((commentItem) => (
+                        {temporaryGameCommentsStorage.map((commentItem) => (
                             <p>{commentItem}</p>
                             )
                         )}
@@ -99,10 +101,14 @@ export function GamePageTemplate(gameToLoad){
     }
 
     function leaveReview(newReview){
+        inputObject.preventDefault();
+
         setTemporaryGameReviewStorage(prevList => [...prevList, newReview])
     }
 
     function leaveComment(inputObject){
+        inputObject.preventDefault();
+
         const newComment = inputObject.target.elements.commentBox.value
         setTemporaryGameCommentsStorage(prevList => [...prevList, newComment])
     }

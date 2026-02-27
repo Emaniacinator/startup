@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Game } from '../classes/game';
 
 export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, temporaryTopGameList, setGameToLoadFunc}) {
@@ -133,11 +133,11 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                         <h2 className="flex justify-center">Newly Added Games</h2>
                         <p className="flex justify-center">(This will be live updated as people add new games to the website)</p>
                         <div className="outline-2 rounded list-inside">
-                            {firstMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameId={firstMostRecentGame.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{firstMostRecentGame.gameName}</NavLink></li>}
-                            {secondMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameId={secondMostRecentGame.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{secondMostRecentGame.gameName}</NavLink></li>}
-                            {thirdMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameId={thirdMostRecentGame.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{thirdMostRecentGame.gameName}</NavLink></li>}
-                            {fourthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameId={fourthMostRecentGame.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{fourthMostRecentGame.gameName}</NavLink></li>}
-                            {fifthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameId={fifthMostRecentGame.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{fifthMostRecentGame.gameName}</NavLink></li>}
+                            {firstMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={firstMostRecentGame.gameId} onClick={setGameToLoadFunc(firstMostRecentGame.gameId)}>{firstMostRecentGame.gameName}</NavLink></li>}
+                            {secondMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={secondMostRecentGame.gameId} onClick={setGameToLoadFunc(secondMostRecentGame.gameId)}>{secondMostRecentGame.gameName}</NavLink></li>}
+                            {thirdMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={thirdMostRecentGame.gameId} onClick={setGameToLoadFunc(thirdMostRecentGame.gameId)}>{thirdMostRecentGame.gameName}</NavLink></li>}
+                            {fourthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={fourthMostRecentGame.gameId} onClick={setGameToLoadFunc(fourthMostRecentGame.gameId)}>{fourthMostRecentGame.gameName}</NavLink></li>}
+                            {fifthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={fifthMostRecentGame.gameId} onClick={setGameToLoadFunc(fifthMostRecentGame.gameId)}>{fifthMostRecentGame.gameName}</NavLink></li>}
                         </div>
                     </nav>
                 </div>
@@ -145,7 +145,7 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                     <h2 className="flex justify-center">All Games</h2>
                     <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
                     {temporaryGameListStorage.map((gameItem) => (
-                        <li><NavLink className='nav-link' to='GamePageTemplate' gameId={gameItem.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{gameItem.gameName}</NavLink></li>
+                        <li><NavLink className='nav-link' to="GamePageTemplate" gameid={gameItem.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{gameItem.gameName}</NavLink></li>
                         )
                     )}
                 </nav>
@@ -157,6 +157,12 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
         if (temporaryNewGameListInfo.length > 4){
             temporaryNewGameListInfo.shift();
         }
-        temporaryNewGameListInfo.push(newlyMadeGame)
+        temporaryNewGameListInfo.push(newlyMadeGame);
+    }
+
+    function betterGameRedirect(inputObject){
+        const gameIdToLoad = inputObject.target.elements.gameid.value;
+        setGameToLoadFunc(gameIdToLoad);
+        useNavigate('GamePageTemplate');
     }
 }
