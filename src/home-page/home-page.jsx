@@ -10,21 +10,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
     const [fifthMostRecentGame, setFifthMostRecentGame] = React.useState(null);
 
     React.useEffect(() =>{
-        // Update or populate the complete game list
-        const fullGameList = document.getElementById("game-list");
-        temporaryGameListStorage.forEach(gameItem => {
-            // Create the new items
-            const newListItem = document.createElement("li");
-            const newNavLink = document.createElement("NavLink");
-            // Give them the correct properties
-            newNavLink.setAttribute('className', 'nav-link')
-            newNavLink.setAttribute('to', 'GamePageTemplate');
-            newNavLink.textContent = gameItem.gameName
-            // Add the NavLink to the li item and the li item to the actual game-list
-            newListItem.appendChild(newNavLink)
-            fullGameList.appendChild(newListItem);
-        });
-
         // Then update or populate the new game list
         if (temporaryNewGameListInfo.length >= 5){
             setFirstMostRecentGame(temporaryNewGameListInfo[4]);
@@ -60,10 +45,10 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
     React.useEffect(() => {
         const intervalIncrementer = setInterval(() => {
             setDummyUserTimer(prevCount => prevCount + 1);
+            let dummyGame = new Game("A *NEW* Dummy Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "This is just a dummy to illustrate functionality", temporaryGameListStorage.length)
+            temporaryGameListStorage.push(dummyGame);
+            updateNewGameList(dummyGame);
         }, 3000);
-        let dummyGame = new Game("A *NEW* Dummy Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "This is just a dummy to illustrate functionality", temporaryGameListStorage.length)
-        temporaryGameListStorage.push(dummyGame);
-        updateNewGameList(dummyGame);
         return (() => clearInterval(intervalIncrementer));
     }, []);
 
@@ -159,6 +144,10 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                 <nav id="game-list" className="flexbox justify-center content-center">
                     <h2 className="flex justify-center">All Games</h2>
                     <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
+                    {temporaryGameListStorage.map((gameItem) => (
+                        <li><NavLink className='nav-link' to='GamePageTemplate'>{gameItem.gameName}</NavLink></li>
+                        ))
+                    }
                 </nav>
             </main>
         </div>

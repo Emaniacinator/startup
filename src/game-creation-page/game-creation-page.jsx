@@ -3,11 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 import { PageState } from '../classes/page-state';
 
-export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc, pageStateSetter){
-
-    React.useEffect(() => {
-        pageStateSetter;
-    }, [])
+export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc){
 
     return (
         <div className="game-creation-page-container">
