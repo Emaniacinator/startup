@@ -3,14 +3,14 @@ import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 import { PageState } from '../classes/page-state';
 
-export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc){
+export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc, addGameFunc){
 
     return (
         <div className="game-creation-page-container">
             <main>
                 <h2 className="flex justify-center">Add a new game here!</h2>
                 <p className="flex justify-center">To add a new game, please fill out the following info:</p>
-                <form className="flexbox justify-center" onSubmit={handleGameCreation}>
+                <form className="flexbox justify-center" onSubmit={handleGameCreation} onChange={(focus) => focus.target.setCustomValidity("")}>
                     <div className="flexbox">
                         <p>Note that a 3rd party API will verify the existence of this game before allowing it to be submitted</p>
                         <label className="flexbox text-xs" htmlFor="game-name-id">Game Name</label>
@@ -45,10 +45,9 @@ export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc
         }
 
         if (!gameExistenceChecker === true) {
-            gameToAdd = new Game(gameName=newGameName, gameImageUrl=newGamePhoto, gameSummary=newGameSummary, gameId=temporaryGameListStorage.length);
             mockApiCheckForExistence = mockApiCall();
             if (mockApiCheckForExistence === true){
-                temporaryGameListStorage.push(gameToAdd);
+                addGameFunc(newGameName, newGamePhoto, newGameSummary, temporaryGameListStorage.length);
                 newGameListUpdateFunc(gameToAdd);
                 validityDisplayObject.setCustomValidity("");
             }

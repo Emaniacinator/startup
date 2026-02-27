@@ -129,6 +129,11 @@ export default function App() {
         setTemporaryPasscodeStorage(prevList => [...prevList, passcodeToAdd]);
     }
 
+    function addNewGame(gameName, gameUrl, gameSummary, id){
+        gameToAdd = new Game(gameName, gameUrl, gameSummary, id)
+        setTemporaryGameListStorage(prevList => [...prevList, gameToAdd])
+    }
+
     function NotFound(){
         return (
             <div className="page-not-found-container">
