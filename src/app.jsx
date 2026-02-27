@@ -22,8 +22,8 @@ export default function App() {
     const [temporaryPasscodeStorage, setTemporaryPasscodeStorage] = React.useState([]);
     let [temporaryGameListStorage, setTemporaryGameListStorage] = React.useState([]);
     let [temporaryNewGameListInfo, setTemporaryNewGameListInfo] = React.useState([]);
-    let [temporaryGameCommentsStorage, setTemporaryGameCommentsStorage] = React.useState([]);
     const location = useLocation();
+    const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-6);
 
     /// This next section is nasty and is just to create a fake top games database to read from
     const temporaryTopGameList = [new Game("Top Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The best rated game", -1, 100, "1/1/1001"),
@@ -75,6 +75,7 @@ export default function App() {
                     temporaryGameListStorage={temporaryGameListStorage}
                     temporaryNewGameListInfo={temporaryNewGameListInfo}
                     temporaryTopGameList={temporaryTopGameList}
+                    setGameToLoadFunc={setIdOfGameToLoad}
                     />} 
                 />
                 <Route path='/LoginPage' element={<LoginPage 
@@ -86,10 +87,14 @@ export default function App() {
                     addUsernameAndPasscodeFunc={addUsernameAndPasscodeFunc}
                     />} 
                 />
-                <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
+                <Route path='/GamePageTemplate' element={<GamePageTemplate 
+                    gameToLoad={temporaryGameListStorage[idOfGameToLoad]}
+                    />} 
+                />
                 <Route path='/GameCreationPage' element={<GameCreationPage 
                     temporaryGameListStorage={temporaryGameListStorage}
                     newGameListUpdateFunc={updateNewGameList}
+                    addGameFunc={addNewGame}
                     />} 
                 />
                 <Route path='*' element={<NotFound />} />
@@ -129,8 +134,7 @@ export default function App() {
         setTemporaryPasscodeStorage(prevList => [...prevList, passcodeToAdd]);
     }
 
-    function addNewGame(gameName, gameUrl, gameSummary, id){
-        gameToAdd = new Game(gameName, gameUrl, gameSummary, id)
+    function addNewGame(gameToAdd){
         setTemporaryGameListStorage(prevList => [...prevList, gameToAdd])
     }
 

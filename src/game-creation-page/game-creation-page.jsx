@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 import { PageState } from '../classes/page-state';
 
-export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc, addGameFunc){
+export function GameCreationPage({temporaryGameListStorage, newGameListUpdateFunc, addGameFunc}){
 
     return (
         <div className="game-creation-page-container">
@@ -31,6 +31,8 @@ export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc
     )
 
     function handleGameCreation(inputObject){
+        inputObject.preventDefault();
+
         const newGameName = inputObject.target.elements.gameName.value;
         const newGamePhoto = inputObject.target.elements.gamePhotoUrl.value;
         const newGameSummary = inputObject.target.elements.gameSummary.value;
@@ -38,18 +40,19 @@ export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc
         const validityDisplayObject = inputObject.target.elements.gameName;
 
         let gameExistenceChecker = false;
-        for (i = 0; i < temporaryGameListStorage.length; i++){
+        for (let i = 0; i < temporaryGameListStorage.length; i++){
             if (newGameName === temporaryGameListStorage[i].returnGameName){
                 gameExistenceChecker = true;
             }
         }
 
         if (!gameExistenceChecker === true) {
-            mockApiCheckForExistence = mockApiCall();
+            let mockApiCheckForExistence = mockApiCall();
             if (mockApiCheckForExistence === true){
-                addGameFunc(newGameName, newGamePhoto, newGameSummary, temporaryGameListStorage.length);
+                let gameToAdd = new Game(newGameName, newGamePhoto, newGameSummary, temporaryGameListStorage.length);
+                addGameFunc(gameToAdd);
                 newGameListUpdateFunc(gameToAdd);
-                validityDisplayObject.setCustomValidity("");
+                validityDisplayObject.setCustomValidity("Game Added! Thank you!");
             }
             else{
                 validityDisplayObject.setCustomValidity("This is mocking the game not existing in an API database. Sorry for the random interruption");
