@@ -14,14 +14,15 @@ import { Game } from './classes/game';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
+    const [passcode, setPasscode] = React.useState(localStorage.getItem('passcode' || ''));
     const currentLoginState = username ? LoginState.LoggedIn : LoginState.LoggedOut;
     const [loginState, setLoginState] = React.useState(currentLoginState);
     const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
-    let temporaryUsernameStorage = [];
-    let temporaryPasscodeStorage = [];
-    let temporaryGameListStorage = [];
-    let temporaryNewGameListInfo = [];
-    let temporaryGameCommentsStorage = [];
+    const [temporaryUsernameStorage, setTemporaryUsernameStorage] = React.useState([]);
+    const [temporaryPasscodeStorage, setTemporaryPasscodeStorage] = React.useState([]);
+    let [temporaryGameListStorage, setTemporaryGameListStorage] = React.useState([]);
+    let [temporaryNewGameListInfo, setTemporaryNewGameListInfo] = React.useState([]);
+    let [temporaryGameCommentsStorage, setTemporaryGameCommentsStorage] = React.useState([]);
     const location = useLocation();
 
     /// This next section is nasty and is just to create a fake top games database to read from
@@ -43,13 +44,13 @@ export default function App() {
                             {location.pathname === '/' && (
                                 <>
                                 <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="game-creation-link" to="GameCreationPage">Add Game</NavLink>
-                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="LoginPage">{username} - Logout</NavLink>
+                                <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" onClick={logoutFunction}>{username} - Logout</NavLink>
                                 </>
                             )}
                             {location.pathname !== '/' && (
                                 <>
                                     <NavLink className= "nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="return-home-link" to="..">Return to home</NavLink>
-                                    <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" to="../LoginPage">{username} - Logout</NavLink>
+                                    <NavLink className="nav-link h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" id="login-link" onClick={logoutFunction}>{username} - Logout</NavLink>
                                 </>
                             )}
                         </>
@@ -74,7 +75,6 @@ export default function App() {
                     temporaryGameListStorage={temporaryGameListStorage}
                     temporaryNewGameListInfo={temporaryNewGameListInfo}
                     temporaryTopGameList={temporaryTopGameList}
-                    addDummyGameToMockOtherUsers={addDummyGameToMockOtherUsers}
                     />} 
                 />
                 <Route path='/LoginPage' element={<LoginPage 
@@ -82,7 +82,8 @@ export default function App() {
                     loginState={loginState}
                     temporaryUsernameStorage={temporaryUsernameStorage}
                     temporaryPasscodeStorage={temporaryPasscodeStorage} 
-                    loginChangFunc={onLoginChange}
+                    loginChangeFunc={onLoginChange}
+                    addUsernameAndPasscodeFunc={addUsernameAndPasscodeFunc}
                     />} 
                 />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate />} />
@@ -101,9 +102,19 @@ export default function App() {
     );
 
 
-    function onLoginChange(username, loginState){
+    function onLoginChange(username, passcode, loginState){
         setUsername(username);
+        setPasscode(passcode)
         setLoginState(loginState);
+        localStorage.setItem('username', username);
+    }
+
+    function logoutFunction(){
+        setUsername();
+        setPasscode();
+        setLoginState(LoginState.LoggedOut);
+        localStorage.setItem('username', '');
+        localStorage.setItem('passcode', '');
     }
 
     function updateNewGameList(newlyMadeGame){
@@ -113,21 +124,9 @@ export default function App() {
         temporaryNewGameListInfo.push(newlyMadeGame)
     }
 
-    function addDummyGameToMockOtherUsers(){
-        const [dummyUserTimer, setDummyUserTimer] = useState(0);
-
-        React.useEffect(() => {
-            const intervalIncrementer = setTimePassed(() => {
-                setDummyUserTimer(prevCount => prevCount + 1);
-            }, 3000);
-            return () => {
-                clearInterval(intervalIncrementer);
-            }
-        }, []);
-
-        dummyGame = new Game(gameName="A *NEW* Dummy Game", gameImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", gameSummary="This is just a dummy to illustrate functionality", gameId=temporaryGameListStorage.length)
-        temporaryGameListStorage.push(dummyGame);
-        updateNewGameList(dummyGame);
+    function addUsernameAndPasscodeFunc(usernameToAdd, passcodeToAdd){
+        setTemporaryUsernameStorage(prevList => [...prevList, usernameToAdd]);
+        setTemporaryPasscodeStorage(prevList => [...prevList, passcodeToAdd]);
     }
 
     function NotFound(){

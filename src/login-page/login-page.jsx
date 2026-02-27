@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { LoginState } from '../classes/login-state';
 import { PageState } from '../classes/page-state';
 
-export function LoginPage(username, loginState, temporaryUsernameStorage, temporaryPasscodeStorage, loginChangeFunc){
+export function LoginPage({username, loginState, temporaryUsernameStorage, temporaryPasscodeStorage, loginChangeFunc, addUsernameAndPasscodeFunc}){
 
     if (loginState === LoginState.LoggedIn) {
         return (
@@ -17,10 +17,10 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
             <div className="login-page-container">
                 <main>
                     <h2>Login</h2>
-                    <form onSubmit={loginUser}>
+                    <form onSubmit={loginUser} onChange={clearCustomValidity}>
                         <div>
                             <label htmlFor="new-user-id" className="flex text-xs">Username</label>
-                            <input type="text" id="existing-user-id" name="esistingUser" required />
+                            <input type="text" id="existing-user-id" name="existingUser" required />
                         </div>
                         <div>
                             <label htmlFor="login-passcode-id" className="flex text-xs">Passcode</label>
@@ -29,7 +29,7 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
                         <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Log in</button>
                     </form>
                     <h2>Or create a new user</h2>
-                    <form onSubmit={addNewUser}>
+                    <form onSubmit={addNewUser} onChange={clearCustomValidity}>
                         <div>
                             <label className="flex text-xs" htmlFor="new-user-id">Create a new Username</label>
                             <input type="text" id="new-user-id" name="newUsername" required />
@@ -40,7 +40,7 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
                         </div>
                         <div>
                             <label className="flex text-xs" htmlFor="verify-new-passcode-id">Verify your passcode</label>
-                            <input type="text" id="verify-new-passcode-id" name="'verify-new-passcode" required />
+                            <input type="text" id="verify-new-passcode-id" name="'verifyNewPasscode" required />
                         </div>
                         <button className="h-[5vh] bg-green-500 hover:bg-green-300 text-white py-1 px-2 rounded" type="Submit">Create Account</button>
                     </form>
@@ -50,36 +50,47 @@ export function LoginPage(username, loginState, temporaryUsernameStorage, tempor
     }
     
     function addNewUser(inputObject){
-        const newUsername = inputObject.target.elements.newUsername;
-        const newPasscode = inputObject.target.elements.newPasscode;
+        inputObject.preventDefault();
+        
+        const newUsername = inputObject.target.elements.newUsername.value;
+        const newPasscode = inputObject.target.elements.newPasscode.value;
+
+        const validityDisplayObject = inputObject.target.elements.newUsername;
 
         if (!temporaryUsernameStorage.includes(newUsername)){
-            temporaryUsernameStorage.push(newUsername);
-            temporaryPasscodeStorage.push(newPasscode);
-            loginChangeFunc(newUsername, LoginState.LoggedIn);
-            inputObject.setCustomValidity("");
+            addUsernameAndPasscodeFunc(newUsername, newPasscode);
+            loginChangeFunc(newUsername, newPasscode, LoginState.LoggedIn);
+            validityDisplayObject.setCustomValidity("");
         }
         else {
-            inputObject.setCustomValidity("Username already used. Please select a different username");
+            validityDisplayObject.setCustomValidity("Username already used. Please select a different username");
         }
     }
 
     function loginUser(inputObject){
-        const inputUsername = inputObject.target.elements.existingUser;
-        const inputPasscode = inputObject.target.elements.loginPasscode;
+        inputObject.preventDefault();
+
+        const inputUsername = inputObject.target.elements.existingUser.value;
+        const inputPasscode = inputObject.target.elements.loginPasscode.value;
+
+        const validityDisplayObject = inputObject.target.elements.existingUser;
 
         if (temporaryUsernameStorage.includes(inputUsername)){
-            const usernameIndex = temporaryUsernameStorage.findIndex(finderFunction => finder === inputUsername);
-            if (temporaryUsernameStorage[usernameIndex] === inputPasscode){
-                loginChangeFunc(inputUsername, LoginState.LoggedIn);
-                inputObject.setCustomValidity("");
+            const usernameIndex = temporaryUsernameStorage.findIndex((finder) => finder === inputUsername);
+            if (temporaryPasscodeStorage[usernameIndex] === inputPasscode){
+                loginChangeFunc(inputUsername, inputPasscode, LoginState.LoggedIn);
+                validityDisplayObject.setCustomValidity("");
             }
             else {
-                inputObject.setCustomValidity("Incorrect passcode. Please try again");
+                validityDisplayObject.setCustomValidity("Incorrect passcode. Please try again");
             }
         }
         else {
-            inputObject.setCustomValidity("That user doesn't exist in our database. Please create a new user");
+            validityDisplayObject.setCustomValidity("That user doesn't exist in our database. Please create a new user");
         }
+    }
+
+    function clearCustomValidity(focus){
+        focus.target.setCustomValidity("");
     }
 }

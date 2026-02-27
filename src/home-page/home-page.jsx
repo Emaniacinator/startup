@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 
-export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, temporaryTopGameList, addDummyGameToMockOtherUsers}) {
+export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, temporaryTopGameList}) {
     const [firstMostRecentGame, setFirstMostRecentGame] = React.useState(null);
     const [secondMostRecentGame, setSecondMostRecentGame] = React.useState(null);
     const [thirdMostRecentGame, setThirdMostRecentGame] = React.useState(null);
@@ -39,7 +39,7 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
         
     }, [temporaryGameListStorage.length]);
 
-    // In theory, this is going to make it so that there is new dummy game data every 5 seconds
+    // In theory, this is going to make it so that there is new dummy game data every 3 seconds
     const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
     
     React.useEffect(() => {

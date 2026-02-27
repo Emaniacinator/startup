@@ -31,9 +31,11 @@ export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc
     )
 
     function handleGameCreation(inputObject){
-        const newGameName = inputObject.target.elements.gameName;
-        const newGamePhoto = inputObject.target.elements.gamePhotoUrl;
-        const newGameSummary = inputObject.target.elements.gameSummary;
+        const newGameName = inputObject.target.elements.gameName.value;
+        const newGamePhoto = inputObject.target.elements.gamePhotoUrl.value;
+        const newGameSummary = inputObject.target.elements.gameSummary.value;
+
+        const validityDisplayObject = inputObject.target.elements.gameName;
 
         let gameExistenceChecker = false;
         for (i = 0; i < temporaryGameListStorage.length; i++){
@@ -48,14 +50,14 @@ export function GameCreationPage(temporaryGameListStorage, newGameListUpdateFunc
             if (mockApiCheckForExistence === true){
                 temporaryGameListStorage.push(gameToAdd);
                 newGameListUpdateFunc(gameToAdd);
-                inputObject.setCustomValidity("");
+                validityDisplayObject.setCustomValidity("");
             }
             else{
-                inputObject.setCustomValidity("This is mocking the game not existing in an API database. Sorry for the random interruption");
+                validityDisplayObject.setCustomValidity("This is mocking the game not existing in an API database. Sorry for the random interruption");
             }
         }
         else {
-            inputObject.setCustomValidity("That game is already in our database. Please consider leaving a review instead");
+            validityDisplayObject.setCustomValidity("That game is already in our database. Please consider leaving a review instead");
         }
     }
 
