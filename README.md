@@ -119,8 +119,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - I implemented mocks of the ability to read from different databases, log in, and leave reviews and comments!
+- [x] **Hooks** - I used useEffect to create the various different repeating mock elements and displays on my screen and useState to set up variables to help with those mocks
 
 ## 🚀 Service deliverable
 
