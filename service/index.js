@@ -84,13 +84,18 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // The following are endpoints for getting and creating game info
 
 // This function is for when the user creates a new game and sends it here
+// Note that the user needs to be logged in to do this
+
+// THIS WON'T WORK YET BECAUSE YOU HAVEN'T FORMATTED THE GAME CORRECTLY
 apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
-  temporaryGameListStorage.push(req.body);
-  if (temporaryNewGameList.length > 4){
-      temporaryNewGameList.shift();
-  }
-  temporaryNewGameList.push(req.body)
-  res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here but for now we're just going to see what happens
+  await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore, req.body.releaseDate);
+  res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
+});
+
+// This function is for when the user wants to get info on a specific game to load it's associated page
+// Note that the user DOES NOT need to be logged in to do this
+apiRouter.get('/gameApi/getGameInfo', async (req, res) => {
+
 });
 
 // The following are functions needed for checks and information
@@ -140,3 +145,29 @@ function updateAuthorizationCookies(res, authToken){
     maxAge: 30000
   });
 };
+
+async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averageScore, releaseDate){
+
+  const gameToAdd = {
+    gameName: gameName,
+    gameImageUrl: gameImageUrl,
+    gameSummary: gameSummary,
+    gameId: gameId,
+    averageScore: averageScore,
+    releaseDate: releaseDate
+  }
+
+  temporaryGameListStorage.push(gameToAdd);
+  if (temporaryNewGameList.length > 4){
+      temporaryNewGameList.shift();
+  }
+  temporaryNewGameList.push(gameToAdd)
+};
+
+async function getGameInformation(fieldToSearchBy, itemToSearchFor){
+  if (!itemToSearchFor){
+    return null;
+  };
+
+  return getGameInformation.find((currentItem) => currentItem[fieldToSearchBy] === itemToSearchFor);
+}
