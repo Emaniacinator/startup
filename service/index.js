@@ -83,6 +83,11 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // The following are endpoints for getting and creating game info
 
+// This function is for when the user creates a new game and sends it here
+apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
+  temporaryGameListStorage.push(req.body);
+  res.send(temporaryGameListStorage); // This maybe shouldn't be here but for now we're just going to see what happens
+});
 
 // The following are functions needed for checks and information
 async function verifyLogin(req, res, next){
