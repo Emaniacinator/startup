@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 import { PageState } from '../classes/page-state';
 
-export function GameCreationPage({temporaryGameListStorage, newGameListUpdateFunc, addGameFunc}){
+export function GameCreationPage({twitchClientId, twitchAuth}){
 
     return (
         <div className="game-creation-page-container">
@@ -47,7 +47,7 @@ export function GameCreationPage({temporaryGameListStorage, newGameListUpdateFun
         }
 
         if (!gameExistenceChecker === true) {
-            let mockApiCheckForExistence = mockApiCall();
+            let mockApiCheckForExistence = determineIfGameIsReal(newGameName);
             if (mockApiCheckForExistence === true){
                 let gameToAdd = new Game(newGameName, newGamePhoto, newGameSummary, temporaryGameListStorage.length);
                 addGameFunc(gameToAdd);
@@ -69,6 +69,42 @@ export function GameCreationPage({temporaryGameListStorage, newGameListUpdateFun
         }
         else {
             return true;
+        }
+    }
+
+    async function determineIfGameIsReal(gameToSearchFor){
+
+        let requestBody = `fields id, name; search "${gameToSearchFor}; limit 1;"`;
+
+        try{
+
+            const response = await fetch('https://api.igdb.com/v4/search', {
+                method: 'POST',
+                headers: {
+                    'Client-ID': twitchClientId,
+                    'Authorization': `Bearer ${twitchAuth}`,
+                },
+                body: requestBody
+            });
+
+            if (response.status === 401){
+                throw new Error('Error with Twitch API access token');
+            }
+            else if (!response.ok){
+                throw new Error('Error in the Twitch IGDB API');
+            }
+
+            responseData = await response.json();
+
+            if (responseData.lengtj > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (error) {
+            console.error("Error finding game:", error);
+            return false;
         }
     }
 }

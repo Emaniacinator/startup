@@ -27,10 +27,10 @@ export default function App() {
     const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-6);
 
     const [twitchAuth, setTwitchAuth] = React.useState('');
+    const twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
+    const twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
 
     React.useEffect(async () => {
-        let twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
-        let twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
         let body = {
             client_id: twitchClientId,
             client_secret: twitchClientSecret,
@@ -41,7 +41,6 @@ export default function App() {
                 jsonifiedResponse = response.json().parse();
                 setTwitchAuth(jsonifiedResponse.access_token);
             });
-
     }, [])
 
     /// This next section is nasty and is just to create a fake top games database to read from
