@@ -26,6 +26,7 @@ app.listen(port, () => {
 let apiRouter = express.Router();
 app.use('/api', apiRouter);
 
+// The following are the authorization endpoints
 apiRouter.post('/auth/create', async (req, res) => {
 
   if (await getUserInformation('username', req.body.username)){
@@ -65,9 +66,9 @@ apiRouter.post('/auth/login', async (req, res) => {
   };
 });
 
-apiRouter.post('/auth/logout', async (req, res) => {
+apiRouter.delete('/auth/logout', async (req, res) => {
 
-  const userToLogout = getUserInformation('token', req.cookies['authorizationCookie']);
+  const userToLogout = getUserInformation('authToken', req.cookies['authorizationCookie']);
 
   if (!userToLogout){
 
@@ -79,6 +80,22 @@ apiRouter.post('/auth/logout', async (req, res) => {
     res.status(204).end();
   };
 });
+
+// The following are endpoints for getting and creating game info
+
+
+// The following are functions needed for checks and information
+async function verifyLogin(req, res, next){
+  const userToVerify = await getUserInformation('authToken', req.cookies['authorizationCookie']);
+  if (!userToVerify){
+
+    res.status(401).send({ msg: 'Not logged in, can\'t perform action'});
+  
+  } else {
+
+    next();
+  };
+};
 
 async function getUserInformation(elementToSearchThrough, valueToSearchFor) {
 
