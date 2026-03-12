@@ -86,7 +86,11 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // This function is for when the user creates a new game and sends it here
 apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
   temporaryGameListStorage.push(req.body);
-  res.send(temporaryGameListStorage); // This maybe shouldn't be here but for now we're just going to see what happens
+  if (temporaryNewGameList.length > 4){
+      temporaryNewGameList.shift();
+  }
+  temporaryNewGameList.push(req.body)
+  res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here but for now we're just going to see what happens
 });
 
 // The following are functions needed for checks and information
