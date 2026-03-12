@@ -78,13 +78,13 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // THIS WON'T WORK YET BECAUSE YOU HAVEN'T FORMATTED THE GAME CORRECTLY IN THE BACKEND REACT CODE
 apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
-  await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore, req.body.releaseDate);
+  await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
   res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
 });
 
 // This function is for when the user wants to get info on a specific game to load it's associated page
 // Note that the user DOES NOT need to be logged in to do this
-apiRouter.get('/gameApi/getGameInfo', async (req, res) => {
+apiRouter.post('/gameApi/getGameInfo', async (req, res) => {
 
   const gameDataToGet = getGameInformation('gameId', req.body.gameId);
 
@@ -92,6 +92,19 @@ apiRouter.get('/gameApi/getGameInfo', async (req, res) => {
     res.status(404).send({ msg: 'That game could not be found in our database. Please consider adding it'});
   } else {
     res.send(gameDataToGet);
+  };
+
+});
+
+// This function is just to check to see if a game is already in the database or not, based on its name
+apiRouter.post('/gameApi/checkGameExists', async (req, res) => {
+
+  const gameDataCheck = getGameInformation('gameName', req.body.gameName);
+
+  if(!gameDataCheck){
+    res.send(false);
+  } else {
+    res.send(true);
   };
 
 });
@@ -146,15 +159,14 @@ function updateAuthorizationCookies(res, authToken){
 
 };
 
-async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averageScore, releaseDate){
+async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averageScore){
 
   const gameToAdd = {
     gameName: gameName,
     gameImageUrl: gameImageUrl,
     gameSummary: gameSummary,
     gameId: gameId,
-    averageScore: averageScore,
-    releaseDate: releaseDate
+    averageScore: averageScore
   }
 
   temporaryGameListStorage.push(gameToAdd);

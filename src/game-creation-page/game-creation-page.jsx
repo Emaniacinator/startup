@@ -30,7 +30,7 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
         </div>
     )
 
-    function handleGameCreation(inputObject){
+    async function handleGameCreation(inputObject){
         inputObject.preventDefault();
 
         const newGameName = inputObject.target.elements.gameName.value;
@@ -47,11 +47,19 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
         }
 
         if (!gameExistenceChecker === true) {
-            let mockApiCheckForExistence = determineIfGameIsReal(newGameName);
-            if (mockApiCheckForExistence === true){
-                let gameToAdd = new Game(newGameName, newGamePhoto, newGameSummary, temporaryGameListStorage.length);
-                addGameFunc(gameToAdd);
-                newGameListUpdateFunc(gameToAdd);
+            let apiCheckForExistence = determineIfGameIsReal(newGameName);
+            if (apiCheckForExistence === true){
+                await fetch('', {
+                    method: POST,
+                    headers: { 'Content-Type': 'application/json'},
+                    body: { 'gameName': newGameName,
+                            'gameImageUrl': newGamePhoto,
+                            'gameSummary': newGameSummary,
+                            'gameId': 'AAAAAAAHHHHHHHH',
+                            'averageScore': null
+                            }
+                });
+
                 validityDisplayObject.setCustomValidity("Game Added! Thank you!");
             }
             else{
@@ -60,15 +68,6 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
         }
         else {
             validityDisplayObject.setCustomValidity("That game is already in our database. Please consider leaving a review instead");
-        }
-    }
-
-    function mockApiCall(){
-        if (Math.random() < 0.5){
-            return false;
-        }
-        else {
-            return true;
         }
     }
 
@@ -96,7 +95,7 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
 
             responseData = await response.json();
 
-            if (responseData.lengtj > 0){
+            if (responseData.length > 0){
                 return true;
             } else {
                 return false;
