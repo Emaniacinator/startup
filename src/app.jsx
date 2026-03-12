@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import 'tailwindcss';
 import "tailwindcss/preflight";
 import "./app.css";
-import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
+import { Route, Routes, NavLink } from 'react-router-dom';
 import { HomePage } from './home-page/home-page'
 import { LoginPage } from './login-page/login-page';
 import { GamePageTemplate } from './game-page-template/game-page-template';
@@ -11,6 +11,7 @@ import { GameCreationPage } from './game-creation-page/game-creation-page';
 import { LoginState } from './classes/login-state';
 import { PageState } from './classes/page-state';
 import { Game } from './classes/game';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
@@ -24,6 +25,24 @@ export default function App() {
     let [temporaryNewGameListInfo, setTemporaryNewGameListInfo] = React.useState([]);
     const location = useLocation();
     const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-6);
+
+    const [twitchAuth, setTwitchAuth] = React.useState('');
+
+    React.useEffect(async () => {
+        let twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
+        let twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
+        let body = {
+            client_id: twitchClientId,
+            client_secret: twitchClientSecret,
+            grant_type: client_credentials
+        }
+        await fetch('https://id.twitch.tv/oauth2/token', body)
+            .then((response) => {
+                jsonifiedResponse = response.json().parse();
+                setTwitchAuth(jsonifiedResponse.access_token);
+            });
+
+    }, [])
 
     /// This next section is nasty and is just to create a fake top games database to read from
     const temporaryTopGameList = [new Game("Top Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The best rated game", -1, 100, "1/1/1001"),
