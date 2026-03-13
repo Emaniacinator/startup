@@ -1,12 +1,10 @@
-import { Game } from './classes/game';
-
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 5173;
 
 let temporaryUserInfoStorage = [];
 let temporaryGameListStorage = [];
@@ -77,13 +75,13 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // Note that the user needs to be logged in to do this
 apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
   await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
-  res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
+  res.send({temporaryGameListStorage, temporaryNewGameList}); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
 });
 
 // This is a version of the above code that doesn't need auth as a way to have dummy users make games
 apiRouter.post('/gameApi/createDummyGame', async (req, res) => {
   await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
-  res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
+  res.send({temporaryGameListStorage, temporaryNewGameList}); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
 });
 
 // This function is for when the user wants to get info on a specific game to load it's associated page
@@ -152,7 +150,7 @@ async function createNewUser(username, passcode) {
 
   let newUser = {
     username: username,
-    passcode: passcode,
+    passcode: hashedPasscode,
     authToken: uuid.v4(),
   };
 
@@ -199,6 +197,6 @@ async function getGameInformation(fieldToSearchBy, itemToSearchFor){
     return null;
   };
 
-  return getGameInformation.find((currentItem) => currentItem[fieldToSearchBy] === itemToSearchFor);
+  return temporaryGameListStorage.find((currentItem) => currentItem[fieldToSearchBy] === itemToSearchFor);
   
 }

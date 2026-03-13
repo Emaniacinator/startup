@@ -26,23 +26,30 @@ export default function App() {
     const location = useLocation();
     const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-6);
 
-    const [twitchAuth, setTwitchAuth] = React.useState('');
+    const [twitchAuth, setTwitchAuth] = React.useState({});
     const twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
     const twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
 
     React.useEffect(() => {
-        let body = {
+
+        let body = new URLSearchParams({
             client_id: twitchClientId,
             client_secret: twitchClientSecret,
-            grant_type: client_credentials
-        }
+            grant_type: 'client_credentials'
+        });
+
         let credentialHelper = async () => {
-            await fetch('https://id.twitch.tv/oauth2/token', body)
-                  .then((response) => {
-                    jsonifiedResponse = response.json().parse();
-                    setTwitchAuth(jsonifiedResponse.access_token);
-                  });
+
+            const twitchResponse = await fetch('https://id.twitch.tv/oauth2/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString()
+            });
+
+            const jsonifiedResponse = await twitchResponse.json();
+            setTwitchAuth(jsonifiedResponse.access_token);
         }
+
         credentialHelper();
     }, [])
 

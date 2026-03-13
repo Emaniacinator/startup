@@ -126,12 +126,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - The services are being used, as instructed
+- [x] **Static middleware for frontend** - I implemented the middleware as instructed!
+- [x] **Calls to third party endpoints** - I got an auth from and called the endpoints for twitch's game database services
+- [x] **Backend service endpoints** - I created the endpoints for most of the core functions of my app
+- [x] **Frontend calls service endpoints** - I made it so that my frontend pages call my endpoints
+- [x] **Supports registration, login, logout, and restricted endpoint** - I added endpoints for logging in and out, as well as some that require the user to be logged in
 
 ## 🚀 DB deliverable
 

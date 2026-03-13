@@ -15,10 +15,10 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
     React.useEffect(() => {
 
         let listsReturned = async () => {
-            const returnedListsResponse = await fetch('/gameApi/getGameLists', {
+            const returnedListsResponse = await fetch('/api/gameApi/getGameLists', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({})
+                body: {}
             });
 
             const returnedLists = await returnedListsResponse.json();
@@ -66,7 +66,7 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
     React.useEffect(() => {
         const intervalIncrementer = setInterval(() => {
             setDummyUserTimer(prevCount => prevCount + 1);
-            let dummyPostResults = fetch('/gameApi/createDummyGame', {
+            let dummyPostResults = fetch('/api/gameApi/createDummyGame', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: { gameName: 'A *NEW* Dummy Game!',
