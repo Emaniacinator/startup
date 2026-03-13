@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { LoginState } from '../classes/login-state';
 import { PageState } from '../classes/page-state';
 
-export function LoginPage({username, loginState, temporaryUsernameStorage, temporaryPasscodeStorage, loginChangeFunc, addUsernameAndPasscodeFunc}){
+export function LoginPage({username, setUsernameFunc, loginState, loginChangeFunc}){
 
     if (loginState === LoginState.LoggedIn) {
         return (
@@ -49,17 +49,26 @@ export function LoginPage({username, loginState, temporaryUsernameStorage, tempo
         )
     }
     
-    function addNewUser(inputObject){
+    async function addNewUser(inputObject){
+
         inputObject.preventDefault();
         
         const newUsername = inputObject.target.elements.newUsername.value;
         const newPasscode = inputObject.target.elements.newPasscode.value;
-
         const validityDisplayObject = inputObject.target.elements.newUsername;
 
-        if (!temporaryUsernameStorage.includes(newUsername)){
-            addUsernameAndPasscodeFunc(newUsername, newPasscode);
-            loginChangeFunc(newUsername, newPasscode, LoginState.LoggedIn);
+        addUserResponse = await fetch('/auth/create', {
+            method: POST,
+            headers: { 'Content-Type': 'application/json' },
+            body: {
+                username: newUsername,
+                passcode: newPasscode
+            }
+        })
+
+        if (addUserResponse.status.ok){
+            loginChangeFunc(LoginState.LoggedIn);
+            setUsernameFunc(loginResponse.body.username);
             validityDisplayObject.setCustomValidity("");
         }
         else {
@@ -67,27 +76,33 @@ export function LoginPage({username, loginState, temporaryUsernameStorage, tempo
         }
     }
 
-    function loginUser(inputObject){
-        inputObject.preventDefault();
+    async function loginUser(inputObject){
 
+        inputObject.preventDefault();
         const inputUsername = inputObject.target.elements.existingUser.value;
         const inputPasscode = inputObject.target.elements.loginPasscode.value;
-
         const validityDisplayObject = inputObject.target.elements.existingUser;
 
-        if (temporaryUsernameStorage.includes(inputUsername)){
-            const usernameIndex = temporaryUsernameStorage.findIndex((finder) => finder === inputUsername);
-            if (temporaryPasscodeStorage[usernameIndex] === inputPasscode){
-                loginChangeFunc(inputUsername, inputPasscode, LoginState.LoggedIn);
+        loginResponse = await fetch('/auth/login', {
+            method: POST,
+            headers: { 'Content-Type': 'application/json' },
+            body: { 
+                username: inputUsername,
+                passcode: inputPasscode
+            }
+        }); 
+
+        if (loginResponse.status.ok){
+                loginChangeFunc(LoginState.LoggedIn);
+                setUsernameFunc(loginResponse.body.username);
                 validityDisplayObject.setCustomValidity("");
-            }
-            else {
-                validityDisplayObject.setCustomValidity("Incorrect passcode. Please try again");
-            }
+        }
+        else if (loginResponse.status === 401){
+            validityDisplayObject.setCustomValidity("Incorrect passcode. Please try again");
         }
         else {
             validityDisplayObject.setCustomValidity("That user doesn't exist in our database. Please create a new user");
-        }
+        };
     }
 
     function clearCustomValidity(focus){

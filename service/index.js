@@ -43,7 +43,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   const userToLogin = await getUserInformation('username', req.body.username);
 
   if (!userToLogin){
-    res.status(401).send({ msg: 'That user doesn\'t exist in our database'});
+    res.status(404).send({ msg: 'That user doesn\'t exist in our database'});
   } else {
 
     if (!(await bcrypt.compare(req.body.passcode, userToLogin.passcode))){
