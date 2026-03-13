@@ -14,14 +14,19 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
 
     React.useEffect(() => {
 
-        let listsReturned = fetch('/gameApi/getGameLists', {
-            method: POST,
-            headers: { 'Content-Type': 'application/json' },
-            body: {}
-        });
+        let listsReturned = async () => {
+            const returnedListsResponse = await fetch('/gameApi/getGameLists', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
 
-        setTemporaryGameListStorage(listsReturned.body.gameList);
-        setTemporaryNewGameListInfo(listsReturned.body.newGameList);
+            const returnedLists = await returnedListsResponse.json();
+            setTemporaryGameListStorage(returnedLists.body.gameList);
+            setTemporaryNewGameListInfo(returnedLists.body.newGameList);
+        };
+        
+        listsReturned();
 
     }, []);
 
@@ -62,7 +67,7 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
         const intervalIncrementer = setInterval(() => {
             setDummyUserTimer(prevCount => prevCount + 1);
             let dummyPostResults = fetch('/gameApi/createDummyGame', {
-                method: POST,
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: { gameName: 'A *NEW* Dummy Game!',
                         gameImageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s',

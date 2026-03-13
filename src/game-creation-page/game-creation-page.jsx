@@ -41,7 +41,7 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
         const validityDisplayObject = inputObject.target.elements.gameName;
 
         let gameExistenceChecker = await fetch('/gameApi/checkGameExists', {
-            method: POST,
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: { 'gameName': newGameName }
         });
@@ -50,12 +50,12 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
             let apiCheckForExistence = determineIfGameIsReal(newGameName);
             if (apiCheckForExistence === true){
                 gameList, _ = await fetch('/gameApi/getGameLists', {
-                    method: POST,
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: {}
                 });
                 await fetch('/gameApi/createGame', {
-                    method: POST,
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: { 'gameName': newGameName,
                             'gameImageUrl': newGamePhoto,

@@ -117,7 +117,7 @@ export function GamePageTemplate(gameToLoad){
 
     async function handleGameLoading(){
         setLoadedGame(await fetch('/gameApi/getGameInfo', {
-            method: POST,
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: { 'gameId': gameToLoad }
         }));

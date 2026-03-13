@@ -58,7 +58,7 @@ export function LoginPage({username, setUsernameFunc, loginState, loginChangeFun
         const validityDisplayObject = inputObject.target.elements.newUsername;
 
         addUserResponse = await fetch('/auth/create', {
-            method: POST,
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: {
                 username: newUsername,
@@ -84,7 +84,7 @@ export function LoginPage({username, setUsernameFunc, loginState, loginChangeFun
         const validityDisplayObject = inputObject.target.elements.existingUser;
 
         loginResponse = await fetch('/auth/login', {
-            method: POST,
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: { 
                 username: inputUsername,
