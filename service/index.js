@@ -75,9 +75,13 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // This function is for when the user creates a new game and sends it here
 // Note that the user needs to be logged in to do this
-
-// THIS WON'T WORK YET BECAUSE YOU HAVEN'T FORMATTED THE GAME CORRECTLY IN THE BACKEND REACT CODE
 apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
+  await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
+  res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
+});
+
+// This is a version of the above code that doesn't need auth as a way to have dummy users make games
+apiRouter.post('/gameApi/createDummyGame', async (req, res) => {
   await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
   res.send(temporaryGameListStorage, temporaryNewGameList); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
 });

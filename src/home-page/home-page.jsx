@@ -2,14 +2,30 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Game } from '../classes/game';
 
-export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, temporaryTopGameList, setGameToLoadFunc}) {
+export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
     const [firstMostRecentGame, setFirstMostRecentGame] = React.useState(null);
     const [secondMostRecentGame, setSecondMostRecentGame] = React.useState(null);
     const [thirdMostRecentGame, setThirdMostRecentGame] = React.useState(null);
     const [fourthMostRecentGame, setFourthMostRecentGame] = React.useState(null);
     const [fifthMostRecentGame, setFifthMostRecentGame] = React.useState(null);
 
-    React.useEffect(() =>{
+    const [temporaryGameListStorage, setTemporaryGameListStorage] = React.useState([]);
+    const [temporaryNewGameListInfo, setTemporaryNewGameListInfo] = React.useState([]);
+
+    React.useEffect(() => {
+
+        let listsReturned = fetch('/gameApi/getGameLists', {
+            method: POST,
+            headers: { 'Content-Type': 'application/json' },
+            body: {}
+        });
+
+        setTemporaryGameListStorage(listsReturned.body.gameList);
+        setTemporaryNewGameListInfo(listsReturned.body.newGameList);
+
+    }, []);
+
+    React.useEffect(() => {
         // Then update or populate the new game list
         if (temporaryNewGameListInfo.length >= 5){
             setFirstMostRecentGame(temporaryNewGameListInfo[4]);
@@ -35,7 +51,7 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
         }
         else if (temporaryNewGameListInfo.length == 1){
             setFirstMostRecentGame(temporaryNewGameListInfo[0]);
-        }
+        };
         
     }, [temporaryGameListStorage.length]);
 
@@ -45,9 +61,16 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
     React.useEffect(() => {
         const intervalIncrementer = setInterval(() => {
             setDummyUserTimer(prevCount => prevCount + 1);
-            let dummyGame = new Game("A *NEW* Dummy Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "This is just a dummy to illustrate functionality", temporaryGameListStorage.length)
-            temporaryGameListStorage.push(dummyGame);
-            updateNewGameList(dummyGame);
+            let dummyPostResults = fetch('/gameApi/createDummyGame', {
+                method: POST,
+                headers: { 'Content-Type': 'application/json' },
+                body: { gameName: 'A *NEW* Dummy Game!',
+                        gameImageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s',
+                        gameSummary: 'This is just a dummy game, idk man',
+                        gameId: (temporaryGameListStorage.length + 1),
+                        averageScore: 50
+                 }
+            });
         }, 3000);
         return (() => clearInterval(intervalIncrementer));
     }, []);
@@ -67,9 +90,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                                 <tr>
                                     <th className="relative text-center w-1/4">Rating</th>
                                 </tr>
-                                <tr>
-                                    <th className="relative text-center w-1/4">Release Date</th>
-                                </tr>
                             </thead>
                             <tbody className="grid grid-cols-3 bg-white">
                                 <tr>
@@ -77,9 +97,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                                 </tr>
                                 <tr>
                                     <td className="relative text-center w-1/10">{temporaryTopGameList[0].averageScore}</td>
-                                </tr>
-                                <tr>
-                                    <td className="relative text-center w-1/4">{temporaryTopGameList[0].releaseDate}</td>
                                 </tr>
                             </tbody>
                             <tbody className="grid grid-cols-3 bg-gray-300">
@@ -89,9 +106,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                                 <tr>
                                     <td className="relative text-center w-1/10">{temporaryTopGameList[1].averageScore}</td>
                                 </tr>
-                                <tr>
-                                    <td className="relative text-center w-1/4">{temporaryTopGameList[1].releaseDate}</td>
-                                </tr>
                             </tbody>
                             <tbody className="grid grid-cols-3 bg-white">
                                 <tr>
@@ -99,9 +113,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                                 </tr>
                                 <tr>
                                     <td className="relative text-center w-1/10">{temporaryTopGameList[2].averageScore}</td>
-                                </tr>
-                                <tr>
-                                    <td className="relative text-center w-1/4">{temporaryTopGameList[2].releaseDate}</td>
                                 </tr>
                             </tbody>
                             <tbody className="grid grid-cols-3 bg-white">
@@ -111,9 +122,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                                 <tr>
                                     <td className="relative text-center w-1/10">{temporaryTopGameList[3].averageScore}</td>
                                 </tr>
-                                <tr>
-                                    <td className="relative text-center w-1/4">{temporaryTopGameList[3].releaseDate}</td>
-                                </tr>
                             </tbody>    
                             <tbody className="grid grid-cols-3 bg-white">
                                 <tr>
@@ -121,9 +129,6 @@ export function HomePage({temporaryGameListStorage, temporaryNewGameListInfo, te
                                 </tr>
                                 <tr>
                                     <td className="relative text-center w-1/10">{temporaryTopGameList[4].averageScore}</td>
-                                </tr>
-                                <tr>
-                                    <td className="relative text-center w-1/4">{temporaryTopGameList[4].releaseDate}</td>
                                 </tr>
                             </tbody>            
                         </table>
