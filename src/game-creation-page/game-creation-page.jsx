@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Game } from '../classes/game';
 import { PageState } from '../classes/page-state';
+import { postcss } from 'autoprefixer';
 
 export function GameCreationPage({twitchClientId, twitchAuth}){
 
@@ -39,23 +40,27 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
 
         const validityDisplayObject = inputObject.target.elements.gameName;
 
-        let gameExistenceChecker = false;
-        for (let i = 0; i < temporaryGameListStorage.length; i++){
-            if (newGameName === temporaryGameListStorage[i].returnGameName){
-                gameExistenceChecker = true;
-            }
-        }
+        let gameExistenceChecker = await fetch('/gameApi/checkGameExists', {
+            method: POST,
+            headers: { 'Content-Type': 'application/json' },
+            body: { 'gameName': newGameName }
+        });
 
-        if (!gameExistenceChecker === true) {
+        if (gameExistenceChecker === false) {
             let apiCheckForExistence = determineIfGameIsReal(newGameName);
             if (apiCheckForExistence === true){
-                await fetch('', {
+                gameList, _ = await fetch('/gameApi/getGameLists', {
                     method: POST,
-                    headers: { 'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
+                    body: {}
+                });
+                await fetch('/gameApi/createGame', {
+                    method: POST,
+                    headers: { 'Content-Type': 'application/json' },
                     body: { 'gameName': newGameName,
                             'gameImageUrl': newGamePhoto,
                             'gameSummary': newGameSummary,
-                            'gameId': 'AAAAAAAHHHHHHHH',
+                            'gameId': gameList.length + 1,
                             'averageScore': null
                             }
                 });
@@ -63,7 +68,7 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
                 validityDisplayObject.setCustomValidity("Game Added! Thank you!");
             }
             else{
-                validityDisplayObject.setCustomValidity("This is mocking the game not existing in an API database. Sorry for the random interruption");
+                validityDisplayObject.setCustomValidity("It seems like that game isn't a real game. Please try again and check your spelling");
             }
         }
         else {

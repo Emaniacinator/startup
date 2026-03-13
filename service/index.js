@@ -109,6 +109,16 @@ apiRouter.post('/gameApi/checkGameExists', async (req, res) => {
 
 });
 
+// This function gets all the different game lists needed for an application
+apiRouter.post('/gameApi/getGameLists', async (req, res) => {
+
+  res.send( {
+    gameList: temporaryGameListStorage,
+    newGameList: temporaryNewGameList
+  })
+
+})
+
 // The following are functions needed for checks and information
 async function verifyLogin(req, res, next){
 
