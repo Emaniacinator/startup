@@ -9,9 +9,11 @@ export function GamePageTemplate(gameToLoad){
     const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
     const [secondDummyUserTimer, setSecondDummyUserTimer] = React.useState(0);
 
+    const [loadedGame, setLoadedGame] = React.useState({});
+
     React.useEffect(() => {
-        let dummyReview = new GameReview('Dummy User', '50', 'Dummy Review. It was alright I guess');
-    })
+        handleGameLoading();
+    }, []);
 
     // Leaves a new review every 6 seconds
     React.useEffect(() => {
@@ -38,10 +40,10 @@ export function GamePageTemplate(gameToLoad){
             <main>
                 <div id="combo-box" className="flex justify-center">
                     <div id="game-info" className="flexbox content-center w-7/12 left-1/12 right-7/12">
-                        <h2>{gameToLoad.gameName}</h2>
+                        <h2>{loadedGame.gameName}</h2>
                         <p>Put an appropriate game image here. For now, here is a demo image:</p>
-                        <img alt="Image for demo of game" src={gameToLoad.gameImageUrl} />
-                        <p>Average Game Rating: {gameToLoad.averageScore}/100 (pull from a database)</p>
+                        <img alt="Image for demo of game" src={loadedGame.gameImageUrl} />
+                        <p>Average Game Rating: {loadedGame.averageScore}/100 (pull from a database)</p>
                     </div>
                     <div id="game-review-stuff" className="flexbox content-center w-3/12 left-1/12 right-7/12">
                         <h2>Leave a game review</h2>
@@ -64,8 +66,8 @@ export function GamePageTemplate(gameToLoad){
                         {temporaryGameReviewStorage.map((reviewItem) => (
                             <>
                                 <p>{reviewItem.reviewerUsername}:</p>
-                                <p>    Score: {reviewItem.reviewScore}</p>
-                                <p>    Review: {reviewItem.reviewText}</p>
+                                <p>Score: {reviewItem.reviewScore}</p>
+                                <p>Review: {reviewItem.reviewText}</p>
                             </>
                             )
                         )}
@@ -112,4 +114,12 @@ export function GamePageTemplate(gameToLoad){
         const newComment = inputObject.target.elements.commentBox.value
         setTemporaryGameCommentsStorage(prevList => [...prevList, newComment])
     }
+
+    async function handleGameLoading(){
+        setLoadedGame(await fetch('/gameApi/getGameInfo', {
+            method: POST,
+            headers: { 'Content-Type': 'application/json' },
+            body: { 'gameId': gameToLoad }
+        }));
+    };
 }
