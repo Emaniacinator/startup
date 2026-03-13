@@ -1,14 +1,24 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 
-const port = process.argv.length > 2 ? process.argv[2] : 5173;
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 let temporaryUserInfoStorage = [];
 let temporaryGameListStorage = [];
 let temporaryNewGameList = [];
+
+let twitchAuth;
+const twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
+const twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
+
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://api.igdb.com/', 'https://id.twitch.tv/', 'http://localhost:3000'],
+  credentials: true
+}))
 
 app.use(express.json());
 
@@ -23,14 +33,86 @@ app.listen(port, () => {
 let apiRouter = express.Router();
 app.use('/api', apiRouter);
 
+// The following are weird wrapper endpoints because twitch's apis really don't
+// like the stadard call methods when they come from a webpage so I have to do
+// the calls from frontend to here to twitch apparently for the igdb database
+apiRouter.post('/igdbDatabase/getAuthorization', async (req, res) => {
+  let body = new URLSearchParams({
+      client_id: twitchClientId,
+      client_secret: twitchClientSecret,
+      grant_type: 'client_credentials'
+  });
+
+  let credentialHelper = async () => {
+
+    console.log('Trying to get twitch auth');
+
+    const twitchResponse = await fetch('https://id.twitch.tv/oauth2/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+    });
+
+    console.log(`Got twitch auth: ${twitchResponse}`);
+
+    const jsonifiedResponse = await twitchResponse.json();
+    twitchAuth = jsonifiedResponse.access_token;
+
+  };
+
+  await credentialHelper();
+  res.send({ msg: 'Authorization successful' });
+
+});
+
+apiRouter.post('/igdbDatabase/checkIfGameIsReal', async (req, res) => {
+  let requestBody = `fields id, name; search "${req.body.gameName}"; limit 1;`;
+
+  try{
+
+      const response = await fetch('https://api.igdb.com/v4/search', {
+          method: 'POST',
+          headers: {
+              'Client-ID': twitchClientId,
+              'Authorization': `Bearer ${twitchAuth}`,
+          },
+          body: requestBody
+      });
+
+      if (response.status === 401){
+          throw new Error('Error with Twitch API access token');
+      }
+      else if (!response.ok){
+          throw new Error('Error in the Twitch IGDB API');
+      }
+
+      let responseData = await response.json();
+
+      if (responseData.length > 0){
+          res.send(true);
+      } else {
+          res.send(false);
+      }
+  }
+  catch (error) {
+      res.status(401).send({msg: "Error finding game:" + error});
+  }
+})
+
 // The following are the authorization endpoints
 apiRouter.post('/auth/create', async (req, res) => {
 
+  console.log('Calling create User')
+
   if (await getUserInformation('username', req.body.username)){
+    console.log('Found a user with the same username')
     res.status(409).send({ msg: 'User already exists, please pick a different username'});
   } else {
+    console.log('Creating user in databases')
     const createdUser = await createNewUser(req.body.username, req.body.passcode);
+    console.log('Setting authorization cookies')
     updateAuthorizationCookies(res, createdUser.authToken);
+    console.log(`Returning the username: ${createdUser.username}`)
     res.send({ username: createdUser.username });
   };
 
@@ -58,7 +140,7 @@ apiRouter.post('/auth/login', async (req, res) => {
 
 apiRouter.delete('/auth/logout', async (req, res) => {
 
-  const userToLogout = getUserInformation('authToken', req.cookies['authorizationCookie']);
+  const userToLogout = await getUserInformation('authToken', req.cookies['authorizationCookie']);
 
   if (!userToLogout){
     res.status(401).send({ msg: 'Can\'t log out a user that isn\'t logged in'});
@@ -101,7 +183,8 @@ apiRouter.post('/gameApi/getGameInfo', async (req, res) => {
 // This function is just to check to see if a game is already in the database or not, based on its name
 apiRouter.post('/gameApi/checkGameExists', async (req, res) => {
 
-  const gameDataCheck = getGameInformation('gameName', req.body.gameName);
+  const gameDataCheck = await getGameInformation('gameName', req.body.gameName);
+  console.log('gameDataCheck result:', gameDataCheck);
 
   if(!gameDataCheck){
     res.send(false);
@@ -127,6 +210,7 @@ async function verifyLogin(req, res, next){
   const userToVerify = await getUserInformation('authToken', req.cookies['authorizationCookie']);
 
   if (!userToVerify){
+    console.log("Failed the internal authorization")
     res.status(401).send({ msg: 'Not logged in, can\'t perform action'});
   } else {
     next();
@@ -166,7 +250,7 @@ function updateAuthorizationCookies(res, authToken){
     secure: true,
     httpOnly: true,
     sameSite: 'strict',
-    maxAge: 30000
+    maxAge: 3600000
   });
 
 };

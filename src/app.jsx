@@ -26,31 +26,18 @@ export default function App() {
     const location = useLocation();
     const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-6);
 
-    const [twitchAuth, setTwitchAuth] = React.useState({});
-    const twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
-    const twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
-
     React.useEffect(() => {
 
-        let body = new URLSearchParams({
-            client_id: twitchClientId,
-            client_secret: twitchClientSecret,
-            grant_type: 'client_credentials'
-        });
-
         let credentialHelper = async () => {
-
-            const twitchResponse = await fetch('https://id.twitch.tv/oauth2/token', {
+            await fetch('/api/igdbDatabase/getAuthorization', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: body.toString()
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
             });
-
-            const jsonifiedResponse = await twitchResponse.json();
-            setTwitchAuth(jsonifiedResponse.access_token);
         }
 
         credentialHelper();
+
     }, [])
 
     /// This next section is nasty and is just to create a fake top games database to read from
@@ -108,11 +95,9 @@ export default function App() {
                 />
                 <Route path='/LoginPage' element={<LoginPage 
                     username={username}
+                    setUsernameFunc={setUsername}
                     loginState={loginState}
-                    temporaryUsernameStorage={temporaryUsernameStorage}
-                    temporaryPasscodeStorage={temporaryPasscodeStorage} 
                     loginChangeFunc={onLoginChange}
-                    addUsernameAndPasscodeFunc={addUsernameAndPasscodeFunc}
                     />} 
                 />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate 
@@ -135,16 +120,14 @@ export default function App() {
     );
 
 
-    function onLoginChange(username, passcode, loginState){
+    function onLoginChange(username, loginState){
         setUsername(username);
-        setPasscode(passcode)
         setLoginState(loginState);
         localStorage.setItem('username', username);
     }
 
     function logoutFunction(){
         setUsername();
-        setPasscode();
         setLoginState(LoginState.LoggedOut);
         localStorage.setItem('username', '');
         localStorage.setItem('passcode', '');

@@ -57,18 +57,20 @@ export function LoginPage({username, setUsernameFunc, loginState, loginChangeFun
         const newPasscode = inputObject.target.elements.newPasscode.value;
         const validityDisplayObject = inputObject.target.elements.newUsername;
 
-        addUserResponse = await fetch('/auth/create', {
+        let addUserResponse = await fetch('/api/auth/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: {
+            body: JSON.stringify({
                 username: newUsername,
                 passcode: newPasscode
-            }
+            })
         })
 
-        if (addUserResponse.status.ok){
-            loginChangeFunc(LoginState.LoggedIn);
-            setUsernameFunc(loginResponse.body.username);
+        let parsedAddUserResponse = await addUserResponse.json();
+
+        if (addUserResponse.ok){
+            loginChangeFunc(parsedAddUserResponse.username, LoginState.LoggedIn);
+            console.log(`Logged in as ${parsedAddUserResponse.username}`)
             validityDisplayObject.setCustomValidity("");
         }
         else {
@@ -83,18 +85,20 @@ export function LoginPage({username, setUsernameFunc, loginState, loginChangeFun
         const inputPasscode = inputObject.target.elements.loginPasscode.value;
         const validityDisplayObject = inputObject.target.elements.existingUser;
 
-        loginResponse = await fetch('/auth/login', {
+        let loginResponse = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: { 
+            body: JSON.stringify({ 
                 username: inputUsername,
                 passcode: inputPasscode
-            }
+            })
         }); 
 
-        if (loginResponse.status.ok){
-                loginChangeFunc(LoginState.LoggedIn);
-                setUsernameFunc(loginResponse.body.username);
+        let parsedLoginResponse = await loginResponse.json();
+
+        if (loginResponse.ok){
+                loginChangeFunc(parsedLoginResponse.username, LoginState.LoggedIn);
+                console.log(`Logged in as ${parsedLoginResponse.username}`)
                 validityDisplayObject.setCustomValidity("");
         }
         else if (loginResponse.status === 401){

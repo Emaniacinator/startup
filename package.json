@@ -3,6 +3,7 @@
     "@vitejs/plugin-react": "^5.1.4",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -38,6 +39,5 @@
     "url": "https://github.com/Emaniacinator/startup/issues"
   },
   "homepage": "https://github.com/Emaniacinator/startup#readme",
-  "proxy": "http://localhost:5173"
-  
+  "proxy": "http://localhost:3000"
 }

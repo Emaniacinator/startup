@@ -40,32 +40,44 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
 
         const validityDisplayObject = inputObject.target.elements.gameName;
 
-        let gameExistenceChecker = await fetch('/gameApi/checkGameExists', {
+        let gameExistenceChecker = await fetch('/api/gameApi/checkGameExists', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: { 'gameName': newGameName }
+            body: JSON.stringify({ 'gameName': newGameName })
         });
 
-        if (gameExistenceChecker === false) {
-            let apiCheckForExistence = determineIfGameIsReal(newGameName);
+        if (( await gameExistenceChecker.json()) === false) {
+            let apiCheckForExistence = await determineIfGameIsReal(newGameName);
             if (apiCheckForExistence === true){
-                gameList, _ = await fetch('/gameApi/getGameLists', {
+                let gameListResponse = await fetch('/api/gameApi/getGameLists', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: {}
+                    body: JSON.stringify({})
                 });
-                await fetch('/gameApi/createGame', {
+
+                let parsedResponse = await gameListResponse.json();
+                let gameList = parsedResponse.gameList;
+
+                let createGameResponse = await fetch('/api/gameApi/createGame', {
+                    credentials: 'include',
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: { 'gameName': newGameName,
+                    body: JSON.stringify({ 'gameName': newGameName,
                             'gameImageUrl': newGamePhoto,
                             'gameSummary': newGameSummary,
                             'gameId': gameList.length + 1,
                             'averageScore': null
-                            }
+                            })
                 });
 
-                validityDisplayObject.setCustomValidity("Game Added! Thank you!");
+                if (createGameResponse.ok){
+                    validityDisplayObject.setCustomValidity("Game Added! Thank you!");
+                }
+                else {
+                    validityDisplayObject.setCustomValidity("It seems like you failed the authorization check. Please log out and then back in");
+                }
+
+                
             }
             else{
                 validityDisplayObject.setCustomValidity("It seems like that game isn't a real game. Please try again and check your spelling");
@@ -76,39 +88,21 @@ export function GameCreationPage({twitchClientId, twitchAuth}){
         }
     }
 
-    async function determineIfGameIsReal(gameToSearchFor){
+    async function determineIfGameIsReal(gameToSearchFor){;
 
-        let requestBody = `fields id, name; search "${gameToSearchFor}; limit 1;"`;
+        const response = await fetch('/api/igdbDatabase/checkIfGameIsReal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({gameName: gameToSearchFor})
+        });
 
-        try{
+        let formattedResponse = await response.json(); 
 
-            const response = await fetch('https://api.igdb.com/v4/search', {
-                method: 'POST',
-                headers: {
-                    'Client-ID': twitchClientId,
-                    'Authorization': `Bearer ${twitchAuth}`,
-                },
-                body: requestBody
-            });
-
-            if (response.status === 401){
-                throw new Error('Error with Twitch API access token');
-            }
-            else if (!response.ok){
-                throw new Error('Error in the Twitch IGDB API');
-            }
-
-            responseData = await response.json();
-
-            if (responseData.length > 0){
-                return true;
-            } else {
-                return false;
-            }
+        if (!response.ok){
+            console.error(formattedResponse.msg)
         }
-        catch (error) {
-            console.error("Error finding game:", error);
-            return false;
+        else {
+            return formattedResponse
         }
     }
 }

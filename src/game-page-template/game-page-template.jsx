@@ -1,9 +1,7 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { PageState } from '../classes/page-state';
 import { GameReview } from '../classes/gameReview';
 
-export function GamePageTemplate(gameToLoad){
+export function GamePageTemplate({gameToLoad}){
     let [temporaryGameCommentsStorage, setTemporaryGameCommentsStorage] = React.useState([]);
     let [temporaryGameReviewStorage, setTemporaryGameReviewStorage] = React.useState([]);
     const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
@@ -12,7 +10,10 @@ export function GamePageTemplate(gameToLoad){
     const [loadedGame, setLoadedGame] = React.useState({});
 
     React.useEffect(() => {
-        handleGameLoading();
+        let sillyWrapper = async () => {
+            await handleGameLoading();
+        }
+        sillyWrapper();
     }, []);
 
     // Leaves a new review every 6 seconds
@@ -40,10 +41,10 @@ export function GamePageTemplate(gameToLoad){
             <main>
                 <div id="combo-box" className="flex justify-center">
                     <div id="game-info" className="flexbox content-center w-7/12 left-1/12 right-7/12">
-                        <h2>{loadedGame.gameName}</h2>
+                        <h2>{loadedGame?.gameName || 'Demo Name'}</h2>
                         <p>Put an appropriate game image here. For now, here is a demo image:</p>
-                        <img alt="Image for demo of game" src={loadedGame.gameImageUrl} />
-                        <p>Average Game Rating: {loadedGame.averageScore}/100 (pull from a database)</p>
+                        <img alt="Image for demo of game" src={loadedGame?.gameImageUrl || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s'} />
+                        <p>Average Game Rating: {loadedGame?.averageScore || 50}/100 (pull from a database)</p>
                     </div>
                     <div id="game-review-stuff" className="flexbox content-center w-3/12 left-1/12 right-7/12">
                         <h2>Leave a game review</h2>
@@ -91,6 +92,8 @@ export function GamePageTemplate(gameToLoad){
     )
 
     function makeAndSendReviewUsingVariables(inputObject){
+        inputObject.preventDefault();
+
         if (localStorage.getItem('username', '') !== ''){
             const reviewScore = inputObject.target.elements.gameScore.value;
             const reviewText = inputObject.target.elements.gameReview.value;
@@ -103,8 +106,6 @@ export function GamePageTemplate(gameToLoad){
     }
 
     function leaveReview(newReview){
-        inputObject.preventDefault();
-
         setTemporaryGameReviewStorage(prevList => [...prevList, newReview])
     }
 
@@ -116,10 +117,14 @@ export function GamePageTemplate(gameToLoad){
     }
 
     async function handleGameLoading(){
-        setLoadedGame(await fetch('/gameApi/getGameInfo', {
+        let gameToLoadResponse = await fetch('/api/gameApi/getGameInfo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: { 'gameId': gameToLoad }
-        }));
+            body: JSON.stringify({ 'gameId': gameToLoad })
+        });
+
+        let parsedGameToLoadResponse = await gameToLoadResponse.json();
+
+        setLoadedGame(parsedGameToLoadResponse);
     };
 }

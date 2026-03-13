@@ -18,12 +18,12 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
             const returnedListsResponse = await fetch('/api/gameApi/getGameLists', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: {}
+                body: JSON.stringify({})
             });
 
             const returnedLists = await returnedListsResponse.json();
-            setTemporaryGameListStorage(returnedLists.body.gameList);
-            setTemporaryNewGameListInfo(returnedLists.body.newGameList);
+            setTemporaryGameListStorage(returnedLists.gameList);
+            setTemporaryNewGameListInfo(returnedLists.newGameList);
         };
         
         listsReturned();
@@ -58,7 +58,7 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
             setFirstMostRecentGame(temporaryNewGameListInfo[0]);
         };
         
-    }, [temporaryGameListStorage.length]);
+    }, [temporaryNewGameListInfo]);
 
     // In theory, this is going to make it so that there is new dummy game data every 3 seconds
     const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
@@ -69,13 +69,25 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
             let dummyPostResults = fetch('/api/gameApi/createDummyGame', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: { gameName: 'A *NEW* Dummy Game!',
+                body: JSON.stringify({ gameName: 'A *NEW* Dummy Game!',
                         gameImageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s',
                         gameSummary: 'This is just a dummy game, idk man',
                         gameId: (temporaryGameListStorage.length + 1),
                         averageScore: 50
-                 }
+                })
             });
+            let listsReturned = async () => {
+                const returnedListsResponse = await fetch('/api/gameApi/getGameLists', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+
+                const returnedLists = await returnedListsResponse.json();
+                setTemporaryGameListStorage(returnedLists.gameList);
+                setTemporaryNewGameListInfo(returnedLists.newGameList);
+                };
+            listsReturned();
         }, 3000);
         return (() => clearInterval(intervalIncrementer));
     }, []);
@@ -143,11 +155,11 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
                         <h2 className="flex justify-center">Newly Added Games</h2>
                         <p className="flex justify-center">(This will be live updated as people add new games to the website)</p>
                         <div className="outline-2 rounded list-inside">
-                            {firstMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={firstMostRecentGame.gameId} onClick={setGameToLoadFunc(firstMostRecentGame.gameId)}>{firstMostRecentGame.gameName}</NavLink></li>}
-                            {secondMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={secondMostRecentGame.gameId} onClick={setGameToLoadFunc(secondMostRecentGame.gameId)}>{secondMostRecentGame.gameName}</NavLink></li>}
-                            {thirdMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={thirdMostRecentGame.gameId} onClick={setGameToLoadFunc(thirdMostRecentGame.gameId)}>{thirdMostRecentGame.gameName}</NavLink></li>}
-                            {fourthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={fourthMostRecentGame.gameId} onClick={setGameToLoadFunc(fourthMostRecentGame.gameId)}>{fourthMostRecentGame.gameName}</NavLink></li>}
-                            {fifthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={fifthMostRecentGame.gameId} onClick={setGameToLoadFunc(fifthMostRecentGame.gameId)}>{fifthMostRecentGame.gameName}</NavLink></li>}
+                            {firstMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={firstMostRecentGame.gameId} onClick={() => setGameToLoadFunc(firstMostRecentGame.gameId)}>{firstMostRecentGame.gameName}</NavLink></li>}
+                            {secondMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={secondMostRecentGame.gameId} onClick={() => setGameToLoadFunc(secondMostRecentGame.gameId)}>{secondMostRecentGame.gameName}</NavLink></li>}
+                            {thirdMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={thirdMostRecentGame.gameId} onClick={() => setGameToLoadFunc(thirdMostRecentGame.gameId)}>{thirdMostRecentGame.gameName}</NavLink></li>}
+                            {fourthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={fourthMostRecentGame.gameId} onClick={() => setGameToLoadFunc(fourthMostRecentGame.gameId)}>{fourthMostRecentGame.gameName}</NavLink></li>}
+                            {fifthMostRecentGame !== null && <li><NavLink className="nav-link" to="GamePageTemplate" gameid={fifthMostRecentGame.gameId} onClick={() => setGameToLoadFunc(fifthMostRecentGame.gameId)}>{fifthMostRecentGame.gameName}</NavLink></li>}
                         </div>
                     </nav>
                 </div>
@@ -155,7 +167,7 @@ export function HomePage({temporaryTopGameList, setGameToLoadFunc}) {
                     <h2 className="flex justify-center">All Games</h2>
                     <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
                     {temporaryGameListStorage.map((gameItem) => (
-                        <li><NavLink className='nav-link' to="GamePageTemplate" gameid={gameItem.gameId} onClick={setGameToLoadFunc(gameItem.gameId)}>{gameItem.gameName}</NavLink></li>
+                        <li><NavLink className='nav-link' to="GamePageTemplate" gameid={gameItem.gameId} onClick={() => setGameToLoadFunc(gameItem.gameId)}>{gameItem.gameName}</NavLink></li>
                         )
                     )}
                 </nav>
