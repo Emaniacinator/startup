@@ -42,7 +42,7 @@ ssh -i "$key" ubuntu@$hostname << ENDSSH
 bash -i
 cd services/${service}
 npm install
-pm2 restart ${service}
+pm2 restart ${service} || pm2 start index.js --name ${service}
 ENDSSH
 
 # Step 5
