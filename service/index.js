@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 let temporaryUserInfoStorage = [];
 let temporaryGameListStorage = [];
@@ -16,7 +16,7 @@ const twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
 const twitchClientSecret = '9nsgc0s558wrq5tx7pbe52mwqh8v3d';
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://api.igdb.com/', 'https://id.twitch.tv/', 'http://localhost:3000'],
+  origin: ['http://localhost:5173', 'https://api.igdb.com/', 'https://id.twitch.tv/', 'http://localhost:4000'],
   credentials: true
 }))
 
