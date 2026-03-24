@@ -199,9 +199,14 @@ apiRouter.post('/gameApi/checkGameExists', async (req, res) => {
 // This function gets all the different game lists needed for an application
 apiRouter.post('/gameApi/getGameLists', async (req, res) => {
 
+  const gameList = await DATABASE.getAllGames();
+  const newGameList = await DATABASE.getNewestGameAdditions();
+  const topFiveGameList = await DATABASE.getTopFiveGames();
+  
   res.send( {
-    gameList: temporaryGameListStorage,
-    newGameList: temporaryNewGameList
+    gameList: gameList,
+    newGameList: newGameList,
+    topFiveGamesList: topFiveGameList
   })
 
 })
