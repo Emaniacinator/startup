@@ -1,9 +1,7 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { LoginState } from '../classes/login-state';
-import { PageState } from '../classes/page-state';
 
-export function LoginPage({username, setUsernameFunc, loginState, loginChangeFunc}){
+export function LoginPage({username, loginState, loginChangeFunc}){
 
     if (loginState === LoginState.LoggedIn) {
         return (

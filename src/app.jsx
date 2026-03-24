@@ -92,7 +92,6 @@ export default function App() {
                 />
                 <Route path='/LoginPage' element={<LoginPage 
                     username={username}
-                    setUsernameFunc={setUsername}
                     loginState={loginState}
                     loginChangeFunc={onLoginChange}
                     />} 
