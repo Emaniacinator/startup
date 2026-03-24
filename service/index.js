@@ -154,7 +154,9 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // Note that the user needs to be logged in to do this
 apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
   await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
-  res.send({temporaryGameListStorage, temporaryNewGameList}); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
+  const gameList = await DATABASE.getAllGames();
+  const newGameList = await DATABASE.getNewestGameAdditions();
+  res.send({gameList, newGameList});
 });
 
 // This is a version of the above code that doesn't need auth as a way to have dummy users make games
