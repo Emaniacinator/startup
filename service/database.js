@@ -42,6 +42,10 @@ async function addGame(game) {
     await gameCollection.insertOne(game);
 };
 
+async function getSingleGame(gameId) {
+    await gameCollection.findOne({gameId: gameId});
+};
+
 async function updateGameWithReview(gameId, gameReview) {
     // Add the review
     await gameCollection.updateOne({gameId: gameId}, {$push: {gameReviews: gameReview}});
@@ -56,8 +60,8 @@ async function updateGameWithReview(gameId, gameReview) {
 };
 
 async function getGameReviews(gameId){
-    await gameCollection.findOne({gameId: gameId}, {projection: {gameReviews: 1}})
-}
+    await gameCollection.findOne({gameId: gameId}, {projection: {gameReviews: 1}});
+};
 
 module.exports = {
   getUser,
@@ -66,6 +70,7 @@ module.exports = {
   updateUser,
   updateUserRemoveAuth,
   addGame,
+  getSingleGame,
   updateGameWithReview,
   getGameReviews,
 };
