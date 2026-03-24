@@ -34,16 +34,20 @@ async function updateUser(user) {
     await userCollection.updateOne({ username: user.username }, { $set: user });
 };
 
-async function updateUserRemoveAuth(user) {
-    await userCollection.updateOne({ username: user.username }, { $unset: { token: 1 } });
+async function removeUserAuth(user) {
+    await userCollection.updateOne({ username: user.username }, { $unset: { authToken: 1 } });
 };
 
 async function addGame(game) {
     await gameCollection.insertOne(game);
 };
 
-async function getSingleGame(gameId) {
+async function getSingleGameById(gameId) {
     await gameCollection.findOne({gameId: gameId});
+};
+
+async function getSingleGameByName(gameName) {
+    await gameCollection.findOne({gameName: gameName});
 };
 
 async function getAllGames(){
@@ -88,9 +92,10 @@ module.exports = {
   getUserByAuthToken,
   addUser,
   updateUser,
-  updateUserRemoveAuth,
+  removeUserAuth,
   addGame,
-  getSingleGame,
+  getSingleGameById,
+  getSingleGameByName,
   getAllGames,
   getTopFiveGames,
   getNewestGameAdditions,

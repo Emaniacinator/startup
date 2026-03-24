@@ -117,7 +117,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 apiRouter.post('/auth/login', async (req, res) => {
 
-  const userToLogin = await getUserInformation('username', req.body.username);
+  let userToLogin = await getUserInformation('username', req.body.username);
 
   if (!userToLogin){
     res.status(404).send({ msg: 'That user doesn\'t exist in our database'});
@@ -127,7 +127,7 @@ apiRouter.post('/auth/login', async (req, res) => {
       res.status(401).send({ msg: 'Invalid passcode'});
     } else {
       userToLogin.authToken = uuid.v4();
-      updateAuthorizationCookies(res, userToLogin.authToken);
+      await updateAuthorizationCookies(res, userToLogin);
       res.send({ username: userToLogin.username });
     };
 
@@ -142,6 +142,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   if (!userToLogout){
     res.status(401).send({ msg: 'Can\'t log out a user that isn\'t logged in'});
   } else {
+    await DATABASE.removeUserAuth(userToLogout);
     res.clearCookie('authorizationCookie');
     res.status(204).end();
   };
@@ -162,7 +163,9 @@ apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
 // This is a version of the above code that doesn't need auth as a way to have dummy users make games
 apiRouter.post('/gameApi/createDummyGame', async (req, res) => {
   await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
-  res.send({temporaryGameListStorage, temporaryNewGameList}); // This maybe shouldn't be here and should be a whole endpoint but for now we're just going to see what happens
+  const gameList = await DATABASE.getAllGames();
+  const newGameList = await DATABASE.getNewestGameAdditions();
+  res.send({gameList, newGameList});
 });
 
 // This function is for when the user wants to get info on a specific game to load it's associated page
@@ -241,15 +244,17 @@ async function createNewUser(username, passcode) {
     authToken: uuid.v4(),
   };
 
-  temporaryUserInfoStorage.push(newUser);
+  await DATABASE.addUser(newUser);
 
   return newUser;
 
 };
 
-function updateAuthorizationCookies(res, authToken){
+async function updateAuthorizationCookies(res, userToAuth){
 
-  res.cookie('authorizationCookie', authToken, {
+  await DATABASE.updateUser(userToAuth);
+
+  res.cookie('authorizationCookie', userToAuth.authToken, {
     secure: true,
     httpOnly: true,
     sameSite: 'strict',
@@ -278,6 +283,10 @@ async function getGameInformation(fieldToSearchBy, itemToSearchFor){
     return null;
   };
 
-  return temporaryGameListStorage.find((currentItem) => currentItem[fieldToSearchBy] === itemToSearchFor);
+  if (fieldToSearchBy === 'gameId'){
+    return await DATABASE.getSingleGameById(itemToSearchFor);
+  } else {
+    return await DATABASE.getSingleGameByName(itemToSearchFor);
+  }
   
 }
