@@ -50,6 +50,13 @@ async function getAllGames(){
     await gameCollection.find();
 };
 
+async function getTopFiveGames(){
+    await gameCollection.aggregate([
+        { $sort: { averageScore : -1}},
+        { $limit: 5}    
+    ]);
+};
+
 async function updateGameWithReview(gameId, gameReview) {
     // Add the review
     await gameCollection.updateOne({gameId: gameId}, {$push: {gameReviews: gameReview}});
@@ -67,9 +74,7 @@ async function getGameReviews(gameId){
     await gameCollection.findOne({gameId: gameId}, {projection: {gameReviews: 1}});
 };
 
-async function getTopFiveGames(){
-    await gameCollection.find()
-}
+
 
 module.exports = {
   getUser,
@@ -80,6 +85,7 @@ module.exports = {
   addGame,
   getSingleGame,
   getAllGames,
+  getTopFiveGames,
   updateGameWithReview,
   getGameReviews,
 };
