@@ -1,56 +1,50 @@
 const { MongoClient } = require('mongodb');
 const config = require('./dbConfig.json');
 
-const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const url = `mongodb+srv://${config.username}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
-const db = client.db('main');
-const userCollection = db.collection('users');
-const gameCollection = db.collection('score');
+const database = client.db('main');
+const userCollection = database.collection('users');
+const gameCollection = database.collection('games');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
-  try {
-    await db.command({ ping: 1 });
-    console.log(`Connect to database`);
-  } catch (ex) {
-    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
-    process.exit(1);
-  }
+    try {
+        await db.command({ ping: 1 });
+        console.log(`Connect to database`);
+    } catch (ex) {
+        console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+        process.exit(1);
+    }
 })();
 
-function getUser(email) {
-  return userCollection.findOne({ email: email });
-}
+function getUser(username) {
+    return userCollection.findOne({ username: username });
+};
 
 function getUserByToken(token) {
-  return userCollection.findOne({ token: token });
-}
+    return userCollection.findOne({ token: token });
+};
 
 async function addUser(user) {
-  await userCollection.insertOne(user);
-}
+    await userCollection.insertOne(user);
+};
 
 async function updateUser(user) {
-  await userCollection.updateOne({ email: user.email }, { $set: user });
-}
+    await userCollection.updateOne({ username: user.username }, { $set: user });
+};
 
 async function updateUserRemoveAuth(user) {
-  await userCollection.updateOne({ email: user.email }, { $unset: { token: 1 } });
-}
+    await userCollection.updateOne({ username: user.username }, { $unset: { token: 1 } });
+};
 
-async function addScore(score) {
-  return scoreCollection.insertOne(score);
-}
+async function addGame(game) {
+    await gameCollection.insertOne(game);
+};
 
-function getHighScores() {
-  const query = { score: { $gt: 0, $lt: 900 } };
-  const options = {
-    sort: { score: -1 },
-    limit: 10,
-  };
-  const cursor = scoreCollection.find(query, options);
-  return cursor.toArray();
-}
+async function updateGameWithReview(review) {
+
+};
 
 module.exports = {
   getUser,
@@ -58,6 +52,6 @@ module.exports = {
   addUser,
   updateUser,
   updateUserRemoveAuth,
-  addScore,
-  getHighScores,
+  addGame,
+  updateGameWithReview,
 };
