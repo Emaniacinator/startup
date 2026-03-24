@@ -4,12 +4,9 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
+const DATABASE = require('./database.js');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-
-let temporaryUserInfoStorage = [];
-let temporaryGameListStorage = [];
-let temporaryNewGameList = [];
 
 let twitchAuth;
 const twitchClientId = 'oe6w8v1vae6tu8884zgmlbugswk1eh';
@@ -224,7 +221,11 @@ async function getUserInformation(elementToSearchThrough, valueToSearchFor) {
     return null;
   };
 
-  return temporaryUserInfoStorage.find((currentItem) => currentItem[elementToSearchThrough] === valueToSearchFor);
+  if (elementToSearchThrough === 'username'){
+    return await DATABASE.getUserByUsername(valueToSearchFor);
+  } else {
+    return await DATABASE.getUserByAuthToken(valueToSearchFor);
+  }
 
 };
 
@@ -265,13 +266,7 @@ async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averag
     averageScore: averageScore
   }
 
-  temporaryGameListStorage.push(gameToAdd);
-
-  if (temporaryNewGameList.length > 4){
-      temporaryNewGameList.shift();
-  }
-
-  temporaryNewGameList.push(gameToAdd)
+  await DATABASE.addGame(gameToAdd);
 
 };
 

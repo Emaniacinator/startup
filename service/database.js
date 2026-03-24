@@ -18,12 +18,12 @@ const gameCollection = database.collection('games');
     }
 })();
 
-function getUser(username) {
+function getUserByUsername(username) {
     return userCollection.findOne({ username: username });
 };
 
-function getUserByToken(token) {
-    return userCollection.findOne({ token: token });
+function getUserByAuthToken(authToken) {
+    return userCollection.findOne({ authToken: authToken });
 };
 
 async function addUser(user) {
@@ -52,8 +52,15 @@ async function getAllGames(){
 
 async function getTopFiveGames(){
     await gameCollection.aggregate([
-        { $sort: { averageScore : -1}},
-        { $limit: 5}    
+        {$sort: {averageScore : -1}},
+        {$limit: 5}    
+    ]);
+};
+
+async function getNewestGameAdditions(){
+    await gameCollection.aggregate([
+        {$sort: {gameId : -1}},
+        {$limit: 5}
     ]);
 };
 
@@ -77,8 +84,8 @@ async function getGameReviews(gameId){
 
 
 module.exports = {
-  getUser,
-  getUserByToken,
+  getUserByUsername,
+  getUserByAuthToken,
   addUser,
   updateUser,
   updateUserRemoveAuth,
@@ -86,6 +93,7 @@ module.exports = {
   getSingleGame,
   getAllGames,
   getTopFiveGames,
+  getNewestGameAdditions,
   updateGameWithReview,
   getGameReviews,
 };
