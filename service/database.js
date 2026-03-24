@@ -42,8 +42,8 @@ async function addGame(game) {
     await gameCollection.insertOne(game);
 };
 
-async function updateGameWithReview(review) {
-
+async function updateGameWithReview(gameId, gameReview) {
+    await gameCollection.updateOne({gameId: gameId}, {$push: {gameReviews: gameReview}})
 };
 
 module.exports = {
