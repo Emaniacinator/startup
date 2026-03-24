@@ -46,6 +46,10 @@ async function getSingleGame(gameId) {
     await gameCollection.findOne({gameId: gameId});
 };
 
+async function getAllGames(){
+    await gameCollection.find();
+};
+
 async function updateGameWithReview(gameId, gameReview) {
     // Add the review
     await gameCollection.updateOne({gameId: gameId}, {$push: {gameReviews: gameReview}});
@@ -63,6 +67,10 @@ async function getGameReviews(gameId){
     await gameCollection.findOne({gameId: gameId}, {projection: {gameReviews: 1}});
 };
 
+async function getTopFiveGames(){
+    await gameCollection.find()
+}
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -71,6 +79,7 @@ module.exports = {
   updateUserRemoveAuth,
   addGame,
   getSingleGame,
+  getAllGames,
   updateGameWithReview,
   getGameReviews,
 };
