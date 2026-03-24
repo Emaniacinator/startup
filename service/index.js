@@ -206,7 +206,7 @@ apiRouter.post('/gameApi/getGameLists', async (req, res) => {
   res.send( {
     gameList: gameList,
     newGameList: newGameList,
-    topFiveGamesList: topFiveGameList
+    topFiveGameList: topFiveGameList
   })
 
 })

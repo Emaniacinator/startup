@@ -87,9 +87,6 @@ export default function App() {
             </div>
             <Routes>
                 <Route path='/' element={<HomePage 
-                    temporaryGameListStorage={temporaryGameListStorage}
-                    temporaryNewGameListInfo={temporaryNewGameListInfo}
-                    temporaryTopGameList={temporaryTopGameList}
                     setGameToLoadFunc={setIdOfGameToLoad}
                     />} 
                 />
