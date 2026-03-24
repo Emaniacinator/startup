@@ -43,8 +43,21 @@ async function addGame(game) {
 };
 
 async function updateGameWithReview(gameId, gameReview) {
-    await gameCollection.updateOne({gameId: gameId}, {$push: {gameReviews: gameReview}})
+    // Add the review
+    await gameCollection.updateOne({gameId: gameId}, {$push: {gameReviews: gameReview}});
+    //Find the average score
+    const averagedReviewScores = await gameCollection.aggregate([
+        {$match: {gameId: gameId}}, 
+        {$project: { averagedScores: {$avg: "gameReviews.reviewScore"}}}
+    ]);
+    const safetyCheckedAverageScore = averagedReviewScores[0]?.averagedScores ?? -1;
+    // Update the average score
+    await gameCollection.updateOne({gameId: gameId}, {$set: {averageScore: safetyCheckedAverageScore}});
 };
+
+async function getGameReviews(gameId){
+    await gameCollection.findOne({gameId: gameId}, {projection: {gameReviews: 1}})
+}
 
 module.exports = {
   getUser,
@@ -54,4 +67,5 @@ module.exports = {
   updateUserRemoveAuth,
   addGame,
   updateGameWithReview,
+  getGameReviews,
 };
