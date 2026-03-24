@@ -1,4 +1,3 @@
-import React from 'react';
 import { LoginState } from '../classes/login-state';
 
 export function LoginPage({username, loginState, loginChangeFunc}){

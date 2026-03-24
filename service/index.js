@@ -207,9 +207,28 @@ apiRouter.post('/gameApi/getGameLists', async (req, res) => {
     gameList: gameList,
     newGameList: newGameList,
     topFiveGameList: topFiveGameList
-  })
+  });
+});
 
-})
+// This function is to leave a review of a game
+apiRouter.post('/gameApi/addGameReview', verifyLogin, async (req, res) => {
+
+  await DATABASE.updateGameWithReview(req.body.gameId, req.body.gameReview);
+
+  res.status(200).send();
+});
+
+// This function is a temporary function to let a dummy leave a review of the game
+apiRouter.post('/gameApi/addDummyGameReview', async (req, res) => {
+
+    const gameReviewList = await DATABASE.updateGameWithReview(req.body.gameId, req.body.gameReview);
+
+    if (gameReviewList){
+      res.status(200).send();
+    } else {
+      res.status(500).send();
+    };
+});
 
 // The following are functions needed for checks and information
 async function verifyLogin(req, res, next){
@@ -222,7 +241,6 @@ async function verifyLogin(req, res, next){
   } else {
     next();
   };
-
 };
 
 async function getUserInformation(elementToSearchThrough, valueToSearchFor) {
@@ -235,8 +253,7 @@ async function getUserInformation(elementToSearchThrough, valueToSearchFor) {
     return await DATABASE.getUserByUsername(valueToSearchFor);
   } else {
     return await DATABASE.getUserByAuthToken(valueToSearchFor);
-  }
-
+  };
 };
 
 async function createNewUser(username, passcode) {
@@ -252,7 +269,6 @@ async function createNewUser(username, passcode) {
   await DATABASE.addUser(newUser);
 
   return newUser;
-
 };
 
 async function updateAuthorizationCookies(res, userToAuth){
@@ -265,7 +281,6 @@ async function updateAuthorizationCookies(res, userToAuth){
     sameSite: 'strict',
     maxAge: 3600000
   });
-
 };
 
 async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averageScore){
@@ -276,10 +291,9 @@ async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averag
     gameSummary: gameSummary,
     gameId: gameId,
     averageScore: averageScore
-  }
+  };
 
   await DATABASE.addGame(gameToAdd);
-
 };
 
 async function getGameInformation(fieldToSearchBy, itemToSearchFor){
@@ -292,6 +306,5 @@ async function getGameInformation(fieldToSearchBy, itemToSearchFor){
     return await DATABASE.getSingleGameById(itemToSearchFor);
   } else {
     return await DATABASE.getSingleGameByName(itemToSearchFor);
-  }
-  
-}
+  };
+};

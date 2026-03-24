@@ -81,11 +81,6 @@ async function updateGameWithReview(gameId, gameReview) {
     await gameCollection.updateOne({gameId: gameId}, {$set: {averageScore: safetyCheckedAverageScore}});
 };
 
-async function getGameReviews(gameId){
-    await gameCollection.findOne({gameId: gameId}, {projection: {gameReviews: 1}});
-};
-
-
 
 module.exports = {
   getUserByUsername,
@@ -99,6 +94,5 @@ module.exports = {
   getAllGames,
   getTopFiveGames,
   getNewestGameAdditions,
-  updateGameWithReview,
-  getGameReviews,
+  updateGameWithReview
 };

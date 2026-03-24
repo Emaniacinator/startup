@@ -2,8 +2,8 @@ import React from 'react';
 import { GameReview } from '../classes/gameReview';
 
 export function GamePageTemplate({gameToLoad}){
-    let [temporaryGameCommentsStorage, setTemporaryGameCommentsStorage] = React.useState([]);
-    let [temporaryGameReviewStorage, setTemporaryGameReviewStorage] = React.useState([]);
+    let [localGameCommentsStorage, setLocalGameCommentsStorage] = React.useState([]);
+    let [localGameReviewStorage, setLocalGameReviewStorage] = React.useState([]);
     const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
     const [secondDummyUserTimer, setSecondDummyUserTimer] = React.useState(0);
 
@@ -21,7 +21,7 @@ export function GamePageTemplate({gameToLoad}){
             const intervalIncrementer = setInterval(() => {
                 setDummyUserTimer(prevCount => prevCount + 1);
                 let dummyReview = new GameReview('Dummy User', '50', 'Dummy Review. It was alright I guess');
-                leaveReview(dummyReview);
+                leaveDummyReview(dummyReview);
             }, 6000);
             return (() => clearInterval(intervalIncrementer));
         }, []);
@@ -31,7 +31,7 @@ export function GamePageTemplate({gameToLoad}){
             const intervalIncrementer = setInterval(() => {
                 let comment = 'WOW! A *dummy* comment!'
                 setSecondDummyUserTimer(prevCount => prevCount + 1);
-                setTemporaryGameCommentsStorage(prevList => [...prevList, comment])
+                setLocalGameCommentsStorage(prevList => [...prevList, comment])
             }, 2000);
             return (() => clearInterval(intervalIncrementer));
         }, []);
@@ -64,11 +64,12 @@ export function GamePageTemplate({gameToLoad}){
                 <div id="combo-box" className="flex justify-center">
                     <div className="flexbox content-center w-7/12 left-1/12 right-7/12">
                         <h2>Reviews</h2>
-                        {temporaryGameReviewStorage.map((reviewItem) => (
+                        {localGameReviewStorage.map((reviewItem) => (
                             <>
                                 <p>{reviewItem.reviewerUsername}:</p>
                                 <p>Score: {reviewItem.reviewScore}</p>
                                 <p>Review: {reviewItem.reviewText}</p>
+                                <p>&nbsp;</p>
                             </>
                             )
                         )}
@@ -81,7 +82,7 @@ export function GamePageTemplate({gameToLoad}){
                             <textarea id="comment-box-id" name="commentBox" required></textarea>
                             <button type="Submit">Comment</button>
                         </form>
-                        {temporaryGameCommentsStorage.map((commentItem) => (
+                        {localGameCommentsStorage.map((commentItem) => (
                             <p>{commentItem}</p>
                             )
                         )}
@@ -91,29 +92,51 @@ export function GamePageTemplate({gameToLoad}){
         </div>
     )
 
-    function makeAndSendReviewUsingVariables(inputObject){
+    async function makeAndSendReviewUsingVariables(inputObject){
         inputObject.preventDefault();
 
         if (localStorage.getItem('username', '') !== ''){
             const reviewScore = inputObject.target.elements.gameScore.value;
             const reviewText = inputObject.target.elements.gameReview.value;
             const reviewToAdd = new GameReview(localStorage.getItem('username'), reviewScore, reviewText);
-            leaveReview(reviewToAdd);
+            await leaveReview(reviewToAdd);
         } else {
             const validityDisplayObject = inputObject.target.elements.gameScore;
             validityDisplayObject.setCustomValidity("Please log in before leaving a review");
         }
     }
 
-    function leaveReview(newReview){
-        setTemporaryGameReviewStorage(prevList => [...prevList, newReview])
+    async function leaveReview(newReview){
+        let reviewGameResponse = await fetch('/api/gameApi/addGameReview', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                'gameId': gameToLoad,
+                'gameReview': newReview
+            })
+        });
+
+        handleGameLoading();
+    }
+
+    async function leaveDummyReview(newReview){
+        let reviewGameResponse = await fetch('/api/gameApi/addDummyGameReview', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                'gameId': gameToLoad,
+                'gameReview': newReview
+            })
+        });
+
+        handleGameLoading();
     }
 
     function leaveComment(inputObject){
         inputObject.preventDefault();
 
         const newComment = inputObject.target.elements.commentBox.value
-        setTemporaryGameCommentsStorage(prevList => [...prevList, newComment])
+        setLocalGameCommentsStorage(prevList => [...prevList, newComment])
     }
 
     async function handleGameLoading(){
@@ -126,5 +149,6 @@ export function GamePageTemplate({gameToLoad}){
         let parsedGameToLoadResponse = await gameToLoadResponse.json();
 
         setLoadedGame(parsedGameToLoadResponse);
+        setLocalGameReviewStorage(loadedGame.gameReviews);
     };
 }
