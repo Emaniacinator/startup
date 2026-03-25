@@ -3,10 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from "@vitejs/plugin-react";
 
 import path from 'path';
-import { GameCreationPage } from './src/game-creation-page/game-creation-page';
-import { GamePageTemplate } from './src/game-page-template/game-page-template';
-import { HomePage } from './src/home-page/home-page';
-import { LoginPage } from './src/login-page/login-page';
+
 const resolve = path.resolve
 
 export default defineConfig({
