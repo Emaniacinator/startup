@@ -1,7 +1,7 @@
 import React from 'react';
 import { GameReview } from '../classes/gameReview';
 
-export function GamePageTemplate({gameToLoad}){
+export function GamePageTemplate({gameIdToLoad}){
     let [localGameCommentsStorage, setLocalGameCommentsStorage] = React.useState([]);
     let [localGameReviewStorage, setLocalGameReviewStorage] = React.useState([]);
     const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
@@ -20,7 +20,7 @@ export function GamePageTemplate({gameToLoad}){
     React.useEffect(() => {
             const intervalIncrementer = setInterval(() => {
                 setDummyUserTimer(prevCount => prevCount + 1);
-                let dummyReview = new GameReview('Dummy User', '50', 'Dummy Review. It was alright I guess');
+                let dummyReview = new GameReview('Dummy User', 50, 'Dummy Review. It was alright I guess');
                 leaveDummyReview(dummyReview);
             }, 6000);
             return (() => clearInterval(intervalIncrementer));
@@ -44,7 +44,7 @@ export function GamePageTemplate({gameToLoad}){
                         <h2>{loadedGame?.gameName || 'Demo Name'}</h2>
                         <p>Put an appropriate game image here. For now, here is a demo image:</p>
                         <img alt="Image for demo of game" src={loadedGame?.gameImageUrl || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s'} />
-                        <p>Average Game Rating: {loadedGame?.averageScore || 50}/100 (pull from a database)</p>
+                        <p>Average Game Rating: {(loadedGame?.averageScore === undefined || loadedGame?.averageScore === -1) ? "No Ratings" : loadedGame.averageScore}</p>
                     </div>
                     <div id="game-review-stuff" className="flexbox content-center w-3/12 left-1/12 right-7/12">
                         <h2>Leave a game review</h2>
@@ -96,7 +96,7 @@ export function GamePageTemplate({gameToLoad}){
         inputObject.preventDefault();
 
         if (localStorage.getItem('username', '') !== ''){
-            const reviewScore = inputObject.target.elements.gameScore.value;
+            const reviewScore = parseFloat(inputObject.target.elements.gameScore.value);
             const reviewText = inputObject.target.elements.gameReview.value;
             const reviewToAdd = new GameReview(localStorage.getItem('username'), reviewScore, reviewText);
             await leaveReview(reviewToAdd);
@@ -108,7 +108,7 @@ export function GamePageTemplate({gameToLoad}){
 
     async function leaveReview(newReview){
 
-        if (gameToLoad === -1){
+        if (gameIdToLoad === -1){
             console.log("A valid game is not loaded. Id defaulted to -1.");
             return;
         };
@@ -117,7 +117,7 @@ export function GamePageTemplate({gameToLoad}){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
-                'gameId': gameToLoad,
+                'gameId': gameIdToLoad,
                 'gameReview': newReview
             })
         });
@@ -127,7 +127,7 @@ export function GamePageTemplate({gameToLoad}){
 
     async function leaveDummyReview(newReview){
 
-        if (gameToLoad === -1){
+        if (gameIdToLoad === -1){
             console.log("A valid game is not loaded. Id defaulted to -1.");
             return;
         };
@@ -136,7 +136,7 @@ export function GamePageTemplate({gameToLoad}){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
-                'gameId': gameToLoad,
+                'gameId': gameIdToLoad,
                 'gameReview': newReview
             })
         });
@@ -152,9 +152,9 @@ export function GamePageTemplate({gameToLoad}){
     }
 
     async function handleGameLoading(){
-        console.log(`Id of game to load: ${gameToLoad}`);
+        console.log(`Id of game to load: ${gameIdToLoad}`);
 
-        if (gameToLoad === -1){
+        if (gameIdToLoad === -1){
             gameToLoad = {
                 "gameName": "Dummy Game",
                 "gameImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s",
@@ -165,16 +165,21 @@ export function GamePageTemplate({gameToLoad}){
             setLoadedGame(gameToLoad);
             setLocalGameReviewStorage([]);
         } else {
-            let gameToLoadResponse = await fetch('/api/gameApi/getGameInfo', {
+            let getGameInfoResponse = await fetch('/api/gameApi/getGameInfo', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'gameId': gameToLoad })
+                body: JSON.stringify({ 'gameId': gameIdToLoad })
             });
 
-            let parsedGameToLoadResponse = await gameToLoadResponse.json();
+            let parsedGetGameInfoResponse = await getGameInfoResponse.json();
 
-            setLoadedGame(parsedGameToLoadResponse);
-            setLocalGameReviewStorage(loadedGame.gameReviews);
+            console.log("Full response:", JSON.stringify(parsedGetGameInfoResponse, null, 2));
+            console.log(`Output game info: ${parsedGetGameInfoResponse.gameName}`);
+
+            setLoadedGame(parsedGetGameInfoResponse);
+            if (loadedGame.gameReviews){
+                setLocalGameReviewStorage(loadedGame.gameReviews);
+            }
         };
     };
 }

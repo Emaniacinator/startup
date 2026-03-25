@@ -10,7 +10,7 @@ const gameCollection = database.collection('games');
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
     try {
-        await db.command({ ping: 1 });
+        await database.command({ ping: 1 });
         console.log(`Connect to database`);
     } catch (ex) {
         console.log(`Unable to connect to database with ${url} because ${ex.message}`);
@@ -43,29 +43,29 @@ async function addGame(game) {
 };
 
 async function getSingleGameById(gameId) {
-    await gameCollection.findOne({gameId: gameId});
+    return gameCollection.findOne({gameId: gameId});
 };
 
 async function getSingleGameByName(gameName) {
-    await gameCollection.findOne({gameName: gameName});
+    return gameCollection.findOne({gameName: gameName});
 };
 
 async function getAllGames(){
-    await gameCollection.find();
+    return gameCollection.find().toArray();
 };
 
 async function getTopFiveGames(){
-    await gameCollection.aggregate([
+    return gameCollection.aggregate([
         {$sort: {averageScore : -1}},
         {$limit: 5}    
-    ]);
+    ]).toArray();
 };
 
 async function getNewestGameAdditions(){
-    await gameCollection.aggregate([
+    return gameCollection.aggregate([
         {$sort: {gameId : -1}},
         {$limit: 5}
-    ]);
+    ]).toArray();
 };
 
 async function updateGameWithReview(gameId, gameReview) {
@@ -74,8 +74,11 @@ async function updateGameWithReview(gameId, gameReview) {
     //Find the average score
     const averagedReviewScores = await gameCollection.aggregate([
         {$match: {gameId: gameId}}, 
-        {$project: { averagedScores: {$avg: "gameReviews.reviewScore"}}}
-    ]);
+        {$project: { averagedScores: {$avg: "$gameReviews.reviewScore"}}}
+    ]).toArray();
+
+    console.log("Aggregation result:", JSON.stringify(averagedReviewScores, null, 2));
+    
     const safetyCheckedAverageScore = averagedReviewScores[0]?.averagedScores ?? -1;
     // Update the average score
     await gameCollection.updateOne({gameId: gameId}, {$set: {averageScore: safetyCheckedAverageScore}});

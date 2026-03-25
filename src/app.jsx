@@ -87,7 +87,7 @@ export default function App() {
                     />} 
                 />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate 
-                    gameToLoad={idOfGameToLoad}
+                    gameIdToLoad={idOfGameToLoad}
                     />} 
                 />
                 <Route path='/GameCreationPage' element={<GameCreationPage />} />

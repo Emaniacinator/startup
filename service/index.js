@@ -108,7 +108,7 @@ apiRouter.post('/auth/create', async (req, res) => {
     console.log('Creating user in databases')
     const createdUser = await createNewUser(req.body.username, req.body.passcode);
     console.log('Setting authorization cookies')
-    updateAuthorizationCookies(res, createdUser.authToken);
+    updateAuthorizationCookies(res, createdUser);
     console.log(`Returning the username: ${createdUser.username}`)
     res.send({ username: createdUser.username });
   };
@@ -172,7 +172,7 @@ apiRouter.post('/gameApi/createDummyGame', async (req, res) => {
 // Note that the user DOES NOT need to be logged in to do this
 apiRouter.post('/gameApi/getGameInfo', async (req, res) => {
 
-  const gameDataToGet = getGameInformation('gameId', req.body.gameId);
+  const gameDataToGet = await getGameInformation('gameId', req.body.gameId);
 
   if (!gameDataToGet){
     res.status(404).send({ msg: 'That game could not be found in our database. Please consider adding it'});
@@ -186,7 +186,6 @@ apiRouter.post('/gameApi/getGameInfo', async (req, res) => {
 apiRouter.post('/gameApi/checkGameExists', async (req, res) => {
 
   const gameDataCheck = await getGameInformation('gameName', req.body.gameName);
-  console.log('gameDataCheck result:', gameDataCheck);
 
   if(!gameDataCheck){
     res.send(false);
@@ -223,11 +222,7 @@ apiRouter.post('/gameApi/addDummyGameReview', async (req, res) => {
 
     const gameReviewList = await DATABASE.updateGameWithReview(req.body.gameId, req.body.gameReview);
 
-    if (gameReviewList){
-      res.status(200).send();
-    } else {
-      res.status(500).send();
-    };
+    res.status(200).send();
 });
 
 // The following are functions needed for checks and information
@@ -236,7 +231,7 @@ async function verifyLogin(req, res, next){
   const userToVerify = await getUserInformation('authToken', req.cookies['authorizationCookie']);
 
   if (!userToVerify){
-    console.log("Failed the internal authorization")
+    console.log("Failed the internal authorization");
     res.status(401).send({ msg: 'Not logged in, can\'t perform action'});
   } else {
     next();
@@ -271,11 +266,11 @@ async function createNewUser(username, passcode) {
   return newUser;
 };
 
-async function updateAuthorizationCookies(res, userToAuth){
+async function updateAuthorizationCookies(res, userToAuthenticate){
 
-  await DATABASE.updateUser(userToAuth);
+  await DATABASE.updateUser(userToAuthenticate);
 
-  res.cookie('authorizationCookie', userToAuth.authToken, {
+  res.cookie('authorizationCookie', userToAuthenticate.authToken, {
     secure: true,
     httpOnly: true,
     sameSite: 'strict',
@@ -298,13 +293,17 @@ async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averag
 
 async function getGameInformation(fieldToSearchBy, itemToSearchFor){
 
+  console.log(`Looking for the following item: ${itemToSearchFor} by searching through the following flags: ${fieldToSearchBy}`);
+
   if (!itemToSearchFor){
     return null;
   };
 
   if (fieldToSearchBy === 'gameId'){
+    console.log(`Found the game ${JSON.stringify((await DATABASE.getSingleGameById(itemToSearchFor)), null, 2)}`);
     return await DATABASE.getSingleGameById(itemToSearchFor);
   } else {
+    console.log(`Found the game ${JSON.stringify((await DATABASE.getSingleGameByName(itemToSearchFor)), null, 2)}`);
     return await DATABASE.getSingleGameByName(itemToSearchFor);
   };
 };
