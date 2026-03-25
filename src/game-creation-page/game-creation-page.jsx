@@ -1,10 +1,4 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Game } from '../classes/game';
-import { PageState } from '../classes/page-state';
-import { postcss } from 'autoprefixer';
-
-export function GameCreationPage({twitchClientId, twitchAuth}){
+export function GameCreationPage(){
 
     return (
         <div className="game-creation-page-container">

@@ -19,12 +19,10 @@ export default function App() {
     const currentLoginState = username ? LoginState.LoggedIn : LoginState.LoggedOut;
     const [loginState, setLoginState] = React.useState(currentLoginState);
     const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
-    const [temporaryUsernameStorage, setTemporaryUsernameStorage] = React.useState([]);
-    const [temporaryPasscodeStorage, setTemporaryPasscodeStorage] = React.useState([]);
     let [temporaryGameListStorage, setTemporaryGameListStorage] = React.useState([]);
     let [temporaryNewGameListInfo, setTemporaryNewGameListInfo] = React.useState([]);
     const location = useLocation();
-    const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-6);
+    const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-1);
 
     React.useEffect(() => {
 
@@ -97,15 +95,10 @@ export default function App() {
                     />} 
                 />
                 <Route path='/GamePageTemplate' element={<GamePageTemplate 
-                    gameToLoad={temporaryGameListStorage[idOfGameToLoad]}
+                    gameToLoad={idOfGameToLoad}
                     />} 
                 />
-                <Route path='/GameCreationPage' element={<GameCreationPage 
-                    temporaryGameListStorage={temporaryGameListStorage}
-                    newGameListUpdateFunc={updateNewGameList}
-                    addGameFunc={addNewGame}
-                    />} 
-                />
+                <Route path='/GameCreationPage' element={<GameCreationPage />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
             <footer>
@@ -127,22 +120,6 @@ export default function App() {
         setLoginState(LoginState.LoggedOut);
         localStorage.setItem('username', '');
         localStorage.setItem('passcode', '');
-    }
-
-    function updateNewGameList(newlyMadeGame){
-        if (temporaryNewGameListInfo.length > 4){
-            temporaryNewGameListInfo.shift();
-        }
-        temporaryNewGameListInfo.push(newlyMadeGame)
-    }
-
-    function addUsernameAndPasscodeFunc(usernameToAdd, passcodeToAdd){
-        setTemporaryUsernameStorage(prevList => [...prevList, usernameToAdd]);
-        setTemporaryPasscodeStorage(prevList => [...prevList, passcodeToAdd]);
-    }
-
-    function addNewGame(gameToAdd){
-        setTemporaryGameListStorage(prevList => [...prevList, gameToAdd])
     }
 
     function NotFound(){

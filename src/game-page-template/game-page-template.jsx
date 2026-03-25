@@ -107,6 +107,12 @@ export function GamePageTemplate({gameToLoad}){
     }
 
     async function leaveReview(newReview){
+
+        if (gameToLoad === -1){
+            console.log("A valid game is not loaded. Id defaulted to -1.");
+            return;
+        };
+
         let reviewGameResponse = await fetch('/api/gameApi/addGameReview', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -120,6 +126,12 @@ export function GamePageTemplate({gameToLoad}){
     }
 
     async function leaveDummyReview(newReview){
+
+        if (gameToLoad === -1){
+            console.log("A valid game is not loaded. Id defaulted to -1.");
+            return;
+        };
+
         let reviewGameResponse = await fetch('/api/gameApi/addDummyGameReview', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -140,15 +152,29 @@ export function GamePageTemplate({gameToLoad}){
     }
 
     async function handleGameLoading(){
-        let gameToLoadResponse = await fetch('/api/gameApi/getGameInfo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'gameId': gameToLoad })
-        });
+        console.log(`Id of game to load: ${gameToLoad}`);
 
-        let parsedGameToLoadResponse = await gameToLoadResponse.json();
+        if (gameToLoad === -1){
+            gameToLoad = {
+                "gameName": "Dummy Game",
+                "gameImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s",
+                "gameSummary": "This is a dummy game. It's likely appearing becaue of an error determining which game to load.",
+                "gameId": -1,
+                "averageScore": 0
+            }
+            setLoadedGame(gameToLoad);
+            setLocalGameReviewStorage([]);
+        } else {
+            let gameToLoadResponse = await fetch('/api/gameApi/getGameInfo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'gameId': gameToLoad })
+            });
 
-        setLoadedGame(parsedGameToLoadResponse);
-        setLocalGameReviewStorage(loadedGame.gameReviews);
+            let parsedGameToLoadResponse = await gameToLoadResponse.json();
+
+            setLoadedGame(parsedGameToLoadResponse);
+            setLocalGameReviewStorage(loadedGame.gameReviews);
+        };
     };
 }
