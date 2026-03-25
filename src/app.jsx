@@ -37,14 +37,6 @@ export default function App() {
         credentialHelper();
 
     }, [])
-
-    /// This next section is nasty and is just to create a fake top games database to read from
-    const temporaryTopGameList = [new Game("Top Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The best rated game", -1, 100, "1/1/1001"),
-                                new Game("Second Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The second best rated game", -2, 90, "2/2/2002"),
-                                new Game("Third Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The third best rated game", -3, 80, "3/3/3003"),
-                                new Game("Fourth Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The fourth best rated game", -4, 70, "4/4/4004"),
-                                new Game("Fifth Game", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s", "The fifth best rated game", -5, 60, "5/5/5005")]
-    /// Okay, the section is over and we can go back to the normal code
     
     return (
         <> 
@@ -115,12 +107,20 @@ export default function App() {
         localStorage.setItem('username', username);
     }
 
-    function logoutFunction(){
+    async function logoutFunction(){
+
+        let logoutResponse = await fetch('/api/auth/logout', {
+            credentials: 'include',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+
         setUsername();
         setLoginState(LoginState.LoggedOut);
         localStorage.setItem('username', '');
         localStorage.setItem('passcode', '');
-    }
+    };
 
     function NotFound(){
         return (
