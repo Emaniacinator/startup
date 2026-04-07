@@ -46,7 +46,7 @@ class GameChatNotifier {
         this.messageHandlers.push(messageHandler);
     } 
 
-    removeHandler(messageHandler) {
+    removeMessageHandler(messageHandler) {
         this.messageHandlers.filter((specificMessageHandler) => specificMessageHandler !== specificMessageHandler);
     }
 

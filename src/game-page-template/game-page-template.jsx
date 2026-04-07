@@ -7,7 +7,6 @@ export function GamePageTemplate({gameIdToLoad}){
     let [localGameReviewStorage, setLocalGameReviewStorage] = React.useState([]);
 
     const [loadedGame, setLoadedGame] = React.useState({});
-    const [messageEvents, setMessageEvents] = React.useState([]);
 
     React.useEffect(() => {
         let sillyWrapper = async () => {
@@ -17,7 +16,11 @@ export function GamePageTemplate({gameIdToLoad}){
     }, []);
 
     React.useEffect(() => {
-        
+        GameChat.addMessageHandler(handleMessageEvent);
+
+        return () => {
+            GameChat.removeMessageHandler(handleMessageEvent);
+        }
     });
     
     return(
@@ -113,7 +116,7 @@ export function GamePageTemplate({gameIdToLoad}){
         inputObject.preventDefault();
 
         const newComment = inputObject.target.elements.commentBox.value
-        setLocalGameCommentsStorage(prevList => [...prevList, newComment])
+        GameChat.broadcastEvent(localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
     }
 
     async function handleGameLoading(){
@@ -147,4 +150,11 @@ export function GamePageTemplate({gameIdToLoad}){
             }
         };
     };
+
+    function handleMessageEvent(messageEvent){
+        if (messageEvent.broadcastType !== ChatEvent.UpdateMainPage && messageEvent.broadcastType !== ChatEvent.SystemMessage){
+            let newComment = `For game: ${messageEvent.gamePage}, ${messageEvent.from} says: \n\t${messageEvent.message}`;
+            setLocalGameCommentsStorage(prevList => [...prevList, newComment]);
+        }
+    }
 }
