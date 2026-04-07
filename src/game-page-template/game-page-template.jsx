@@ -1,5 +1,6 @@
 import React from 'react';
 import { GameReview } from '../classes/gameReview';
+import { ChatEvent, GameChat } from '../gameChat';
 
 export function GamePageTemplate({gameIdToLoad}){
     let [localGameCommentsStorage, setLocalGameCommentsStorage] = React.useState([]);
@@ -16,7 +17,7 @@ export function GamePageTemplate({gameIdToLoad}){
     }, []);
 
     React.useEffect(() => {
-        
+
     });
     
     return(

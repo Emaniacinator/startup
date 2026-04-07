@@ -9,9 +9,7 @@ import { LoginPage } from './login-page/login-page';
 import { GamePageTemplate } from './game-page-template/game-page-template';
 import { GameCreationPage } from './game-creation-page/game-creation-page';
 import { LoginState } from './classes/login-state';
-import { PageState } from './classes/page-state';
-import { Game } from './classes/game';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { ChatEvent, GameChat } from './gameChat';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');

@@ -1,3 +1,5 @@
+import { ChatEvent, GameChat } from '../gameChat';
+
 export function GameCreationPage(){
 
     return (
@@ -66,6 +68,7 @@ export function GameCreationPage(){
 
                 if (createGameResponse.ok){
                     validityDisplayObject.setCustomValidity("Game Added! Thank you!");
+                    GameChat.broadcastEvent(localStorage.getItem('username'), '', '', ChatEvent.UpdateMainPage);
                 }
                 else {
                     validityDisplayObject.setCustomValidity("It seems like you failed the authorization check. Please log out and then back in");

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { ChatEvent, GameChat } from '../gameChat';
 
 export function HomePage({setGameToLoadFunc}) {
     const [localGameList, setLocalGameList] = React.useState([]);
