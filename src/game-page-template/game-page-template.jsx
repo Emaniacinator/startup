@@ -4,10 +4,9 @@ import { GameReview } from '../classes/gameReview';
 export function GamePageTemplate({gameIdToLoad}){
     let [localGameCommentsStorage, setLocalGameCommentsStorage] = React.useState([]);
     let [localGameReviewStorage, setLocalGameReviewStorage] = React.useState([]);
-    const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
-    const [secondDummyUserTimer, setSecondDummyUserTimer] = React.useState(0);
 
     const [loadedGame, setLoadedGame] = React.useState({});
+    const [messageEvents, setMessageEvents] = React.useState([]);
 
     React.useEffect(() => {
         let sillyWrapper = async () => {
@@ -16,25 +15,9 @@ export function GamePageTemplate({gameIdToLoad}){
         sillyWrapper();
     }, []);
 
-    // Leaves a new review every 6 seconds
     React.useEffect(() => {
-            const intervalIncrementer = setInterval(() => {
-                setDummyUserTimer(prevCount => prevCount + 1);
-                let dummyReview = new GameReview('Dummy User', 50, 'Dummy Review. It was alright I guess');
-                leaveDummyReview(dummyReview);
-            }, 6000);
-            return (() => clearInterval(intervalIncrementer));
-        }, []);
-
-    // Leaves a new comment every 2 seconds
-    React.useEffect(() => {
-            const intervalIncrementer = setInterval(() => {
-                let comment = 'WOW! A *dummy* comment!'
-                setSecondDummyUserTimer(prevCount => prevCount + 1);
-                setLocalGameCommentsStorage(prevList => [...prevList, comment])
-            }, 2000);
-            return (() => clearInterval(intervalIncrementer));
-        }, []);
+        
+    });
     
     return(
         <div className="game-page-template-container">

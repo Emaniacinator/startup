@@ -51,13 +51,17 @@ class GameChatNotifier {
     }
 
     receiveMessageEvent(messageEvent){
-        this.messageEvents.push(messageEvent);
+        // Add the event to the list of comments if it matters
+        if (messageEvent.broadcastType !== ChatEvent.UpdateMainPage) {
+            this.messageEvents.push(messageEvent);
+        };
 
+        // Otherwise just send out the broadcast to allow for the updates
         this.messageEvents.forEach((specificMessageEvent) => {
             this.messageHandlers.forEach((specificMessageHandler) => {
                 specificMessageHandler(specificMessageEvent);
             });
-        });
+        });   
     }
 }
 

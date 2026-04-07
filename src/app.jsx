@@ -15,12 +15,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
-    const [passcode, setPasscode] = React.useState(localStorage.getItem('passcode' || ''));
     const currentLoginState = username ? LoginState.LoggedIn : LoginState.LoggedOut;
     const [loginState, setLoginState] = React.useState(currentLoginState);
-    const [currentPage, setCurrentPage] = React.useState(PageState.HomePage);
-    let [temporaryGameListStorage, setTemporaryGameListStorage] = React.useState([]);
-    let [temporaryNewGameListInfo, setTemporaryNewGameListInfo] = React.useState([]);
     const location = useLocation();
     const [idOfGameToLoad, setIdOfGameToLoad] = React.useState(-1);
 
