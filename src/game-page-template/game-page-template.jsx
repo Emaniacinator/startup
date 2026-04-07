@@ -17,7 +17,7 @@ export function GamePageTemplate({gameIdToLoad}){
     }, []);
 
     React.useEffect(() => {
-
+        
     });
     
     return(
@@ -106,26 +106,7 @@ export function GamePageTemplate({gameIdToLoad}){
             })
         });
 
-        handleGameLoading();
-    }
-
-    async function leaveDummyReview(newReview){
-
-        if (gameIdToLoad === -1){
-            console.log("A valid game is not loaded. Id defaulted to -1.");
-            return;
-        };
-
-        let reviewGameResponse = await fetch('/api/gameApi/addDummyGameReview', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                'gameId': gameIdToLoad,
-                'gameReview': newReview
-            })
-        });
-
-        handleGameLoading();
+        await handleGameLoading();
     }
 
     function leaveComment(inputObject){
