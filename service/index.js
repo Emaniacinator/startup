@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const DATABASE = require('./database.js');
+const { peerProxy } = require('./peerProxy.js');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -307,3 +308,9 @@ async function getGameInformation(fieldToSearchBy, itemToSearchFor){
     return await DATABASE.getSingleGameByName(itemToSearchFor);
   };
 };
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+peerProxy(httpService);
