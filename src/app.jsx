@@ -35,7 +35,7 @@ export default function App() {
         <> 
             <div className="website-banner">
                 <h1 className="website-name">Video Game Voting</h1>
-                <img alt="Demo banner for website" src="../public/website-banner.png" />
+                <img alt="Demo banner for website" src="/website-banner.png" />
                 <nav className="" id="login-links">
                     {loginState === LoginState.LoggedIn && (
                         <>
