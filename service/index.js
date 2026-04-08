@@ -274,17 +274,14 @@ async function createNewGame(gameName, gameImageUrl, gameSummary, gameId, averag
 
 async function getGameInformation(fieldToSearchBy, itemToSearchFor){
 
-  console.log(`Looking for the following item: ${itemToSearchFor} by searching through the following flags: ${fieldToSearchBy}`);
 
   if (!itemToSearchFor){
     return null;
   };
 
   if (fieldToSearchBy === 'gameId'){
-    console.log(`Found the game ${JSON.stringify((await DATABASE.getSingleGameById(itemToSearchFor)), null, 2)}`);
     return await DATABASE.getSingleGameById(itemToSearchFor);
   } else {
-    console.log(`Found the game ${JSON.stringify((await DATABASE.getSingleGameByName(itemToSearchFor)), null, 2)}`);
     return await DATABASE.getSingleGameByName(itemToSearchFor);
   };
 };

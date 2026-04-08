@@ -116,11 +116,11 @@ export function GamePageTemplate({gameIdToLoad}){
         inputObject.preventDefault();
 
         const newComment = inputObject.target.elements.commentBox.value
+        console.log("Comment info to be broadcast: ", localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
         GameChat.broadcastEvent(localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
     }
 
     async function handleGameLoading(){
-        console.log(`Id of game to load: ${gameIdToLoad}`);
 
         if (gameIdToLoad === -1){
             gameToLoad = {
@@ -141,9 +141,6 @@ export function GamePageTemplate({gameIdToLoad}){
 
             let parsedGetGameInfoResponse = await getGameInfoResponse.json();
 
-            console.log("Full response:", JSON.stringify(parsedGetGameInfoResponse, null, 2));
-            console.log(`Output game info: ${parsedGetGameInfoResponse.gameName}`);
-
             setLoadedGame(parsedGetGameInfoResponse);
             if (loadedGame.gameReviews){
                 setLocalGameReviewStorage(loadedGame.gameReviews);
@@ -152,15 +149,17 @@ export function GamePageTemplate({gameIdToLoad}){
     };
 
     function handleMessageEvent(messageEvent){
-        if (messageEvent.broadcastType === ChatEvent.UpdateMainPage){
+        console.log(`Handling message event from the user ${messageEvent.from}`);
+        if (messageEvent.broadcastType === "updateMainPage"){
             let newComment = `For game: ${messageEvent.gamePage}, ${messageEvent.from} says: \n\t${messageEvent.message}`;
             setLocalGameCommentsStorage(prevList => [...prevList, newComment]);
-        } else if (messageEvent.broadcastType === ChatEvent.UserConnected){
+        } else if (messageEvent.broadcastType === "userConnected"){
             let userJoinComment = `User ${messageEvent.from} joined chat in the game ${messageEvent.gamePage}`;
             setLocalGameCommentsStorage(prevList => [...prevList, userJoinComment]);
-        } else if (messageEvent.broadcastType === ChatEvent.UserDisconnected) {
+        } else if (messageEvent.broadcastType === "userDisconnected") {
             let userLeaveComment = `User ${messageEvent.from} left the chat`;
             setLocalGameCommentsStorage(prevList => [...prevList, userLeaveComment]);
         } else {};
+        console.log("Game comment storage after event handling: ", localGameCommentsStorage);
     }
 }

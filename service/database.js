@@ -8,11 +8,6 @@ const database = client.db('main');
 const userCollection = database.collection('users');
 const gameCollection = database.collection('games');
 
-console.log('Connecting with URL: ', url);
-client.connect()
-  .then(() => console.log('Connected successfully!'))
-  .catch(err => console.log('Connection failed:', err));
-
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
     try {
