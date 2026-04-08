@@ -144,8 +144,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - Integrated websocket in the backed for the transfer of data in chats
+- [x] **Frontend makes WebSocket connection** - The websocket connection is initiated differently depending on the page to allow
+                                                for different functions. It is implemented!
+- [x] **Data sent over WebSocket connection** - The websocket hosts a chat room when you are viewing a game (the chat room is *not* game
+                                                specific) and uses WebSocket to send out updates to the home page when stuff is added. This
+                                                notably doesn't apply to the reviews
+- [x] **WebSocket data displayed** - Websocket data is viewable in the chat on the side of a game
+- [x] **Application is fully functional** - Pretty much everything that I intended to have working in this application does!
