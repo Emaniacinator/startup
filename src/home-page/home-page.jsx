@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ChatEvent, GameChat } from '../gameChat';
 
@@ -8,55 +8,22 @@ export function HomePage({setGameToLoadFunc}) {
     const [localTopFiveGameList, setLocalTopFiveGameList] = React.useState([]);
 
     React.useEffect(() => {
+        GameChat.addMessageHandler();
 
-        let listsReturned = async () => {
-            const returnedListsResponse = await fetch('/api/gameApi/getGameLists', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({})
-            });
+        return ()=> {
+            GameChat.removeMessageHandler();
+        }
+    })
 
-            const returnedLists = await returnedListsResponse.json();
-            setLocalGameList(returnedLists.gameList);
-            setLocalNewGameList(returnedLists.newGameList);
-            setLocalTopFiveGameList(returnedLists.topFiveGameList);
-        };
-        
-        listsReturned();
-
-    }, []);
-
-    // In theory, this is going to make it so that there is new dummy game data every 3 seconds
-    const [dummyUserTimer, setDummyUserTimer] = React.useState(0);
-    
     React.useEffect(() => {
-        const intervalIncrementer = setInterval(() => {
-            setDummyUserTimer(prevCount => prevCount + 1);
-            let dummyPostResults = fetch('/api/gameApi/createDummyGame', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ gameName: 'A *NEW* Dummy Game!',
-                        gameImageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3YMfbPBgXzxmZxsa2vb2LPyanOsR6iqY7g&s',
-                        gameSummary: 'This is just a dummy game, idk man',
-                        gameId: (localGameList.length + 1),
-                        averageScore: 50
-                })
-            });
-            let listsReturned = async () => {
-                const returnedListsResponse = await fetch('/api/gameApi/getGameLists', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                });
 
-                const returnedLists = await returnedListsResponse.json();
-                setLocalGameList(returnedLists.gameList);
-                setLocalNewGameList(returnedLists.newGameList);
-                setLocalTopFiveGameList(returnedLists.topFiveGameList);
-                };
-            listsReturned();
-        }, 3000);
-        return (() => clearInterval(intervalIncrementer));
+        const pageLoadHelper = useCallback(async () => {
+            await loadPageData();
+        });
+
+        pageLoadHelper();
+        
+
     }, []);
 
     return (
@@ -112,16 +79,26 @@ export function HomePage({setGameToLoadFunc}) {
         </div>
     );
 
-    function updateNewGameList(newlyMadeGame){
-        if (localNewGameList.length > 4){
-            localNewGameList.shift();
-        }
-        localNewGameList.push(newlyMadeGame);
+    function handlePageReloadOnNewInfo(messageEvent){
+        if (messageEvent.broadcastType === ChatEvent.UpdateMainPage){
+            const anotherPageLoadHelper = useCallback(async () => {
+                await loadPageData();
+            });
+
+            anotherPageLoadHelper();
+        };
     }
 
-    function betterGameRedirect(inputObject){
-        const gameIdToLoad = inputObject.target.elements.gameid.value;
-        setGameToLoadFunc(gameIdToLoad);
-        useNavigate('GamePageTemplate');
+    async function loadPageData(){
+        const returnedListsResponse = await fetch('/api/gameApi/getGameLists', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+
+        const returnedLists = await returnedListsResponse.json();
+        setLocalGameList(returnedLists.gameList);
+        setLocalNewGameList(returnedLists.newGameList);
+        setLocalTopFiveGameList(returnedLists.topFiveGameList);
     }
 }
