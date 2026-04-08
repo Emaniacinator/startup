@@ -3,8 +3,8 @@ import { GameReview } from '../classes/gameReview';
 import { ChatEvent, GameChat } from '../gameChat';
 
 export function GamePageTemplate({gameIdToLoad}){
-    let [localGameCommentsStorage, setLocalGameCommentsStorage] = React.useState([]);
-    let [localGameReviewStorage, setLocalGameReviewStorage] = React.useState([]);
+    const [localGameCommentsStorage, setLocalGameCommentsStorage] = React.useState([]);
+    const [localGameReviewStorage, setLocalGameReviewStorage] = React.useState([]);
 
     const [loadedGame, setLoadedGame] = React.useState({});
 
@@ -70,7 +70,7 @@ export function GamePageTemplate({gameIdToLoad}){
                             <button type="Submit">Comment</button>
                         </form>
                         {localGameCommentsStorage.map((commentItem) => (
-                            <p>{commentItem}</p>
+                            <p className="whitespace-pre-wrap">{commentItem}</p>
                             )
                         )}
                     </div>
@@ -117,6 +117,10 @@ export function GamePageTemplate({gameIdToLoad}){
 
         const newComment = inputObject.target.elements.commentBox.value
         console.log("Comment info to be broadcast: ", localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
+
+        const composedComment = (`For game: ${loadedGame?.gameName} You said:\n\t  ${newComment}`);
+        setLocalGameCommentsStorage([...localGameCommentsStorage, composedComment]);
+
         GameChat.broadcastEvent(localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
     }
 
@@ -150,16 +154,21 @@ export function GamePageTemplate({gameIdToLoad}){
 
     function handleMessageEvent(messageEvent){
         console.log(`Handling message event from the user ${messageEvent.from}`);
-        if (messageEvent.broadcastType === "updateMainPage"){
-            let newComment = `For game: ${messageEvent.gamePage}, ${messageEvent.from} says: \n\t${messageEvent.message}`;
-            setLocalGameCommentsStorage(prevList => [...prevList, newComment]);
+        if (messageEvent.broadcastType === "sendMessage"){
+            console.log("updating based on sendMessage command");
+            let newComment = `For game: ${messageEvent.gamePage}, ${messageEvent.from} says:\n\t${messageEvent.message}`;
+            setLocalGameCommentsStorage([...localGameCommentsStorage, newComment]);
         } else if (messageEvent.broadcastType === "userConnected"){
+            console.log("updating based on userConnected command");
             let userJoinComment = `User ${messageEvent.from} joined chat in the game ${messageEvent.gamePage}`;
-            setLocalGameCommentsStorage(prevList => [...prevList, userJoinComment]);
+            setLocalGameCommentsStorage([...localGameCommentsStorage, userJoinComment]);
         } else if (messageEvent.broadcastType === "userDisconnected") {
+            console.log("updating based on userDisconnected command");
             let userLeaveComment = `User ${messageEvent.from} left the chat`;
-            setLocalGameCommentsStorage(prevList => [...prevList, userLeaveComment]);
-        } else {};
+            setLocalGameCommentsStorage([...localGameCommentsStorage, userLeaveComment]);
+        } else {
+            console.log("Didn't hit any update states");
+        };
         console.log("Game comment storage after event handling: ", localGameCommentsStorage);
     }
 }

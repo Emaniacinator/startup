@@ -79,12 +79,11 @@ export function HomePage({setGameToLoadFunc}) {
     );
 
     function handlePageReloadOnNewInfo(messageEvent){
-        if (messageEvent.broadcastType === ChatEvent.UpdateMainPage){
-            const anotherPageLoadHelper = useCallback(async () => {
-                await loadPageData();
-            });
-
-            anotherPageLoadHelper();
+        console.log("Attempting to reload page");
+        console.log("Message event type: ", messageEvent.broadcastType);
+        if (messageEvent.broadcastType === "updateMainPage"){
+            console.log("Correct broadcast type, calling the pageLoadHelper");
+            pageLoadHelper();
         };
     }
 

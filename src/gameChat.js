@@ -55,21 +55,22 @@ class GameChatNotifier {
 
     receiveMessageEvent(messageEvent){
         // Add the event to the list of comments if it matters
-        console.log("Message event received by a user of the type ", messageEvent.broadcastType);
+        console.log("Message event received by a user of the type", messageEvent.broadcastType);
 
         if (messageEvent.broadcastType !== "updateMainPage") {
             console.log("Pushing the message to the messageEvents list");
             this.messageEvents.push(messageEvent);
-        };
 
-        // Otherwise just send out the broadcast to allow for the updates
-        console.log("Triggering message handler for this update");
-        this.messageEvents.forEach((specificMessageEvent) => {
-            this.messageHandlers.forEach((specificMessageHandler) => {
-                console.log("Called the message handler for this event one time");
-                specificMessageHandler(specificMessageEvent);
-            });
-        });   
+            this.messageEvents.forEach((specificMessageEvent) => {
+                this.messageHandlers.forEach((specificMessageHandler) => {
+                    console.log("Called the message handler for this event one time");
+                    specificMessageHandler(specificMessageEvent);
+                });
+            });  
+        } else { 
+            console.log("Called the message handler for this event one time");
+            specificMessageHandler(specificMessageEvent);
+        };
     }
 }
 
