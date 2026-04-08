@@ -9,15 +9,16 @@ function peerProxy(httpServer) {
         socket.on('message', function message(data) {
             socketServer.clients.forEach((client) => {
                 if (client !== socket && client.readyState === WebSocket.OPEN) {
-                client.send(data);
+                    client.send(data);
                 }
             });
         });
-    })
 
-    socket.on('pong', () => {
-        socket.isAlive = true;
+        socket.on('pong', () => {
+            socket.isAlive = true;
+        });
     });
+
 
     setInterval(() => {
         socketServer.clients.forEach(function each(client) {

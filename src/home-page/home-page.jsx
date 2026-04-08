@@ -7,6 +7,10 @@ export function HomePage({setGameToLoadFunc}) {
     const [localNewGameList, setLocalNewGameList] = React.useState([]);
     const [localTopFiveGameList, setLocalTopFiveGameList] = React.useState([]);
 
+    const pageLoadHelper = useCallback(async () => {
+            await loadPageData();
+    });
+
     React.useEffect(() => {
         GameChat.addMessageHandler(handlePageReloadOnNewInfo);
 
@@ -17,12 +21,7 @@ export function HomePage({setGameToLoadFunc}) {
 
     React.useEffect(() => {
 
-        const pageLoadHelper = useCallback(async () => {
-            await loadPageData();
-        });
-
         pageLoadHelper();
-        
 
     }, []);
 

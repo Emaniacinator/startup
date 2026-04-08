@@ -2,7 +2,8 @@ const ChatEvent = {
     UserConnected: 'userConnected',
     UserDisconnected: 'userDisconnected',
     SendMessage: 'sendMessage',
-    UpdateMainPage: 'updateMainPage'
+    UpdateMainPage: 'updateMainPage',
+    SystemEvent: 'systemEvent'
 }
 
 class GameChatMessage {
@@ -23,15 +24,15 @@ class GameChatNotifier {
         const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
         this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
         this.socket.onopen = (event) => {
-            this.receiveEvent(new GameChatMessage('Simon', GameEvent.System, { msg: 'connected' }));
+            this.receiveMessageEvent(new GameChatMessage('Simon', ChatEvent.SystemEvent, { msg: 'connected' }));
         };
         this.socket.onclose = (event) => {
-            this.receiveEvent(new GameChatMessage('Simon', GameEvent.System, { msg: 'disconnected' }));
+            this.receiveMessageEvent(new GameChatMessage('Simon', ChatEvent.SystemEvent, { msg: 'disconnected' }));
         };
         this.socket.onmessage = async (msg) => {
             try {
                 const event = JSON.parse(await msg.data.text());
-                this.receiveEvent(event);
+                this.receiveMessageEvent(event);
             } catch {}
         };
     }
