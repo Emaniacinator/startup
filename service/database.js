@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 const config = require('./dbConfig.json');
 
-const url = `mongodb://Emaniacinator:${config.password}@ac-p796oz2-shard-00-00.ymjcfqu.mongodb.net:27017,ac-p796oz2-shard-00-01.ymjcfqu.mongodb.net:27017,ac-p796oz2-shard-00-02.ymjcfqu.mongodb.net:27017/?ssl=true&replicaSet=atlas-iarrw0-shard-0&authSource=admin&appName=VideoGameVotingWebsite`;
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 
 const client = new MongoClient(url);
 const database = client.db('main');
