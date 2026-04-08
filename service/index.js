@@ -161,14 +161,6 @@ apiRouter.post('/gameApi/createGame', verifyLogin, async (req, res) => {
   res.send({gameList, newGameList});
 });
 
-// This is a version of the above code that doesn't need auth as a way to have dummy users make games
-apiRouter.post('/gameApi/createDummyGame', async (req, res) => {
-  await createNewGame(req.body.gameName, req.body.gameImageUrl, req.body.gameSummary, req.body.gameId, req.body.averageScore);
-  const gameList = await DATABASE.getAllGames();
-  const newGameList = await DATABASE.getNewestGameAdditions();
-  res.send({gameList, newGameList});
-});
-
 // This function is for when the user wants to get info on a specific game to load it's associated page
 // Note that the user DOES NOT need to be logged in to do this
 apiRouter.post('/gameApi/getGameInfo', async (req, res) => {
@@ -216,14 +208,6 @@ apiRouter.post('/gameApi/addGameReview', verifyLogin, async (req, res) => {
   await DATABASE.updateGameWithReview(req.body.gameId, req.body.gameReview);
 
   res.status(200).send();
-});
-
-// This function is a temporary function to let a dummy leave a review of the game
-apiRouter.post('/gameApi/addDummyGameReview', async (req, res) => {
-
-    const gameReviewList = await DATABASE.updateGameWithReview(req.body.gameId, req.body.gameReview);
-
-    res.status(200).send();
 });
 
 // The following are functions needed for checks and information
