@@ -116,12 +116,16 @@ export function GamePageTemplate({gameIdToLoad}){
         inputObject.preventDefault();
 
         const newComment = inputObject.target.elements.commentBox.value
-        console.log("Comment info to be broadcast: ", localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
+
+        let usernameToDisplay = localStorage.getItem('username', '');
+        if (usernameToDisplay === ''){
+            usernameToDisplay = 'Guest';
+        };
 
         const composedComment = (`For game: ${loadedGame?.gameName} You said:\n\t  ${newComment}`);
         setLocalGameCommentsStorage([...localGameCommentsStorage, composedComment]);
 
-        GameChat.broadcastEvent(localStorage.getItem('username', 'guest'), loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
+        GameChat.broadcastEvent(usernameToDisplay, loadedGame?.gameName || 'Demo Name', newComment, ChatEvent.SendMessage);
     }
 
     async function handleGameLoading(){
@@ -146,8 +150,8 @@ export function GamePageTemplate({gameIdToLoad}){
             let parsedGetGameInfoResponse = await getGameInfoResponse.json();
 
             setLoadedGame(parsedGetGameInfoResponse);
-            if (loadedGame.gameReviews){
-                setLocalGameReviewStorage(loadedGame.gameReviews);
+            if (parsedGetGameInfoResponse.gameReviews){
+                setLocalGameReviewStorage(parsedGetGameInfoResponse.gameReviews);
             }
         };
     };

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { ChatEvent, GameChat } from '../gameChat';
+import { NavLink } from 'react-router-dom';
+import {  GameChat } from '../gameChat';
 
 export function HomePage({setGameToLoadFunc}) {
     const [localGameList, setLocalGameList] = React.useState([]);
@@ -31,23 +31,24 @@ export function HomePage({setGameToLoadFunc}) {
                 <div id="combo-box" className="flex justify-center">
                     <nav id ="top-games" className="flexbox content-center w-5/12 left-1/12 right-7/12">
                         <h2 className="flex justify-center text-2xl">Top Rated Games</h2>
-                        <p className="flex justify-center">(This will be updated and populated by a database when the page is loaded)</p>
-                        <table className="grid outline-2 table-fixed w-full">
-                            <thead className="grid grid-cols-3">
+                        <table className="grid outline-2 rounded list-inside table-fixed w-full">
+                            <thead className="grid grid-cols-[3fr_1fr]">
                                 <tr>
                                     <th className="relative text-center w-1/4">Name</th>
                                 </tr>
                                 <tr>
-                                    <th className="relative text-center w-1/4">Rating</th>
+                                    <th className="relative text-center">Rating</th>
                                 </tr>
                             </thead>
                             {localTopFiveGameList.map((gameItem) => (
-                                    <tbody className="grid grid-cols-3 bg-white">
+                                    <tbody className="grid grid-cols-[3fr_1fr]" key={gameItem.gameId}>
                                         <tr>
                                             <li><NavLink className='nav-link' to="GamePageTemplate" gameid={gameItem.gameId} onClick={() => setGameToLoadFunc(gameItem.gameId)}>{gameItem.gameName}</NavLink></li>
-                                     </tr>
+                                        </tr>
                                         <tr>
-                                            <td className="relative text-center w-1/10">{gameItem.averageScore}</td>
+                                            <td className="relative text-center w-1/12">{gameItem.averageScore !== undefined
+                                                                                         ? Number(gameItem.averageScore).toFixed(2)
+                                                                                         : 'No Ratings'}</td>
                                         </tr>
                                     </tbody>
                                 )
@@ -68,7 +69,6 @@ export function HomePage({setGameToLoadFunc}) {
                 </div>
                 <nav id="game-list" className="flexbox justify-center content-center">
                     <h2 className="flex justify-center">All Games</h2>
-                    <p className="flex justify-center">(This will be a list of all of the games that have a review page)</p>
                     {localGameList.map((gameItem) => (
                             <li><NavLink className='nav-link' to="GamePageTemplate" gameid={gameItem.gameId} onClick={() => setGameToLoadFunc(gameItem.gameId)}>{gameItem.gameName}</NavLink></li>
                         )
