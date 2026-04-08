@@ -2,7 +2,6 @@ const ChatEvent = {
     UserConnected: 'userConnected',
     UserDisconnected: 'userDisconnected',
     SendMessage: 'sendMessage',
-    SystemMessage: 'systemMessage',
     UpdateMainPage: 'updateMainPage'
 }
 

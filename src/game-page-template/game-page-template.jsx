@@ -152,9 +152,15 @@ export function GamePageTemplate({gameIdToLoad}){
     };
 
     function handleMessageEvent(messageEvent){
-        if (messageEvent.broadcastType !== ChatEvent.UpdateMainPage && messageEvent.broadcastType !== ChatEvent.SystemMessage){
+        if (messageEvent.broadcastType === ChatEvent.UpdateMainPage){
             let newComment = `For game: ${messageEvent.gamePage}, ${messageEvent.from} says: \n\t${messageEvent.message}`;
             setLocalGameCommentsStorage(prevList => [...prevList, newComment]);
-        }
+        } else if (messageEvent.broadcastType === ChatEvent.UserConnected){
+            let userJoinComment = `User ${messageEvent.from} joined chat in the game ${messageEvent.gamePage}`;
+            setLocalGameCommentsStorage(prevList => [...prevList, userJoinComment]);
+        } else if (messageEvent.broadcastType === ChatEvent.UserDisconnected) {
+            let userLeaveComment = `User ${messageEvent.from} left the chat`;
+            setLocalGameCommentsStorage(prevList => [...prevList, userLeaveComment]);
+        } else {};
     }
 }

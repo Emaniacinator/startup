@@ -8,12 +8,12 @@ export function HomePage({setGameToLoadFunc}) {
     const [localTopFiveGameList, setLocalTopFiveGameList] = React.useState([]);
 
     React.useEffect(() => {
-        GameChat.addMessageHandler();
+        GameChat.addMessageHandler(handlePageReloadOnNewInfo);
 
         return ()=> {
-            GameChat.removeMessageHandler();
+            GameChat.removeMessageHandler(handlePageReloadOnNewInfo);
         }
-    })
+    });
 
     React.useEffect(() => {
 
